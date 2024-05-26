@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, MouseEvent, SyntheticEvent } from "react";
+import { useState, useEffect, MouseEvent, SyntheticEvent } from "react";
 import Image from "next/image";
 import NextLink from "next/link";
 import { useRouter } from "next/navigation";
@@ -41,8 +41,8 @@ const linkTitles = [
 	{ title: "Blog", link: "#" },
 	{ title: "短影音", link: "#" },
 ];
+
 function Header() {
-	
 	const dispatch = useDispatch();
 	const router = useRouter();
 	const { profile } = useSelector((x: RootState) => x.auth);
@@ -50,6 +50,7 @@ function Header() {
 
 	const [isClient, setIsClient] = useState(false);
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+	const [container, setContainer] = useState<HTMLElement | undefined>(undefined);
 	const [mobileOpen, setMobileOpen] = useState(false);
 	const open = Boolean(anchorEl);
 
@@ -61,6 +62,7 @@ function Header() {
 		if (!profile && userProfile) {
 			dispatch(setProfile(userProfile));
 		}
+    setContainer(typeof window !== 'undefined' ? window.document.body : undefined);
 	}, [profile, userProfile, dispatch]);
 
 	const handleProfileMenuClick = (event: MouseEvent<HTMLElement>) => {
@@ -136,7 +138,6 @@ function Header() {
 			<MenuItem onClick={handleLogout}>登出</MenuItem>
 		</Box>
 	)
-	const container = window !== undefined ? () => window.document.body : undefined;
 	return (
 		<Box sx={{ display: "flex" }}>
 			<AppBar 
