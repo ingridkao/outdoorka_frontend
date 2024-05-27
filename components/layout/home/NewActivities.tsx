@@ -5,6 +5,7 @@ import Slider from "react-slick";
 import { Box } from "@mui/material";
 import TitleSection from "@/components/layout/home/TitleSection";
 import CardActivity from "@/components/ui/shared/card-activity";
+import Loading from "@/components/ui/loading/loading";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import axios from "@/plugins/api/axios";
@@ -30,7 +31,7 @@ function NewActivities() {
 	}, []);
 
 	if (error) return <div>Failed to load</div>;
-	if (activityList.length === 0) return <div>Loading...</div>;
+	if (activityList.length === 0) return <Loading />;
 
 	const SliderSettings = {
 		centerMode: true,

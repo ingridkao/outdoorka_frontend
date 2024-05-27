@@ -11,7 +11,7 @@ function MainLayout({ children }: MainLayoutProps) {
 			<Box 
 				component="main"
 				sx={{ 
-					paddingTop: 12,
+					paddingTop: 10,
 					wordWrap: "break-word"
 				}}
 			>

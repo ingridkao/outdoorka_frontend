@@ -151,11 +151,10 @@ function Header() {
 				}}
 			>
 				<Toolbar sx={{ 
+					width: "100vw",
 					justifyContent: "space-between",
-					py: 2,
-					"& > *": {
-						flex: "1 1 0"
-					}
+					flexWrap: "wrap",
+					py: 2
 				}}>
 					{/* Mobile: 漢堡選單按鈕 */}
 					<IconButton
@@ -165,7 +164,8 @@ function Header() {
 						onClick={handleDrawerToggle}
 						sx={{ 
 							display: { lg: "none" },
-							mr: 2,
+							justifyContent: "flex-start",
+							flex: "0 1 96px"
 						}}
 					>
 						<MenuIcon />
@@ -173,6 +173,7 @@ function Header() {
 					{/* Desktop: Menu*/}
 					<Box sx={{ 
 						display: { xs: "none", lg: "inline-flex" },
+						flex: "0 1 500px"
 					}}>
 						{linkTitles.map((item) => (
 							<Link
@@ -192,24 +193,37 @@ function Header() {
 						))}
 					</Box>
 
-					<Button component={NextLink} href="/">
+					<Button 
+						component={NextLink} 
+						href="/"
+						sx={{ 
+							height: { xs: "30px", lg: "48px" },
+							flex: "1 1 auto",
+							justifyContent: "flex-end",
+						}}
+					>
 						<Image
 							src={scrollDownFlag? LogoHeader2 : LogoHeader1 }
-							width={100}
-							height={48}
+							layout="fill"
 							alt="揪好咖"
 							style={{
 								transition: scrollDownFlag ? "0.3s" : "0.5s",
-								flexGrow: 1
 							}}
 							priority={true}	
 						/>
 					</Button>
 
-					<Box sx={{textAlign: "right"}}>
+					<Box sx={{
+						flex: {xs: "0 1 96px", lg: "0 1 500px"},
+						justifyContent: "flex-end",
+						textAlign: {lg: "right"}
+					}}>
 						{isClient ? (
 							!profile ? (
-								<Box>
+								<Box 
+									display="inline-flex"
+									alignItems="center"
+								>
 									<Button color="inherit" href="/login">
 										登入
 									</Button>
@@ -220,13 +234,8 @@ function Header() {
 								</Box>
 							):(
 								<>
-									<Box 
-										display="inline-flex" 
-										sx={{
-											textAlign: "right"
-										}}
-									>
-										<IconButton 
+									<Box display="inline-flex" >
+										<IconButton
 											onClick={handleProfileMenuClick}
 											bgcolor="#EFF0F7"
 											display="inline-flex"
