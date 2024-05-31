@@ -1,9 +1,11 @@
 "use client";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import NextLink from "next/link";
 import { loginOrganizer } from "@/features/organizer/ogAuthSlice";
+import { EMAIL_REGEX, PWD_REGEX } from "@/utils/regexHandler";
+import { removeCookie, getCookie, setCookie } from "@/utils/cookieHandler";
 
 import {
 	Grid,
@@ -20,37 +22,46 @@ import {
 } from "@mui/material";
 import { LoginOrganizerForm } from "@/types/AuthType";
 
+const OUTDOORKA_OG_ACC_COOKIE = "OUTDOORKA_OG_ACC";
+
 export default function Login() {
 	const router = useRouter();
 	const dispatch = useDispatch();
-	// const token = useSelector((state:any) => state.auth.token);
+	// const token = useSelector((state: any) => state.auth.token);
 
 	const [loginForm, setLoginForm] = useState<LoginOrganizerForm>({
 		email: "",
 		password: "",
+		remember: true,
 	});
 	const [validAccount, setValidAccount] = useState("");
 	const [validPwd, setValidPwd] = useState("");
 	const [errorMsg, setErrorMsg] = useState("");
 	const [successMsg, setSuccessMsg] = useState("");
 
-	const EMAIL_REGEX = /^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/;
-	const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,20}$/;
+	useEffect(() => {
+		const getAcc = getCookie(OUTDOORKA_OG_ACC_COOKIE);
+		if (getAcc) {
+			setLoginForm({
+				email: getAcc,
+				password: "",
+				remember: true,
+			});
+		}
+	}, []);
 
-	const handleInputChange = (
-		e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-	) => {
-		e.preventDefault();
-		const { name, value } = e.target;
-		if (name === "account") {
+	const handleValidate = (name: string, value: string) => {
+		if (name === "email") {
 			if (value === "") {
 				setValidAccount("請輸入帳號");
 			} else if (!EMAIL_REGEX.test(value)) {
 				setValidAccount("請輸入Email格式");
 			} else {
 				setValidAccount("");
+				return true;
 			}
 		}
+
 		if (name === "password") {
 			if (value === "") {
 				setValidPwd("請輸入密碼");
@@ -58,8 +69,18 @@ export default function Login() {
 				setValidPwd("請確認密碼格式，規則為大小寫英數字混合，並且至少八碼");
 			} else {
 				setValidPwd("");
+				return true;
 			}
 		}
+
+		return false;
+	};
+
+	const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+		e.preventDefault();
+		const { name, value } = e.target;
+
+		handleValidate(name, value);
 
 		setLoginForm((prevForm: any) => ({
 			...prevForm,
@@ -67,24 +88,39 @@ export default function Login() {
 		}));
 	};
 
+	const handleChecked = (e: ChangeEvent<HTMLInputElement>) => {
+		if (e.target.name === "remember") {
+			setLoginForm((prevForm: any) => ({
+				...prevForm,
+				remember: e.target.checked,
+			}));
+		}
+	};
+
 	const handleSubmit = (e: { preventDefault: () => void }) => {
 		e.preventDefault();
-		const { email, password } = loginForm as LoginOrganizerForm;
+		const { email, password, remember } = loginForm as LoginOrganizerForm;
 
-		console.log("handleSubmit", email, password);
+		const validAcc = handleValidate("email", email);
+		const validPwd = handleValidate("password", password);
 
-		if (!EMAIL_REGEX.test(email) || !PWD_REGEX.test(password)) return;
+		if (!validPwd || !validAcc) return;
 		setErrorMsg("");
 		setSuccessMsg("");
 
 		dispatch(loginOrganizer(loginForm) as any).then((res: any) => {
 			if (res.payload.data) {
-				setSuccessMsg(res.payload.message);
+				setSuccessMsg('登入成功，即將跳轉至"活動管理"頁面');
 
-				alert("登入成功");
+				if (remember) {
+					setCookie(OUTDOORKA_OG_ACC_COOKIE, email, 1);
+				} else {
+					removeCookie(OUTDOORKA_OG_ACC_COOKIE);
+				}
+
 				setTimeout(() => {
-					router.push("/");
-				}, 300000); // 2秒後跳轉到首頁
+					router.push("/organizer/activity-create");
+				}, 1000); // 1秒後跳轉
 			} else if (res.payload.error) {
 				setErrorMsg(res.payload.error);
 			}
@@ -156,19 +192,20 @@ export default function Login() {
 									error={validAccount !== ""}
 									helperText={validAccount}
 									InputLabelProps={{ shrink: true }}
-									onChange={(event) => handleInputChange(event)}
+									onChange={handleInputChange}
 								/>
 								<TextField
 									required
 									name="password"
+									type="password"
 									value={loginForm.password}
 									label="密碼"
 									margin="normal"
-									type="password"
+									inputProps={{ maxLength: 20 }}
 									error={validPwd !== ""}
 									helperText={validPwd}
 									InputLabelProps={{ shrink: true }}
-									onChange={(event) => handleInputChange(event)}
+									onChange={handleInputChange}
 								/>
 								<Button
 									variant="contained"
@@ -191,8 +228,14 @@ export default function Login() {
 									}}
 								>
 									<FormControlLabel
-										control={<Checkbox defaultChecked />}
 										label="記住我"
+										control={
+											<Checkbox
+												name="remember"
+												checked={loginForm.remember}
+												onChange={handleChecked}
+											/>
+										}
 									/>
 									<MuiLink
 										component={NextLink}

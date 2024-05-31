@@ -21,7 +21,7 @@ function NewActivities() {
 		async function loadData() {
 			try {
 				const responseBody = await activity.getNewActivityList();
-				if (!responseBody || !responseBody.data) return
+				if (!responseBody || !responseBody.data) return;
 				setActivityList(responseBody.data);
 			} catch (error) {
 				setError("Failed to fetch data: " + String(error));
@@ -38,12 +38,14 @@ function NewActivities() {
 		infinite: true,
 		variableWidth: true,
 		adaptiveHeight: true,
-		responsive: [{
-			breakpoint: 400,
-			settings: {
-				dots: true,
-			}
-		}]
+		responsive: [
+			{
+				breakpoint: 400,
+				settings: {
+					dots: true,
+				},
+			},
+		],
 	};
 
 	return (
@@ -51,21 +53,24 @@ function NewActivities() {
 			sx={{
 				position: "relative",
 				overflow: "hidden",
-				paddingBottom: 10,
+				pb: 10,
+				mb: 25,
 				"&::before": {
 					content: "''",
 					position: "absolute",
+					zIndex: -1,
 					left: "5%",
 					width: "90%",
 					maxWidth: "1536px",
-					background: "linear-gradient(180deg, rgba(196, 221, 255, 0.18) 0%, #C4DDFF 100%)",
+					background:
+						"linear-gradient(180deg, rgba(196, 221, 255, 0.18) 0%, #C4DDFF 100%)",
 					borderRadius: "48px",
-					px:0,
-					py:40
-				}
+					px: 0,
+					py: 40,
+					pointerEvents: "none",
+				},
 			}}
 		>
-			
 			<TitleSection title="最新活動" />
 
 			<Slider {...SliderSettings}>
@@ -73,7 +78,7 @@ function NewActivities() {
 					<Box
 						key={value._id}
 						sx={{
-							px:1.5
+							px: 1.5,
 						}}
 					>
 						<CardActivity

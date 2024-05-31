@@ -1,16 +1,15 @@
 import axios from "axios";
-import { tokenName, getCookie } from "@/utils/cookieHandler";
+import { getCookie } from "@/utils/cookieHandler";
 
-const instance = axios.create({
-	baseURL: process.env.NEXT_PUBLIC_BASE_URL_USER || "http://localhost:3006",
-	headers: { "Content-Type": "application/json" },
-});
-
-const onRequest = (config: any) => {
-	const token = getCookie(tokenName);
+const onRequest = (tokenCookie: string) => (config: any) => {
+	const token = getCookie(tokenCookie);
 	if (token) {
 		config.headers.Authorization = `Bearer ${token}`;
 	}
+
+	// Wait for 10 seconds before timing out
+	config.timeout = 10000; //
+
 	return config;
 };
 
@@ -41,7 +40,26 @@ const onError = (error: any) => {
 	}
 };
 
-instance.interceptors.request.use(onRequest);
-instance.interceptors.response.use(onResponse, onError);
+const createInstance = (baseURL: string, tokenCookie: string) => {
+	const instance = axios.create({
+		baseURL,
+		headers: { "Content-Type": "application/json" },
+	});
 
-export default instance;
+	instance.interceptors.request.use(onRequest(tokenCookie));
+	instance.interceptors.response.use(onResponse, onError);
+
+	return instance;
+};
+
+const instance = createInstance(
+	process.env.NEXT_PUBLIC_BASE_URL_USER || "http://localhost:3006",
+	"OUTDOORKA_TOKEN",
+);
+
+const ogInstance = createInstance(
+	process.env.NEXT_PUBLIC_BASE_URL_USER || "http://localhost:3006",
+	"OUTDOORKA_OG_TOKEN",
+);
+
+export { instance as default, ogInstance };

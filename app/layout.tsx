@@ -3,10 +3,12 @@
 import { useMemo } from "react";
 import { Provider } from "react-redux";
 import { ThemeProvider } from "@mui/material/styles";
+
 import initializeStore from "@/features/index";
 
 import { Inter } from "next/font/google";
 import "@/styles/globals.css";
+import "@/styles/customStyles.css";
 import { lightTheme } from "@/styles/theme";
 
 const inter = Inter({ subsets: ["latin"] });

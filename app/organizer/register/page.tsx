@@ -4,7 +4,13 @@ import { useState, ChangeEvent } from "react";
 // import { RegisterForm } from "@/types/AuthType";
 import NextLink from "next/link";
 // import { logoutUser } from "@/features/user/authSlice";
-
+import {
+	EMAIL_REGEX,
+	NAME_REGEX,
+	PWD_REGEX,
+	TW_PHONE_REGEX,
+} from "@/utils/regexHandler";
+import axios from "@/plugins/api/axios";
 import {
 	Grid,
 	Box,
@@ -18,11 +24,12 @@ import {
 } from "@mui/material";
 
 export default function Register() {
-	// const { user } = axios;
+	const { auth } = axios;
 	// const dispatch = useDispatch();
 
 	const [registerForm, setRegisterForm] = useState<any>({
 		name: "",
+		nickName: "",
 		mobile: "",
 		email: "",
 		password: "",
@@ -31,15 +38,11 @@ export default function Register() {
 	const [errorMsg, setErrorMsg] = useState("");
 	const [successMsg, setSuccessMsg] = useState("");
 	const [validName, setValidName] = useState("");
+	const [validNickName, setValidNickName] = useState("");
 	const [validEmail, setValidEmail] = useState("");
 	const [validMobile, setValidMobile] = useState("");
 	const [validPwd, setValidPwd] = useState("");
 	const [validMatch, setValidMatch] = useState("");
-
-	const NAME_REGEX = /^[\u4E00-\u9FA5\w]{3,23}$/; // eslint-disable-line
-	const TW_PHONE_REGEX = /^09\d{8}$/; // eslint-disable-line
-	const EMAIL_REGEX = /^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/; // eslint-disable-line
-	const PWD_REGEX = /^[0-9a-zA-Z]{8,24}$/; // eslint-disable-line
 
 	const handleInputChange = (
 		e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -54,6 +57,16 @@ export default function Register() {
 				setValidName("請確認姓名格式，僅接受中文及英數字");
 			} else {
 				setValidName("");
+			}
+		}
+
+		if (name === "nickName") {
+			if (value === "") {
+				setValidNickName("請輸入暱稱");
+			} else if (!NAME_REGEX.test(value)) {
+				setValidNickName("請確認暱稱格式，僅接受中文及英數字");
+			} else {
+				setValidNickName("");
 			}
 		}
 
@@ -93,7 +106,6 @@ export default function Register() {
 			}
 		}
 
-		console.log("name", name, value);
 		setRegisterForm((prevForm: any) => ({
 			...prevForm,
 			[name]: value,
@@ -102,30 +114,32 @@ export default function Register() {
 
 	const handleSubmit = async (e: { preventDefault: () => void }) => {
 		e.preventDefault();
-		const { email, password, mobile, name } = registerForm;
-		console.log("registerForm", email, password, mobile, name);
+		const { email, nickName, password, mobile, name } = registerForm;
 
 		if (!EMAIL_REGEX.test(email) || !PWD_REGEX.test(password)) return;
 		setErrorMsg("");
 		setSuccessMsg("");
-		// try {
-		// 	const result = await user.registerUser({
-		// 		name,
-		// 		mobile,
-		// 		password,
-		// 		email: email,
-		// 	});
-		// 	// TODO: 調整寫法
-		// 	console.log(result);
-		// 	if (result.error && result.status == 500) {
-		// 		setErrorMsg("此帳號已被註冊過");
-		// 	} else if (result.data) {
-		// 		// setSuccessMsg(result.message);
-		// 		setSuccessMsg("註冊成功");
-		// 	}
-		// } catch (err) {
-		// 	console.error(err);
-		// }
+		try {
+			const result = await auth.registerOrganizer({
+				email,
+				name,
+				nickName,
+				mobile,
+				password,
+			});
+
+			console.log(result);
+			if (result.error && result.status == 409) {
+				setErrorMsg("此帳號已被註冊過");
+			} else if (result.error && result.status == 500) {
+				setErrorMsg("註冊失敗");
+			} else if (result.data) {
+				// setSuccessMsg(result.message);
+				setSuccessMsg("註冊成功");
+			}
+		} catch (err) {
+			console.error(err);
+		}
 	};
 
 	const step1 = (
@@ -162,13 +176,13 @@ export default function Register() {
 					/>
 					<TextField
 						required
-						name="info"
-						value={registerForm.name}
-						label="主揪簡介"
+						name="nickName"
+						value={registerForm.nickName}
+						label="主揪暱稱"
 						variant="outlined"
 						margin="normal"
-						error={validName !== ""}
-						helperText={validName}
+						error={validNickName !== ""}
+						helperText={validNickName}
 						InputLabelProps={{ shrink: true }}
 						onChange={(event) => handleInputChange(event)}
 					/>
@@ -206,6 +220,7 @@ export default function Register() {
 						label="密碼"
 						variant="outlined"
 						margin="normal"
+						inputProps={{ maxLength: 20 }}
 						error={validPwd !== ""}
 						helperText={validPwd}
 						InputLabelProps={{ shrink: true }}
@@ -214,10 +229,12 @@ export default function Register() {
 					<TextField
 						required
 						name="confirm"
+						type="password"
 						value={registerForm.confirm}
 						label="確認密碼"
 						variant="outlined"
 						margin="normal"
+						inputProps={{ maxLength: 20 }}
 						error={validMatch !== ""}
 						helperText={validMatch}
 						InputLabelProps={{ shrink: true }}

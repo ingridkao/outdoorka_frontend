@@ -2,7 +2,7 @@
 import React, { useEffect } from "react";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import axios from "@/plugins/api/axios";
-import { getCookie } from "cookies-next";
+import { getCookie } from "@/utils/cookieHandler";
 
 import MainLayout from "@/components/layout/MainLayout/MainLayout";
 import UserProfile from "@/components/layout/user/userProfile";

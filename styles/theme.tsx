@@ -53,6 +53,9 @@ const lightTheme = createTheme({
 		fontWeightMedium: 500,
 		fontWeightBold: 700,
 	},
+	shape: {
+		borderRadius: 32,
+	},
 });
 
 const darkTheme = createTheme({

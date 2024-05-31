@@ -1,0 +1,14 @@
+.MuiButton-colorPrimary:hover {
+	background-color: #44474c;
+}
+.MuiButton-colorPrimary:disabled {
+	background-color: #e1e2e9;
+	color: #c4c6cd;
+}
+.MuiButton-containedSizeMedium {
+	padding: 16px 48px 16px 48px;
+	font-size: 18px;
+}
+/* .MuiButton-textPrimary:disabled {
+  background-color: #E1E2E9;
+} */

@@ -4,15 +4,15 @@ import Header from "@/components/layout/Header/Header";
 import Footer from "@/components/layout/Footer/Footer";
 import { MainLayoutProps } from "@/types/index";
 
-function MainLayout({ children }: MainLayoutProps) {	
+function MainLayout({ children }: MainLayoutProps) {
 	return (
 		<Box>
 			<Header />
-			<Box 
+			<Box
 				component="main"
-				sx={{ 
+				sx={{
 					paddingTop: 10,
-					wordWrap: "break-word"
+					wordWrap: "break-word",
 				}}
 			>
 				{children}

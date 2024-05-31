@@ -2,7 +2,7 @@
 
 import React from "react";
 import dayjs from "dayjs";
-import { Box, Typography, Grid, Paper } from "@mui/material";
+import { Box, Typography, Avatar, Grid, Paper, CardMedia } from "@mui/material";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import LocationIcon from "@/components/icon/locationIcon";
@@ -56,13 +56,28 @@ const RatingStars = ({ rating = 0 }: { rating: number }) => (
 
 function CardActivity({ activity, type = "sm" }: CardActivityProps) {
 	const parseDate = () => {
-		return dayjs(activity.date).format("YYYY/YY/DD")
-	}
-	// const parseRate = () => {
-	// 	const rating = Number(activity.rating)*10;
-	// 	const roundedRating = Math.round(rating/2);
-	// 	return roundedRating;
-	// }
+		return dayjs(activity.date).format("YYYY/MM/DD");
+	};
+	const roundInfoBoxStyle = {
+		padding: "5px 12px",
+		border: "1px solid #FFFFFFCC",
+		borderRadius: "36px",
+		backdropFilter: "invert(25%)",
+		backgroundColor: "rgba(255, 255, 255, .15)",
+	};
+	const infoIconStyle = {
+		mr: 1,
+		width: "24px",
+		height: "24px",
+		color: "#F8F9FF",
+	};
+	const infoIconTextStyle = {
+		display: "inline-block",
+		fontSize: "16px",
+		fontWeight: "500",
+		lineHeight: "26px",
+		color: "#F8F9FF",
+	};
 	return (
 		<Paper
 			sx={{
@@ -70,22 +85,38 @@ function CardActivity({ activity, type = "sm" }: CardActivityProps) {
 				height: type === "lg" ? 436 : 392,
 				backgroundColor: "#fff",
 				borderRadius: "24px",
+				m: "auto",
 			}}
 		>
 			{/* 上方 區塊 */}
 			<Box sx={{ position: "relative" }}>
 				{/* 底圖 */}
 				<Box
-					component="img"
-					src={activity.photo}
 					sx={{
+						position: "relative",
 						width: "100%",
-						height: type === "lg" ? "244px" : "181px",
 						objectFit: "cover",
 						borderTopLeftRadius: "24px",
 						borderTopRightRadius: "24px",
+						overflow: "hidden",
+						"&::before": {
+							content: "''",
+							position: "absolute",
+							width: "100%",
+							height: "100%",
+							background:
+								"linear-gradient(180deg, transparent 50%, rgb(0,0,0,0.8) 100%)",
+							pointerEvents: "none",
+						},
 					}}
-				></Box>
+				>
+					<CardMedia
+						component="img"
+						alt={activity.title}
+						height={type === "lg" ? "244px" : "181px"}
+						image={activity.photo}
+					/>
+				</Box>
 				{/* 主揪資訊 */}
 				<Grid
 					sx={{
@@ -102,32 +133,26 @@ function CardActivity({ activity, type = "sm" }: CardActivityProps) {
 					{/* 主揪 */}
 					<Grid item>
 						<Box
+							display="inline-flex"
+							alignItems="center"
 							sx={{
-								display: "inline-flex",
+								...roundInfoBoxStyle,
 								width: `${type === "lg" ? "159px" : "155px"}`,
-								height: "40px",
-								padding: "4px 6px 4px 4px",
-								border: "1px solid #FFFFFFCC",
-								borderRadius: "800px",
+								padding: "3px",
 							}}
 						>
-							<Box
-								component="img"
+							<Avatar
+								alt={activity.name}
 								src={activity.avatar}
 								sx={{
-									width: "32px",
-									height: "32px",
-									objectFit: "cover",
-									borderRadius: "100%",
-									marginRight: "7px",
+									width: 32,
+									height: 32,
+									mr: 1,
 								}}
 							/>
-
 							<Box
 								sx={{
 									width: type === "lg" ? "106px" : "103px",
-									height: "32px",
-									lineHeight: "16px",
 								}}
 							>
 								{/* 星星評分 */}
@@ -135,18 +160,15 @@ function CardActivity({ activity, type = "sm" }: CardActivityProps) {
 
 								{/* 主揪名稱 */}
 								<Typography
-									variant="p"
 									sx={{
-										display: "inline-block",
+										...infoIconTextStyle,
 										overflow: "hidden",
 										maxWidth: "7.5em",
 										textOverflow: "ellipsis",
 										whiteSpace: "nowrap",
 										fontSize: "14px",
-										lineHeight: "16px",
 										fontWeight: "400",
-										letterSpacing: "0.5px",
-										color: "#F8F9FF",
+										lineHeight: 1,
 									}}
 								>
 									{activity.name}
@@ -155,39 +177,18 @@ function CardActivity({ activity, type = "sm" }: CardActivityProps) {
 						</Box>
 					</Grid>
 
-					{/* 人數 */}
+					{/* 參加人數 */}
 					{type === "lg" && (
 						<Grid item>
 							<Box
-								sx={{
-									width: "83px",
-									height: "36px",
-									padding: "6px 12px 6px 12px",
-									border: "1px solid #FFFFFFCC",
-									borderRadius: "800px",
-								}}
+								display="inline-flex"
+								alignItems="center"
+								sx={roundInfoBoxStyle}
 							>
-								<PeopleIcon
-									sx={{
-										marginRight: "8px",
-										width: "24px",
-										height: "24px",
-										color: "#F8F9FF",
-									}}
-								/>
-								<Box
-									sx={{
-										display: "inline-block",
-										fontSize: "16px",
-										fontWeight: "500",
-										lineHeight: "26px",
-										verticalAlign: "top",
-										letterSpacing: "0.5px",
-										color: "#F8F9FF",
-									}}
-								>
+								<PeopleIcon sx={infoIconStyle} />
+								<Typography sx={infoIconTextStyle}>
 									{activity.capacity || 0}
-								</Box>
+								</Typography>
 							</Box>
 						</Grid>
 					)}
@@ -195,35 +196,12 @@ function CardActivity({ activity, type = "sm" }: CardActivityProps) {
 					{/* 愛心數 */}
 					<Grid item>
 						<Box
-							sx={{
-								width: "93px",
-								height: "36px",
-								padding: "6px 16px 6px 16px",
-								border: "1px solid #FFFFFFCC",
-								borderRadius: "800px",
-							}}
+							display="inline-flex"
+							alignItems="center"
+							sx={roundInfoBoxStyle}
 						>
-							<FavoriteIcon
-								sx={{
-									marginRight: "2px",
-									width: "24px",
-									height: "24px",
-									color: "#F8F9FF",
-								}}
-							/>
-							<Box
-								sx={{
-									display: "inline-block",
-									fontSize: "16px",
-									fontWeight: "500",
-									lineHeight: "26px",
-									verticalAlign: "top",
-									letterSpacing: "0.5px",
-									color: "#F8F9FF",
-								}}
-							>
-								{activity.likers}
-							</Box>
+							<FavoriteIcon sx={infoIconStyle} />
+							<Typography sx={infoIconTextStyle}>{activity.likers}</Typography>
 						</Box>
 					</Grid>
 				</Grid>
@@ -262,12 +240,12 @@ function CardActivity({ activity, type = "sm" }: CardActivityProps) {
 					<span>{parseDate()}</span>
 				</Box>
 				<Typography
+					variant="h6"
 					sx={{
 						marginTop: "16px",
 						fontWeight: "700",
 						lineHeight: "30px",
 					}}
-					variant="h6"
 				>
 					{activity.title}
 				</Typography>
