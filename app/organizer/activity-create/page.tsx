@@ -6,6 +6,8 @@ import axios from "@/plugins/api/axios";
 import OrganizerLayout from "@/components/layout/OrganizerLayout/OrganizerLayout";
 import { NUMBER_ONLY_REGEX, URL_REGEX } from "@/utils/regexHandler";
 import * as dayjs from "dayjs";
+import { getFirebaseFileName } from "@/utils/common";
+
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -26,6 +28,7 @@ import {
 	MenuItem,
 	SelectChangeEvent,
 	Box,
+	Alert,
 } from "@mui/material";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
@@ -40,8 +43,6 @@ import { ActivityTag, City } from "@/types/enum/activity";
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
-// Initial data
-const getDatetime = dayjs.default().add(7, "day");
 // Initial activity data
 const activityInitData: ICreateActivity = {
 	title: "",
@@ -61,10 +62,26 @@ const activityInitData: ICreateActivity = {
 	],
 	activityImageUrls: [],
 	isPublish: false,
-	activitySignupStartTime: getDatetime,
-	activitySignupEndTime: getDatetime,
-	activityStartTime: getDatetime,
-	activityEndTime: getDatetime,
+	activitySignupStartTime: dayjs
+		.default()
+		.add(1, "day")
+		.set("hour", 0)
+		.set("minute", 0),
+	activitySignupEndTime: dayjs
+		.default()
+		.add(6, "day")
+		.set("hour", 23)
+		.set("minute", 0),
+	activityStartTime: dayjs
+		.default()
+		.add(7, "day")
+		.set("hour", 6)
+		.set("minute", 0),
+	activityEndTime: dayjs
+		.default()
+		.add(7, "day")
+		.set("hour", 17)
+		.set("minute", 0),
 };
 // City Select options
 const citySelect = Object.keys(City).map((key) => ({
@@ -80,6 +97,8 @@ const activitySelectTags = Object.keys(ActivityTag).map((key) => ({
 function ActivityCreate() {
 	const router = useRouter();
 	const { organizer } = axios;
+
+	const [isLoading, setIsLoading] = React.useState<boolean>(false);
 	const [ogInfo, setOgInfo] = React.useState<OgAuthState>({
 		profile: null,
 		token: null,
@@ -93,6 +112,10 @@ function ActivityCreate() {
 	const [imageUrls, setImageUrls] = React.useState<string[]>([]);
 	const [formValid, setFormValid] = React.useState<Record<any, string>>({});
 	const hiddenFileInput = useRef<HTMLInputElement>(null);
+	const [submitResult, setSubmitResult] = React.useState<any>({
+		isSuccess: false,
+		message: "",
+	});
 
 	// Get ogAuth from redux
 	const ogAuth = useSelector((state: RootState) => state.ogAuth);
@@ -176,6 +199,10 @@ function ActivityCreate() {
 
 			if (getFile.size > maxSize) {
 				console.error("Image size cannot exceed 2 MB");
+				setSubmitResult({
+					isSuccess: false,
+					message: "上傳圖片大小不可超過 2 MB",
+				});
 				return;
 			}
 
@@ -183,6 +210,10 @@ function ActivityCreate() {
 			const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
 			if (!allowedTypes.includes(getFile.type)) {
 				console.error("只允許 JPG, PNG, and GIF images are allowed");
+				setSubmitResult({
+					isSuccess: false,
+					message: "圖片格式只允許 JPG, PNG, GIF",
+				});
 				return;
 			}
 
@@ -205,13 +236,21 @@ function ActivityCreate() {
 	};
 
 	const handleTempImageDelete = (index: number) => () => {
+		// Delete image from firebase
+		const fileNam = getFirebaseFileName(imageUrls[index]);
+		organizer.imageDelete(fileNam).then((res: any) => {
+			console.log("imageDelete", res);
+		});
+
 		const newImageUrls = imageUrls.filter((_, i) => i !== index);
 		setImageUrls(newImageUrls);
 	};
 
 	const handleSubmit = (isPublish: boolean) => (e: any) => {
 		e.preventDefault();
-		console.log("submit", activityData);
+		// console.log("submit", activityData);
+
+		setIsLoading(true);
 
 		setFormValid({});
 		activityData.activityTags = tags.map((tag) => tag.value);
@@ -254,22 +293,60 @@ function ActivityCreate() {
 			}
 		}
 
-		// console.log("activityData", activityData);
-		// console.log("formValid", isValid);
+		let errorMessages = "未正確填寫內容，請確認以上欄位內容";
 		if (isValid) {
+			setSubmitResult({
+				isSuccess: false,
+				message: errorMessages,
+			});
+			setIsLoading(false);
 			return;
 		}
 
+		errorMessages = "儲存失敗，請再確認以上欄位後再次嚐試";
 		organizer
 			.createActivity(activityData)
 			.then((res: any) => {
-				console.log("createActivity", res);
-				setTimeout(() => {
-					router.push("/organizer/activity-list");
-				}, 100);
+				if (res.data?._id) {
+					setSubmitResult({
+						isSuccess: true,
+						message: "建立成功",
+					});
+
+					setTimeout(() => {
+						router.push("/organizer/activity-list");
+					}, 200);
+				} else {
+					console.log("res.error", res);
+					if (res.error) {
+						try {
+							const error = JSON.parse(res.error);
+							if (Array.isArray(error)) {
+								errorMessages = error
+									.map((data: any) => Object.values(data)[0])
+									.join("\n");
+							}
+						} catch (error) {
+							if (typeof res.error === "string") {
+								errorMessages = res.error;
+							}
+						}
+					}
+
+					setSubmitResult({
+						isSuccess: false,
+						message: errorMessages,
+					});
+					setIsLoading(false);
+				}
 			})
 			.catch((err: any) => {
-				console.log("createActivity", err);
+				console.error("createActivity", err);
+				setSubmitResult({
+					isSuccess: false,
+					message: errorMessages,
+				});
+				setIsLoading(false);
 			});
 	};
 
@@ -457,6 +534,7 @@ function ActivityCreate() {
 							<DemoContainer components={["DateTimePicker"]}>
 								<DateTimePicker
 									label="活動開始時間"
+									ampm={false}
 									value={activityData.activityStartTime}
 									name="activityStartTime"
 									onChange={handleDateTimeChange("activityStartTime")}
@@ -470,6 +548,7 @@ function ActivityCreate() {
 							>
 								<DateTimePicker
 									label="活動結束時間"
+									ampm={false}
 									value={activityData.activityEndTime}
 									onChange={handleDateTimeChange("activityEndTime")}
 								/>
@@ -485,6 +564,7 @@ function ActivityCreate() {
 							<DemoContainer components={["DateTimePicker"]}>
 								<DateTimePicker
 									label="活動報名起始日"
+									ampm={false}
 									value={activityData.activitySignupStartTime}
 									onChange={handleDateTimeChange("activitySignupStartTime")}
 								/>
@@ -497,6 +577,7 @@ function ActivityCreate() {
 							>
 								<DateTimePicker
 									label="活動報名截止日"
+									ampm={false}
 									value={activityData.activitySignupEndTime}
 									onChange={handleDateTimeChange("activitySignupEndTime")}
 								/>
@@ -642,9 +723,16 @@ function ActivityCreate() {
 				</Grid>
 			</FormControl>
 
-			{/* <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-				下一步
-			</Button> */}
+			{submitResult.isSuccess && submitResult.message && (
+				<Alert severity="success">{submitResult.message}</Alert>
+			)}
+
+			{!submitResult.isSuccess && submitResult.message && (
+				<Alert severity="error" sx={{ whiteSpace: "pre-line" }}>
+					{submitResult.message}
+				</Alert>
+			)}
+
 			<Grid container spacing={5} justifyContent="flex-end" mt={5} mb={5}>
 				<Grid xs={3}>
 					<Button
@@ -654,6 +742,7 @@ function ActivityCreate() {
 						color="primary"
 						size="large"
 						onClick={handleSubmit(false)}
+						disabled={isLoading}
 					>
 						儲存草稿
 					</Button>
@@ -666,6 +755,7 @@ function ActivityCreate() {
 						color="success"
 						size="large"
 						onClick={handleSubmit(true)}
+						disabled={isLoading}
 					>
 						建立活動
 					</Button>

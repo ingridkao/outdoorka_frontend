@@ -40,7 +40,7 @@ function NewActivities() {
 		adaptiveHeight: true,
 		responsive: [
 			{
-				breakpoint: 400,
+				breakpoint: 800,
 				settings: {
 					dots: true,
 				},
@@ -59,14 +59,14 @@ function NewActivities() {
 					content: "''",
 					position: "absolute",
 					zIndex: -1,
-					left: "5%",
-					width: "90%",
+					left: { xs: "5%", lg: "calc(50vw - 768px)" },
+					width: { xs: "90%", lg: "1536px" },
 					maxWidth: "1536px",
 					background:
 						"linear-gradient(180deg, rgba(196, 221, 255, 0.18) 0%, #C4DDFF 100%)",
 					borderRadius: "48px",
 					px: 0,
-					py: 40,
+					py: 43,
 					pointerEvents: "none",
 				},
 			}}

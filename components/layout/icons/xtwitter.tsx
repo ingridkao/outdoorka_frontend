@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { ListItemButton, ListItemText } from "@mui/material";
-import twitterSvg from "@/public/icons/xtwitter.svg"
+import twitterSvg from "@/public/icons/xtwitter.svg";
 
 function Xtwitter() {
 	return (
@@ -23,7 +23,7 @@ function Xtwitter() {
 				height={18}
 				alt="x-twitter"
 				style={{
-					marginRight: "8px"
+					marginRight: "8px",
 				}}
 			/>
 			<ListItemText>X-twitter</ListItemText>

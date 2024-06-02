@@ -1,15 +1,18 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { Inter } from "next/font/google";
 import { Provider } from "react-redux";
 import { ThemeProvider } from "@mui/material/styles";
 
 import initializeStore from "@/features/index";
 
-import { Inter } from "next/font/google";
 import "@/styles/globals.css";
 import "@/styles/customStyles.css";
 import { lightTheme } from "@/styles/theme";
+
+import Cookies from "js-cookie";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,12 +21,21 @@ export default function RootLayout({
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
+	const router = useRouter();
 	const initialReduxState = {};
 
 	const store = useMemo(
 		() => initializeStore(initialReduxState),
 		[initialReduxState],
 	);
+
+	useEffect(() => {
+		// const token = Cookies.get("OUTDOORKA_TOKEN");
+		// if (!token) {
+		// 	router.push("/");
+		// 	return;
+		// }
+	}, [router]);
 
 	return (
 		<html lang="en">

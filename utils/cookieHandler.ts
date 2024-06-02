@@ -18,8 +18,8 @@ export const removeCookie = (name: string) => Cookies.remove(name);
 
 /**
  * 登入資訊寫進Cookie
- * @param value 
- * @param days 
+ * @param value
+ * @param days
  */
 export const setProfileCookie = (value: any, days: number) => {
 	Cookies.set(profileName, value, {

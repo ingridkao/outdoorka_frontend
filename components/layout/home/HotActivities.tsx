@@ -46,7 +46,7 @@ function HotActivities() {
 
 			<Grid container spacing={2}>
 				{activityList?.map((value) => (
-					<Grid item xs={12} md={3} key={value._id}>
+					<Grid item xs={12} sm={6} md={4} lg={3} key={value._id}>
 						<CardActivity
 							type="lg"
 							activity={{

@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { ListItemButton, ListItemText } from "@mui/material";
-import facebookSvg from "@/public/icons/facebook.svg"
+import facebookSvg from "@/public/icons/facebook.svg";
 
 function Facebook() {
 	return (
@@ -23,7 +23,7 @@ function Facebook() {
 				height={16}
 				alt="facebook"
 				style={{
-					marginRight: "8px"
+					marginRight: "8px",
 				}}
 			/>
 			<ListItemText>facebook</ListItemText>

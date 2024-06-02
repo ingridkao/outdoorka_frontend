@@ -6,16 +6,14 @@ import NextLink from "next/link";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { getProfileCookieObj } from "@/utils/cookieHandler";
-import { RootState } from "@/types";
+import { RootState, SimpleDialogProps } from "@/types";
 import { logoutUser, setProfile } from "@/features/user/authSlice";
-import MenuIcon from "@mui/icons-material/Menu";
 
 import {
 	AppBar,
 	Box,
 	List,
 	ListItem,
-	Typography,
 	Drawer,
 	Link,
 	Avatar,
@@ -23,11 +21,17 @@ import {
 	Badge,
 	Button,
 	Toolbar,
+	Typography,
 	Menu,
 	MenuItem,
+	Dialog,
+	DialogTitle,
+	DialogContent,
 	ClickAwayListener,
 	useScrollTrigger,
 } from "@mui/material";
+
+import MenuIcon from "@mui/icons-material/Menu";
 
 import LogoHeader1 from "@/public/images/logoHeader_1.svg";
 import LogoHeader2 from "@/public/images/logoHeader_2.svg";
@@ -42,32 +46,81 @@ const linkTitles = [
 	{ title: "短影音", link: "#" },
 ];
 
-function Header() {
-	const dispatch = useDispatch();
-	const router = useRouter();
-	const { profile } = useSelector((x: RootState) => x.auth);
-	const userProfile = getProfileCookieObj();
+const loginActions = [
+	{ title: "跟團仔", desc: "立刻參加活動、收藏感興趣的活動！", link: "/login", img: "/images/userBg.jpeg", icon: "/icons/users.svg" },
+	{ title: "主揪", desc: "發起活動揪好咖！", link: "/organizer/login", img: "/images/organizerBg.jpeg", icon: "/icons/organizer.svg"}
+];
 
+function SimpleDialog(props: SimpleDialogProps) {
+	const { onClose, open } = props;
+	return (
+		<Dialog onClose={()=>onClose()} open={open} >
+			<DialogTitle>登入/註冊</DialogTitle>
+			<DialogContent>
+				{loginActions.map((item) => (
+					<Button
+						key={item.link}
+						href={item.link}
+						sx={{
+							display: "flex",
+							height: "200px",
+							px: 10,
+							mb: 2,
+							position: "relative",
+							"&::before": {
+								content: "''",
+								position: "absolute",
+								backgroundImage: `url(${item.img})`,
+								backgroundSize: "cover",
+								width: "100%",
+								height: "100%",
+								borderRadius: "24px",
+								filter: "brightness(0.5)",
+								zIndex: 0,
+								transition: "filter 1s"
+							},
+							"&:hover::before": {
+								filter: "brightness(0.2)",
+							}
+						}}
+					>
+						<Box
+							sx={{
+								zIndex: 1, 
+								width:"64px",
+								height:"64px",
+								backgroundImage: `url(${item.icon})`,
+								backgroundSize: "contain",
+								backgroundPosition: "center",
+								backgroundRepeat: "no-repeat"
+							}}
+						/>
+						<Box sx={{ zIndex: 1, width: "215px", color: "#fff", ml: 10}}>
+							<Typography sx={{fontWeight: 700, fontSize: "28px"}}>{item.title}</Typography>
+							<Typography>{item.desc}</Typography>
+						</Box>
+					</Button>
+				))}
+			</DialogContent>
+		</Dialog>
+	);
+}
+
+function Header() {
 	const [isClient, setIsClient] = useState(false);
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const [container, setContainer] = useState<HTMLElement | undefined>(
 		undefined,
 	);
 	const [mobileOpen, setMobileOpen] = useState(false);
+	const [dialogOpen, setDialogOpen] = useState(false);
 	const open = Boolean(anchorEl);
-
-	const drawerWidth = 240;
+	const { profile } = useSelector((x: RootState) => x.auth);
+	const dispatch = useDispatch();
+	const router = useRouter();
+	const userProfile = getProfileCookieObj();
 	const scrollDownFlag = useScrollTrigger();
-
-	useEffect(() => {
-		setIsClient(true);
-		if (!profile && userProfile) {
-			dispatch(setProfile(userProfile));
-		}
-		setContainer(
-			typeof window !== "undefined" ? window.document.body : undefined,
-		);
-	}, []);
+	const drawerWidth = 240;
 
 	const handleProfileMenuClick = (event: MouseEvent<HTMLElement>) => {
 		setAnchorEl(event.currentTarget);
@@ -144,6 +197,17 @@ function Header() {
 			<MenuItem onClick={handleLogout}>登出</MenuItem>
 		</Box>
 	);
+	
+	useEffect(() => {
+		setIsClient(true);
+		if (!profile && userProfile) {
+			dispatch(setProfile(userProfile));
+		}
+		setContainer(
+			typeof window !== "undefined" ? window.document.body : undefined,
+		);
+	}, []);
+
 	return (
 		<Box sx={{ display: "flex" }}>
 			<AppBar
@@ -171,7 +235,7 @@ function Header() {
 						edge="start"
 						onClick={handleDrawerToggle}
 						sx={{
-							display: { lg: "none" },
+							display: { md: "none" },
 							justifyContent: "flex-start",
 							flex: "0 1 96px",
 						}}
@@ -181,7 +245,7 @@ function Header() {
 					{/* Desktop: Menu*/}
 					<Box
 						sx={{
-							display: { xs: "none", lg: "inline-flex" },
+							display: { xs: "none", md: "inline-flex" },
 							flex: "0 1 500px",
 						}}
 					>
@@ -207,7 +271,7 @@ function Header() {
 						component={NextLink}
 						href="/"
 						sx={{
-							height: { xs: "30px", lg: "48px" },
+							height: { xs: "30px", md: "48px" },
 							flex: "1 1 auto",
 							justifyContent: "center",
 						}}
@@ -225,25 +289,21 @@ function Header() {
 
 					<Box
 						sx={{
-							flex: { xs: "0 1 96px", lg: "0 1 500px" },
+							flex: { xs: "0 1 96px", md: "0 1 500px" },
 							justifyContent: "flex-end",
-							textAlign: { lg: "right" },
+							textAlign: { md: "right" },
 						}}
 					>
 						{isClient ? (
 							!profile ? (
 								<Box display="inline-flex" alignItems="center">
-									<Button color="inherit" href="/login">
-										登入
+									<Button color="inherit" onClick={()=>setDialogOpen(true)}>
+										登入 | 註冊
 									</Button>
-									|
-									<Button color="inherit" href="/register">
-										註冊
-									</Button>
-									｜
-									<Button color="inherit" href="/organizer/login">
-										主揪登入
-									</Button>
+									<SimpleDialog
+										open={dialogOpen}
+										onClose={()=>setDialogOpen(false)}
+									/>
 								</Box>
 							) : (
 								<>
@@ -265,19 +325,18 @@ function Header() {
 													width: 40,
 													height: 40,
 													border: "1px solid #fff",
-													m: { xs: 0, lg: 1 },
+													m: { xs: 0, md: 1 },
 												}}
 											>
 												{profile.name.charAt(0).toUpperCase()}
 											</Avatar>
 											<Typography
 												color="#22252A"
-												sx={{ display: { xs: "none", lg: "block" }, pr: 2 }}
+												sx={{ display: { xs: "none", md: "block" }, pr: 2 }}
 											>
 												CIAO! <b>{profile.name}</b>
 											</Typography>
 										</IconButton>
-
 										<IconButton color="inherit" sx={{ mr: 1 }}>
 											<Badge badgeContent={4} color="secondary">
 												<Image
@@ -291,7 +350,7 @@ function Header() {
 
 										<IconButton
 											color="info"
-											sx={{ display: { xs: "none", lg: "block" } }}
+											sx={{ display: { xs: "none", md: "block" } }}
 										>
 											<Badge badgeContent={4} color="secondary">
 												<Image
@@ -342,7 +401,7 @@ function Header() {
 						keepMounted: true,
 					}}
 					sx={{
-						display: { xs: "block", lg: "none" },
+						display: { xs: "block", md: "none" },
 						"& .MuiDrawer-paper": {
 							boxSizing: "border-box",
 							width: drawerWidth,

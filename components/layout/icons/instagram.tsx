@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { ListItemButton, ListItemText } from "@mui/material";
-import instagramSvg from "@/public/icons/instagram.svg"
+import instagramSvg from "@/public/icons/instagram.svg";
 
 function Instagram() {
 	return (
@@ -23,7 +23,7 @@ function Instagram() {
 				height={16}
 				alt="instagram"
 				style={{
-					marginRight: "8px"
+					marginRight: "8px",
 				}}
 			/>
 			<ListItemText>instagram</ListItemText>

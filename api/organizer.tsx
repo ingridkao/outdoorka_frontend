@@ -17,6 +17,9 @@ const organizerApi = (axios: any, event: any) => ({
 			},
 		});
 	},
+	imageDelete(fileName: string) {
+		return axios.delete(`${event}/image?fileName=${fileName}`);
+	},
 });
 
 export default organizerApi;

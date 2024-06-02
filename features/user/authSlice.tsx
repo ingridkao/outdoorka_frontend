@@ -1,6 +1,13 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "@/plugins/api/axios";
-import { tokenName, profileName, getProfileCookieObj, removeCookie, setProfileCookie, setCookie } from "@/utils/cookieHandler";
+import {
+	tokenName,
+	profileName,
+	getProfileCookieObj,
+	removeCookie,
+	setProfileCookie,
+	setCookie,
+} from "@/utils/cookieHandler";
 import { AuthState, ProfileItem, LoginForm } from "@/types/AuthType";
 const { auth } = axios;
 
