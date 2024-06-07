@@ -33,7 +33,7 @@ const lightTheme = createTheme({
 			dark: "#00497D",
 		},
 		background: {
-			default: "#DAE7F3",
+			default: "#f8f9ff",
 			paper: "#FFFFFF",
 		},
 	},

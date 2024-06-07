@@ -128,7 +128,6 @@ export default function Register() {
 				password,
 			});
 
-			console.log(result);
 			if (result.error && result.status == 409) {
 				setErrorMsg("此帳號已被註冊過");
 			} else if (result.error && result.status == 500) {

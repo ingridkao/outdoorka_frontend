@@ -3,11 +3,11 @@
 import React from "react";
 import { Box, Container } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import Header from "@/components/layout/Header/Header";
+import PageHeader from "@/components/layout/Header/PageHeader";
 import Footer from "@/components/layout/Footer/Footer";
 import { MainLayoutProps } from "@/types/index";
 
-function MainLayout({ children }: MainLayoutProps) {
+function PageLayout({ children }: MainLayoutProps) {
 	const theme = useTheme();
 	return (
 		<Box
@@ -15,13 +15,13 @@ function MainLayout({ children }: MainLayoutProps) {
 				backgroundColor: theme.palette.background.default,
 			}}
 		>
-			<Header />
+			<PageHeader />
 			<Container
 				component="main"
 				maxWidth="xl"
 				sx={{
 					px: 0,
-					py: 1.5,
+					py: { xs: 12, sm: 15 },
 					wordWrap: "break-word",
 				}}
 			>
@@ -32,4 +32,4 @@ function MainLayout({ children }: MainLayoutProps) {
 	);
 }
 
-export default MainLayout;
+export default PageLayout;

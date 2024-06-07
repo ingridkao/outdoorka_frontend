@@ -1,14 +1,115 @@
-.MuiButton-colorPrimary:hover {
+/*  MUI Button */
+.MuiButton-root {
+	border-radius: 32px;
+}
+
+/*  MUI Button sizeSmall */
+.MuiButton-sizeSmall {
+	padding: 4px 16px;
+	align-items: center;
+	font-size: 18px;
+	margin-left: 8px;
+}
+
+.MuiButton-sizeSmall svg {
+	margin-right: 8px;
+}
+
+/*  MUI Button colorPrimary */
+.MuiButton-contained.MuiButton-colorPrimary:hover {
 	background-color: #44474c;
 }
-.MuiButton-colorPrimary:disabled {
+.MuiButton-contained.MuiButton-colorPrimary:disabled {
 	background-color: #e1e2e9;
 	color: #c4c6cd;
+}
+
+/* MUI Button contained  */
+.MuiButton-contained:hover {
+	background-color: #a9abb1;
+}
+.MuiButton-contained:disabled {
+	background-color: #f8f9ff;
 }
 .MuiButton-containedSizeMedium {
 	padding: 16px 48px 16px 48px;
 	font-size: 18px;
 }
-/* .MuiButton-textPrimary:disabled {
-  background-color: #E1E2E9;
-} */
+
+/* MUI Typography  */
+.MuiTypography-h4 {
+	margin-bottom: 16px;
+}
+
+/* MUI Accordion  */
+.MuiAccordion-rounded.customAccordion {
+	border-radius: 20px;
+	box-shadow: none;
+}
+.MuiAccordion-rounded.customAccordion::before {
+	display: none;
+}
+.MuiAccordion-rounded.customAccordion .MuiAccordionSummary-content {
+	font-size: 24px;
+	font-weight: 700;
+}
+
+.MuiAccordion-rounded.customAccordion .MuiAccordionDetails-root {
+	color: #74777d;
+}
+
+/** Custom styles for the content editor */
+.content-editor {
+	margin-top: 12px;
+}
+
+.content-editor .ql-toolbar {
+	margin-top: 6px;
+	border-radius: 32px 32px 0 0;
+}
+
+.content-editor .ql-container {
+	height: 300px;
+	border-radius: 0 0 32px 32px;
+}
+
+.content-editor label {
+	color: #b1aaa5;
+	font-weight: 400;
+	font-size: 0.95rem;
+	line-height: 1.5em;
+	margin-left: 12px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	transition:
+		color 200ms cubic-bezier(0, 0, 0.2, 1) 0ms,
+		transform 200ms cubic-bezier(0, 0, 0.2, 1) 0ms,
+		max-width 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+	z-index: 1;
+	pointer-events: auto;
+	user-select: none;
+}
+
+.content-editor .helperText {
+	font-family:
+		Noto Sans TC,
+		sans-serif;
+	font-weight: 400;
+	font-size: 0.8571428571428571rem;
+	line-height: 1.66;
+	text-align: left;
+	margin: 3px 0 12px 13px;
+}
+
+.content-editor .error {
+	color: #be565b;
+}
+
+.content-editor .quill.editor-error .ql-toolbar {
+	border-color: #be565b;
+}
+
+.content-editor .quill.editor-error .ql-container {
+	border-color: #be565b;
+}

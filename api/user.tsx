@@ -11,6 +11,13 @@ const userApi = (axios: any, event: any) => ({
 	updateUserPassword(id: string, post: any) {
 		return axios.patch(`${event}/password`, post);
 	},
+	updateUserPhoto(formData: FormData) {
+		return axios.post(`${event}/imageUpload`, formData, {
+			headers: {
+				"Content-Type": "multipart/form-data",
+			},
+		});
+	},
 });
 
 export default userApi;

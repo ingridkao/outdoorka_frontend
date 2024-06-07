@@ -15,7 +15,7 @@ function Home() {
 		<MainLayout>
 			<Grid container justifyContent="center">
 				<Grid xs={12}>
-					<Box sx={{ height: "1010px" }}>banner</Box>
+					<Box sx={{ height: "1010px" }}></Box>
 				</Grid>
 				<Grid sx={{ maxWidth: {sm: "850px", md: "1280px", lg: "1536px"} }}>
 					<HotActivities />

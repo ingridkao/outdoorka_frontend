@@ -1,6 +1,8 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import axios from "@/plugins/api/axios";
+import { removeCookie } from "@/utils/cookieHandler";
 import {
 	Box,
 	Button,
@@ -10,11 +12,11 @@ import {
 	OutlinedInput,
 	InputLabel,
 	FormControl,
+	Alert,
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import axios from "@/plugins/api/axios";
-import { deleteCookie } from "cookies-next";
+import { PWD_REGEX } from "@/utils/regexHandler";
 
 type Props = { userData: any; onEdit?: any };
 
@@ -23,6 +25,8 @@ const { user } = axios;
 export default function ChangePassword({ userData }: Props) {
 	const router = useRouter();
 	const [showPassword, setShowPassword] = React.useState("");
+	const [errorMsg, setErrorMsg] = useState("");
+	const [successMsg, setSuccessMsg] = useState("");
 
 	const handleClickShowPassword = (target: string) => {
 		if (target === showPassword) {
@@ -34,27 +38,37 @@ export default function ChangePassword({ userData }: Props) {
 
 	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
+		setShowPassword("");
+		setErrorMsg("");
+		setSuccessMsg("");
+
 		const data = new FormData(event.currentTarget);
 		const postData = {
 			password: data.get("old-password"),
-			newPassword: data.get("new-password"),
+			newPassword: (data.get("new-password") as string) || "",
 			confirmPassword: data.get("confirm-password"),
 		};
 
 		console.log(postData);
 
 		if (!postData || !postData.password || !postData.newPassword) {
-			console.error("請輸入密碼");
+			setErrorMsg("請輸入密碼");
 			return;
 		}
 
 		if (postData.newPassword === postData.password) {
-			console.error("與原密碼相同");
+			setErrorMsg("與原密碼相同");
+			return;
+		}
+
+		if (!postData.newPassword.match(PWD_REGEX)) {
+			console.log(postData.newPassword);
+			setErrorMsg("請確認正確密碼格式，規則為大小寫英數字並且至少八碼");
 			return;
 		}
 
 		if (postData.newPassword !== postData.confirmPassword) {
-			console.error("密碼不一致");
+			setErrorMsg("密碼不一致");
 			return;
 		}
 
@@ -62,13 +76,20 @@ export default function ChangePassword({ userData }: Props) {
 			.updateUserPassword(userData._id, postData)
 			.then((result: any) => {
 				console.log(result);
-				setTimeout(() => {
-					deleteCookie("OUTDOORKA_TOKEN");
-					router.push("/login");
-				}, 2000); // 2秒後跳轉到登入頁
+				if (result.data && result.data._id) {
+					setSuccessMsg("密碼變更成功，請重新登入");
+					setTimeout(() => {
+						removeCookie("OUTDOORKA_TOKEN");
+						removeCookie("OUTDOORKA_USER");
+						router.push("/login");
+					}, 2000); // 2秒後跳轉到登入頁
+				} else {
+					setErrorMsg("密碼變更失敗");
+				}
 			})
 			.catch((err: any) => {
 				console.error(err);
+				setErrorMsg("密碼變更失敗");
 			});
 	};
 
@@ -188,6 +209,15 @@ export default function ChangePassword({ userData }: Props) {
 							</FormControl>
 						</Grid>
 						<Grid item xs={12}></Grid>
+					</Grid>
+
+					<Grid item xs={12} sx={{ mt: 5 }}>
+						{errorMsg && (
+							<Alert severity="error" sx={{ whiteSpace: "pre-line" }}>
+								{errorMsg}
+							</Alert>
+						)}
+						{successMsg && <Alert severity="success">{successMsg}</Alert>}
 					</Grid>
 
 					<Button
