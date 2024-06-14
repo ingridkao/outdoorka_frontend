@@ -8,7 +8,7 @@ export const parseDate = (startTime: string, endTime: string) => {
 	const startDate = dayjs(startTime);
 	const endDate = dayjs(endTime);
 	if (startDate.isSame(endDate, "date")) {
-		return `${startDate.format("YYYY/MM/DD HH:00")} - ${endDate.format("HH:00")}`;
+		return `${startDate.format("YYYY/MM/DD HH:mm")} - ${endDate.format("HH:mm")}`;
 	} else {
 		return `${startDate.format("YYYY/MM/DD")} - ${endDate.format("YYYY/MM/DD")}`;
 	}

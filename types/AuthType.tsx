@@ -52,4 +52,5 @@ export interface LoginOrganizerForm {
 export interface OgAuthState {
 	token: AuthItem | null;
 	profile: ProfileOgItem | null;
+	error: string | null;
 }

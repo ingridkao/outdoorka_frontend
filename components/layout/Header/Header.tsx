@@ -3,10 +3,6 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import NextLink from "next/link";
-import { useDispatch, useSelector } from "react-redux";
-import { getProfileCookieObj } from "@/utils/cookieHandler";
-import { RootState } from "@/types";
-import { setProfile } from "@/features/user/authSlice";
 import LoginAction from "./LoginAction";
 
 import {
@@ -39,9 +35,6 @@ function Header() {
 		undefined,
 	);
 	const [mobileOpen, setMobileOpen] = useState(false);
-	const { profile } = useSelector((x: RootState) => x.auth);
-	const dispatch = useDispatch();
-	const userProfile = getProfileCookieObj();
 	const scrollDownFlag = useScrollTrigger();
 	const drawerWidth = 240;
 
@@ -81,9 +74,6 @@ function Header() {
 	);
 	
 	useEffect(() => {
-		if (!profile && userProfile) {
-			dispatch(setProfile(userProfile));
-		}
 		setContainer(
 			typeof window !== "undefined" ? window.document.body : undefined,
 		);

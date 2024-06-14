@@ -344,7 +344,7 @@ function ActivityCreate() {
 					});
 
 					setTimeout(() => {
-						router.push("/organizer/activity-list");
+						router.push("/organizer/activity");
 					}, 200);
 				} else {
 					if (res.error) {

@@ -43,3 +43,11 @@
 	height: 32px;
 	border: 1px solid #fff;
 }
+
+.multiline-ellipsis{
+	display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+	min-height: 3em;
+}

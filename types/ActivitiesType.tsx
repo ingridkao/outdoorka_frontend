@@ -17,6 +17,11 @@ export interface IActivityLink {
 	url: string;
 }
 
+export interface IGetActivity {
+	status: number;
+	sort?: string;
+}
+
 export interface ICreateActivity {
 	title: string;
 	subtitle: string;
@@ -43,16 +48,35 @@ export interface OrganizerState {
 	photo: string;
 	rating: number;
 }
+
+export interface  OrganizerActivityState {
+	_id: string;
+	title: string;
+	subtitle: string;
+	price: number;
+	totalCapacity: number; // 活動人數
+	bookedCapacity: number; // 參加人數
+	region: string;
+	city: string;
+	address: string;
+	location: string; // 集合地點
+	activityImageUrls: string[];
+	isPublish: boolean;
+	activityStartTime: string;
+	activityEndTime: string;
+}
+
 export interface ActivityState {
 	_id: string;
 	organizer: OrganizerState;
+	title: string;
 	subtitle: string;
 	region: string;
 	city: string;
 	activityImageUrls: string[];
 	activityStartTime: string;
 	activityEndTime: string;
-	bookedCapacity: number;
 	likers: number;
+	bookedCapacity: number;
 	popularity: number;
 }

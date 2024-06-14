@@ -19,34 +19,28 @@ import {
 import LogoHeader1 from "@/public/images/logoHeader_1.svg";
 
 import { RootState } from "@/types";
-import { ProfileOgItem } from "@/types/AuthType";
+// import { ProfileOgItem } from "@/types/AuthType";
 
 function OgHeader() {
 	const router = useRouter();
 	const dispatch = useDispatch();
 	// Get ogAuth from redux
-	const ogAuth = useSelector((state: RootState) => state.ogAuth);
-
-	const [profile, setProfile] = useState<ProfileOgItem | null>(null);
+	const {profile} = useSelector((state: RootState) => state.ogAuth);
+	// const [profile, setProfile] = useState<ProfileOgItem | null>(null);
 
 	useEffect(() => {
-		if (ogAuth.profile?._id) {
-			return;
-		}
-
 		const getOgToken = getCookie("OUTDOORKA_OG_TOKEN");
 		if (getOgToken) {
 			dispatch(getOrganizer() as any).then((res: any) => {
-				if (res.payload.data) {
-					setProfile(res.payload.data);
-				} else if (res.payload.error) {
+				if (res.payload?.data) {
+					// setProfile(res.payload.data);
+				} else if (res.error.message) {
 					router.push("/organizer/login");
 				}
 			});
-			return;
+		}else{
+			router.push("/organizer/login");
 		}
-
-		router.push("/organizer/login");
 	}, []);
 
 	return (
@@ -65,7 +59,7 @@ function OgHeader() {
 						py: 2,
 					}}
 				>
-					<Button component={NextLink} href="/organizer/activity-list">
+					<Button component={NextLink} href="/organizer/activity">
 						<Image
 							src={LogoHeader1}
 							width={100}

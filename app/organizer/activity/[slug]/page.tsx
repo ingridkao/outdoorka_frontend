@@ -1,8 +1,6 @@
 "use client";
 
-// import { useParams } from "next/navigation";
-import { QRCodeSVG } from "qrcode.react";
-
+import { useParams } from "next/navigation";
 import {
 	Box,
 	Accordion,
@@ -38,10 +36,10 @@ const ticketData = {
 	bookedCapacity: 2,
 };
 
-function Ticket() {
+function OrganizerActivityDetail() {
 	const theme = useTheme();
-	// const params = useParams<{ id: string }>();
-	// console.log(params);
+	const params = useParams<{ slug: string }>();
+	console.log(params);
 	const paperStyle = {
 		width: "100%",
 		backgroundColor: "#EDF1F9",
@@ -68,7 +66,7 @@ function Ticket() {
 					margin: "auto",
 				}}
 			>
-				<BackBtn href="/ticket" name="票卷清單" />
+				<BackBtn href="/organizer/activity" name="活動清單" />
 
 				<Box sx={{ ...paperStyle, my: 3 }}>
 					<Typography
@@ -80,7 +78,6 @@ function Ticket() {
 							mb: 3,
 						}}
 					>
-						{/* {params?.id} */}
 						{ticketData.subtitle}
 					</Typography>
 					<Typography sx={{ color: "#74777D", mb: 1 }}>
@@ -120,126 +117,10 @@ function Ticket() {
 						justifyContent: "space-between",
 						border: "2px solid #DFE2EB",
 					}}
-				>
-					<Box
-						sx={{
-							display: "flex",
-							alignItems: "center",
-							justifyContent: "center",
-							margin: { xs: "0 auto 8px auto", sm: "auto" },
-							p:1
-						}}
-					>
-						<QRCodeSVG 
-							value={ticketData._id} 
-							size={270}
-						/>
-					</Box>
-					<Box
-						sx={{
-							display: "flex",
-							flexDirection: "column",
-							justifyContent: "space-between",
-							alignItems: { xs: "flex-start", sm: "flex-end" },
-							width: { xs: "350px", sm: "calc(100% - 286px)" },
-							margin: { xs: "8px auto 0 auto", sm: "auto auto 0 auto" },
-						}}
-					>
-						<Box
-							sx={{
-								fontSize: "24px",
-								fontWeight: 700,
-								px: 3,
-								py: 1,
-								mb: 5,
-								backgroundColor: "#FFDAD9",
-							}}
-						>
-							已使用
-						</Box>
-						<Box
-							sx={{
-								display: "flex",
-								flexDirection: { xs: "column", sm: "row" },
-								width: "96%",
-								mb: 1,
-								justifyContent: { xs: "flex-start", sm: "space-between" },
-							}}
-						>
-							<Typography
-								sx={{
-									fontSize: { xs: "16px", sm: "22px" },
-									mb: { xs: 0.5, sm: 0 },
-									color: "#74777D",
-								}}
-							>
-								參加人
-							</Typography>
-							<Typography
-								sx={{
-									fontSize: "28px",
-									fontWeight: 700,
-								}}
-							>
-								XXX
-							</Typography>
-						</Box>
-						<Box
-							sx={{
-								display: "flex",
-								flexDirection: { xs: "column", sm: "row" },
-								width: "96%",
-								mb: 1,
-								justifyContent: { xs: "flex-start", sm: "space-between" },
-							}}
-						>
-							<Typography
-								sx={{
-									fontSize: { xs: "16px", sm: "22px" },
-									mb: { xs: 0.5, sm: 0 },
-									color: "#74777D",
-								}}
-							>
-								訂單編號
-							</Typography>
-							<Typography
-								sx={{
-									fontSize: "18px",
-								}}
-							>
-								xxx
-							</Typography>
-						</Box>
-						<Box
-							sx={{
-								display: "flex",
-								flexDirection: { xs: "column", sm: "row" },
-								width: "96%",
-								justifyContent: { xs: "flex-start", sm: "space-between" },
-							}}
-						>
-							<Typography
-								sx={{
-									fontSize: { xs: "16px", sm: "22px" },
-									mb: { xs: 0.5, sm: 0 },
-									color: "#74777D",
-								}}
-							>
-								票卷編號
-							</Typography>
-							<Typography
-								sx={{
-									fontSize: "18px",
-								}}
-							>
-								xxx
-							</Typography>
-						</Box>
-					</Box>
-				</Box>
+				/>
 			</Box>
 		</PageLayout>
 	);
 }
 
-export default Ticket;
+export default OrganizerActivityDetail;

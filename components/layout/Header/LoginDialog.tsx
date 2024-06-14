@@ -10,7 +10,7 @@ import {
 	DialogContent,
 } from "@mui/material";
 
-function SimpleDialog(props: SimpleDialogProps) {
+function LoginDialog(props: SimpleDialogProps) {
 	const { onClose, open } = props;
 	const loginActions = [
 		{
@@ -83,4 +83,4 @@ function SimpleDialog(props: SimpleDialogProps) {
 	);
 }
 
-export default SimpleDialog;
+export default LoginDialog;

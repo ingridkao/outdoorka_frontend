@@ -58,7 +58,7 @@ function NewActivities() {
 				"&::before": {
 					content: "''",
 					position: "absolute",
-					zIndex: -1,
+					zIndex: 0,
 					left: { xs: "5%", lg: "calc(50vw - 768px)" },
 					width: { xs: "90%", lg: "1536px" },
 					maxWidth: "1536px",
@@ -79,6 +79,7 @@ function NewActivities() {
 						key={value._id}
 						sx={{
 							px: 1.5,
+							py: 0.5
 						}}
 					>
 						<CardActivity

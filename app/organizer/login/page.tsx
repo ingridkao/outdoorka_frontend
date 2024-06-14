@@ -109,7 +109,7 @@ export default function Login() {
 		setSuccessMsg("");
 
 		dispatch(loginOrganizer(loginForm) as any).then((res: any) => {
-			if (res.payload.data) {
+			if (res.payload?.data) {
 				setSuccessMsg('登入成功，即將跳轉至"活動管理"頁面');
 
 				if (remember) {
@@ -121,8 +121,8 @@ export default function Login() {
 				setTimeout(() => {
 					router.push("/organizer/activity-create");
 				}, 1000); // 1秒後跳轉
-			} else if (res.payload.error) {
-				setErrorMsg(res.payload.error);
+			} else if (res.error.message) {
+				setErrorMsg(res.error.message);
 			}
 		});
 	};

@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "@/plugins/api/axios";
 import {
 	tokenName,
@@ -22,7 +22,7 @@ export const loginUser = createAsyncThunk(
 const authSlice: any = createSlice({
 	name: "auth",
 	initialState: {
-		profile: getProfileCookieObj(),
+		profile: getProfileCookieObj(profileName),
 		error: null,
 	} as AuthState,
 	reducers: {
@@ -30,17 +30,18 @@ const authSlice: any = createSlice({
 			state.profile = null;
 			removeCookie(profileName);
 			removeCookie(tokenName);
-			// TODO: 倒轉到首頁
 		},
-		setProfile: (state: AuthState, action: any) => {
-			console.log(action);
-			// state.profile = null;
+		setProfile: (state : AuthState, action: PayloadAction<ProfileItem>) => {
+			state.profile = action.payload;
 		},
 	},
 	extraReducers: (builder: any) => {
 		const { pending, fulfilled, rejected } = loginUser;
 		builder.addCase(pending, (state: AuthState) => {
 			state.error = null;
+		});
+		builder.addCase(rejected, (state: AuthState, action: any) => {
+			state.error = action.error;
 		});
 		builder.addCase(fulfilled, (state: AuthState, action: any) => {
 			if (action.payload.error) {
@@ -50,12 +51,9 @@ const authSlice: any = createSlice({
 			} else if (action.payload.data) {
 				const { user, token } = action.payload.data;
 				state.profile = user as ProfileItem;
-				setProfileCookie(JSON.stringify(user), 1);
+				setProfileCookie(tokenName, user, 1);
 				setCookie(tokenName, token.access_token, 1);
 			}
-		});
-		builder.addCase(rejected, (state: AuthState, action: any) => {
-			state.error = action.error;
 		});
 	},
 });

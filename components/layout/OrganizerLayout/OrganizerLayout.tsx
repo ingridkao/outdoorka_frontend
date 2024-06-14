@@ -19,11 +19,11 @@ function OrganizerLayout({ children }: MainLayoutProps) {
 					wordWrap: "break-word",
 				}}
 			>
-				<Grid container spacing={6}>
-					<Grid item xs={2}>
+				<Grid container spacing={2}>
+					<Grid item xs={12} md={2}>
 						<LeftMenu />
 					</Grid>
-					<Grid item xs={10}>
+					<Grid item xs={12} md={10} sx={{mb:18}}>
 						{children}
 					</Grid>
 				</Grid>

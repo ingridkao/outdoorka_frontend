@@ -25,19 +25,10 @@ const onResponse = (response: any) => {
 
 const onError = (error: any) => {
 	const { response } = error;
-
-	if (response) {
-		return {
-			status: `${response.status || 500}`,
-			error:
-				response.data?.message || response.data?.errorMessage || "服務異常",
-		};
-	} else {
-		return {
-			status: 500,
-			error: "服務異常",
-		};
-	}
+	return Promise.reject({
+		status: `${response.status || 500}`,
+		message: response.data?.errorMessage || "服務異常",
+	});
 };
 
 const createInstance = (baseURL: string, tokenCookie: string) => {

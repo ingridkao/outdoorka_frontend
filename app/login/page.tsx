@@ -87,14 +87,14 @@ export default function Login() {
 		setErrorMsg("");
 		setSuccessMsg("");
 		dispatch(loginUser(loginField)).then((res: any) => {
-			if (res.payload.data) {
+			if (res.payload?.data) {
 				setSuccessMsg(res.payload.message);
 				// 2秒後跳轉到首頁
 				setTimeout(() => {
 					router.replace("/");
 				}, 2000);
-			} else if (res.payload.error) {
-				setErrorMsg(res.payload.error);
+			} else if (res.error.message) {
+				setErrorMsg(res.error.message);
 			}
 		});
 	};

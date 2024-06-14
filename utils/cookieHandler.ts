@@ -2,6 +2,8 @@ import Cookies from "js-cookie";
 
 export const profileName = "OUTDOORKA_USER";
 export const tokenName = "OUTDOORKA_TOKEN";
+export const ogProfileName = "OUTDOORKA_OG_USER";
+export const ogTokenName = "OUTDOORKA_OG_TOKEN";
 
 export const setCookie = (name: string, value: any, days: number) => {
 	Cookies.set(name, value, {
@@ -21,8 +23,8 @@ export const removeCookie = (name: string) => Cookies.remove(name);
  * @param value
  * @param days
  */
-export const setProfileCookie = (value: any, days: number) => {
-	Cookies.set(profileName, value, {
+export const setProfileCookie = (name: string, value: any, days: number) => {
+	Cookies.set(name, JSON.stringify(value), {
 		expires: days,
 	});
 };
@@ -30,8 +32,11 @@ export const setProfileCookie = (value: any, days: number) => {
 /**
  * Cookie讀取登入資訊
  */
-export const getProfileCookieObj = () => {
-	const string = Cookies.get(profileName);
-	if (!string) return null;
-	return JSON.parse(string);
+export const getProfileCookieObj = (name: string) => {
+	const value = Cookies.get(name);
+	if(typeof value === "string" ){
+		return JSON.parse(value)
+	}else{
+		return null
+	}
 };
