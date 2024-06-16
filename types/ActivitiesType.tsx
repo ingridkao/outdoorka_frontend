@@ -49,7 +49,7 @@ export interface OrganizerState {
 	rating: number;
 }
 
-export interface  OrganizerActivityState {
+export interface OrganizerActivityState {
 	_id: string;
 	title: string;
 	subtitle: string;

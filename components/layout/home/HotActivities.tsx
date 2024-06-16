@@ -5,7 +5,7 @@ import NextLink from "next/link";
 import { Box, Grid, Button } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import TitleSection from "@/components/layout/home/TitleSection";
-import CardActivity from "@/components/ui/shared/card-activity";
+import CardActivity from "@/components/ui/card/CardActivity";
 import Loading from "@/components/ui/loading/loading";
 import axios from "@/plugins/api/axios";
 import { ActivityState } from "@/types/ActivitiesType";
@@ -48,7 +48,6 @@ function HotActivities() {
 				{activityList?.map((value) => (
 					<Grid item xs={12} sm={6} md={4} lg={3} key={value._id}>
 						<CardActivity
-							type="lg"
 							activity={{
 								title: value.subtitle,
 								location: `${value.region} ${value.city}`,
@@ -58,8 +57,7 @@ function HotActivities() {
 								name: value.organizer.name,
 								rating: value.organizer.rating,
 								capacity: value.bookedCapacity,
-								likers: value.likers,
-								// rating: value.popularity
+								likers: value.likers
 							}}
 						/>
 					</Grid>

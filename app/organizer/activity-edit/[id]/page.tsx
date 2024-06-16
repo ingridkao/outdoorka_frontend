@@ -10,7 +10,7 @@ import OrganizerLayout from "@/components/layout/OrganizerLayout/OrganizerLayout
 import { NUMBER_ONLY_REGEX, URL_REGEX } from "@/utils/regexHandler";
 import * as dayjs from "dayjs";
 import { getFirebaseFileName } from "@/utils/common";
-
+import Loading from "@/components/ui/loading/loading";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -32,6 +32,7 @@ import {
 	SelectChangeEvent,
 	Box,
 	Alert,
+	AlertTitle,
 } from "@mui/material";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
@@ -74,26 +75,10 @@ const activityInitData: ICreateActivity = {
 	],
 	activityImageUrls: [],
 	isPublish: false,
-	activitySignupStartTime: dayjs
-		.default()
-		.add(1, "day")
-		.set("hour", 0)
-		.set("minute", 0),
-	activitySignupEndTime: dayjs
-		.default()
-		.add(6, "day")
-		.set("hour", 23)
-		.set("minute", 0),
-	activityStartTime: dayjs
-		.default()
-		.add(7, "day")
-		.set("hour", 6)
-		.set("minute", 0),
-	activityEndTime: dayjs
-		.default()
-		.add(7, "day")
-		.set("hour", 17)
-		.set("minute", 0),
+	activitySignupStartTime: null,
+	activitySignupEndTime: null,
+	activityStartTime: null,
+	activityEndTime: null,
 };
 // City Select options
 const citySelect = Object.keys(City).map((key) => ({
@@ -106,18 +91,23 @@ const activitySelectTags = Object.keys(ActivityTag).map((key) => ({
 	value: key,
 }));
 
-function ActivityCreate() {
+function ActivityCreate({ params }: { params: { id: string } }) {
 	const router = useRouter();
 	const { organizer } = axios;
 
 	const quillRef = useRef<any>(null);
 
+	const [initLoading, setInitLoading] = React.useState<boolean>(true);
 	const [isLoading, setIsLoading] = React.useState<boolean>(false);
+	const [checkCanEdit, setCheckCanEdit] = React.useState<boolean>(false);
+
 	const [ogInfo, setOgInfo] = React.useState<OgAuthState>({
 		profile: null,
 		token: null,
 		error: null,
 	});
+
+	const [activityId, setActivityId] = React.useState<string>("");
 	const [activityData, setActivityData] =
 		React.useState<ICreateActivity>(activityInitData);
 	const [tags, setTags] = React.useState<any[]>([]);
@@ -144,6 +134,74 @@ function ActivityCreate() {
 			});
 		}
 	}, [ogAuth]);
+
+	useEffect(() => {
+		if (params.id) {
+			// 取得活動資料，並初始化
+			organizer
+				.getActivityById(params.id)
+				.then((res: any) => {
+					if (res.data._id) {
+						const getData = {
+							title: res.data.title,
+							subtitle: res.data.subtitle,
+							price: res.data.price,
+							totalCapacity: res.data.totalCapacity,
+							city: res.data.city,
+							address: res.data.address,
+							location: res.data.location,
+							activityDetail: he.decode(res.data.activityDetail),
+							activityNotice: res.data.activityNotice,
+							activityTags: res.data.activityTags,
+							activityLinks: res.data.activityLinks,
+							activityImageUrls: res.data.activityImageUrls,
+							isPublish: res.data.isPublish,
+							activitySignupStartTime: dayjs.default(
+								res.data.activitySignupStartTime,
+							),
+							activitySignupEndTime: dayjs.default(
+								res.data.activitySignupEndTime,
+							),
+							activityStartTime: dayjs.default(res.data.activityStartTime),
+							activityEndTime: dayjs.default(res.data.activityEndTime),
+						};
+
+						// 取得活動標籤
+						const getTags = getData.activityTags.map((tag: string) => {
+							const findTag = activitySelectTags.find(
+								(data) => data.value === tag,
+							);
+							return findTag;
+						});
+
+						// 取得活動連結，並補足至 3 個
+						const linkArray = [
+							...getData.activityLinks,
+							...Array.from({
+								length: Math.max(0, 3 - getData.activityLinks.length),
+							}).map(() => ({ name: "", url: "" })),
+						];
+
+						// 活動開始時間與現在時間相差 2 天以上，或是活動未發佈，則可以編輯
+						// const activityStartTime = dayjs.default(getData.activityStartTime);
+						// const now = dayjs.default();
+						// const diffInDays = activityStartTime.diff(now, "day");
+
+						if (!getData.isPublish) {
+							setActivityId(res.data._id);
+							setTags(getTags);
+							setTempLinks(linkArray);
+							setImageUrls(getData.activityImageUrls);
+							setActivityData(getData);
+							setCheckCanEdit(true);
+						}
+					}
+				})
+				.finally(() => {
+					setInitLoading(false);
+				});
+		}
+	}, [organizer, params.id]);
 
 	const handleInputChange = (
 		e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -254,9 +312,14 @@ function ActivityCreate() {
 	const handleTempImageDelete = (index: number) => () => {
 		// Delete image from firebase
 		const fileNam = getFirebaseFileName(imageUrls[index]);
-		organizer.imageDelete(fileNam).then((res: any) => {
-			console.log("imageDelete", res);
-		});
+		organizer
+			.imageDelete(fileNam)
+			.then((res: any) => {
+				console.log("imageDelete", res);
+			})
+			.catch((err: any) => {
+				console.error("imageDelete", err);
+			});
 
 		const newImageUrls = imageUrls.filter((_, i) => i !== index);
 		setImageUrls(newImageUrls);
@@ -336,17 +399,17 @@ function ActivityCreate() {
 
 		errorMessages = "儲存失敗，請再確認以上欄位後再次嚐試";
 		organizer
-			.createActivity(activityData)
+			.updateActivity(activityData, activityId)
 			.then((res: any) => {
 				if (res.data?._id) {
 					setSubmitResult({
 						isSuccess: true,
-						message: "建立成功",
+						message: "更新成功",
 					});
 
 					setTimeout(() => {
 						router.push("/organizer/activity");
-					}, 200);
+					}, 300);
 				} else {
 					if (res.error) {
 						try {
@@ -395,6 +458,26 @@ function ActivityCreate() {
 			</li>
 		);
 	};
+
+	if (initLoading) {
+		return (
+			<OrganizerLayout>
+				<Loading />
+			</OrganizerLayout>
+		);
+	}
+
+	if (!checkCanEdit) {
+		return (
+			<OrganizerLayout>
+				<Alert severity="error">
+					<AlertTitle>該活動無法進行編輯。</AlertTitle>
+					有任何問題請聯繫管理人員。
+				</Alert>
+			</OrganizerLayout>
+		);
+	}
+
 	return (
 		<OrganizerLayout>
 			<Typography
@@ -407,7 +490,7 @@ function ActivityCreate() {
 				}}
 			>
 				<LocalActivityIcon sx={{ marginRight: "8px" }} />
-				建立活動
+				活動編輯
 			</Typography>
 
 			<FormControl>
@@ -474,7 +557,6 @@ function ActivityCreate() {
 					</Grid>
 
 					<Grid item xs={12}>
-						{/* <Typography mt={0}>Tags</Typography> */}
 						<Autocomplete
 							multiple
 							disableCloseOnSelect
@@ -779,7 +861,7 @@ function ActivityCreate() {
 						onClick={handleSubmit(false)}
 						disabled={isLoading}
 					>
-						儲存草稿
+						更新儲存為草稿
 					</Button>
 				</Grid>
 				<Grid xs={3}>
@@ -792,7 +874,7 @@ function ActivityCreate() {
 						onClick={handleSubmit(true)}
 						disabled={isLoading}
 					>
-						建立活動
+						更新並發佈活動
 					</Button>
 				</Grid>
 			</Grid>

@@ -20,7 +20,7 @@ function MainLayout({ children }: MainLayoutProps) {
 				component="main"
 				maxWidth="xl"
 				sx={{
-					px: 0,
+					px: { sm: 0, lg: 0 },
 					py: 1.5,
 					wordWrap: "break-word",
 				}}

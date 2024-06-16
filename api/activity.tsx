@@ -8,6 +8,10 @@ const activity = (axios: any, event: any) => ({
 	getNewActivityList() {
 		return axios.get(`${event}/homelist?type=NEW`);
 	},
+
+	getActivitiesList() {
+		return axios.get(`${event}/list`);
+	},
 });
 
 export default activity;

@@ -4,12 +4,39 @@ import { useEffect, useState } from "react";
 import Slider from "react-slick";
 import { Box } from "@mui/material";
 import TitleSection from "@/components/layout/home/TitleSection";
-import CardActivity from "@/components/ui/shared/card-activity";
+import CardActivitySlick from "@/components/ui/card/CardActivitySlick";
 import Loading from "@/components/ui/loading/loading";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import axios from "@/plugins/api/axios";
 import { ActivityState } from "@/types/ActivitiesType";
+
+const SliderSettings = {
+	infinite: true,
+	variableWidth: true,
+	adaptiveHeight: true,
+	slidesToShow: 6,
+	slidesToScroll: 6,
+	responsive: [
+		{
+			breakpoint: 1278,
+			settings: {
+				slidesToShow: 1,
+				slidesToScroll: 1,
+				centerMode: true,
+			},
+		},
+		{
+			breakpoint: 800,
+			settings: {
+				dots: true,
+				slidesToShow: 1,
+				slidesToScroll: 1,
+				centerMode: true,
+			},
+		},
+	],
+};
 
 function NewActivities() {
 	const { activity } = axios;
@@ -33,21 +60,6 @@ function NewActivities() {
 	if (error) return <div>Failed to load</div>;
 	if (activityList.length === 0) return <Loading />;
 
-	const SliderSettings = {
-		centerMode: true,
-		infinite: true,
-		variableWidth: true,
-		adaptiveHeight: true,
-		responsive: [
-			{
-				breakpoint: 800,
-				settings: {
-					dots: true,
-				},
-			},
-		],
-	};
-
 	return (
 		<Box
 			sx={{
@@ -59,7 +71,7 @@ function NewActivities() {
 					content: "''",
 					position: "absolute",
 					zIndex: 0,
-					left: { xs: "5%", lg: "calc(50vw - 768px)" },
+					left: { xs: "5%", lg: "calc(50vw - 768px)", xl: 192 },
 					width: { xs: "90%", lg: "1536px" },
 					maxWidth: "1536px",
 					background:
@@ -82,8 +94,7 @@ function NewActivities() {
 							py: 0.5
 						}}
 					>
-						<CardActivity
-							type="sm"
+						<CardActivitySlick
 							activity={{
 								title: value.subtitle,
 								location: `${value.region} ${value.city}`,
@@ -93,8 +104,7 @@ function NewActivities() {
 								name: value.organizer.name,
 								rating: value.organizer.rating,
 								capacity: value.bookedCapacity,
-								likers: value.likers,
-								// rating: value.popularity
+								likers: value.likers
 							}}
 						/>
 					</Box>

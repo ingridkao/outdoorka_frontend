@@ -13,7 +13,6 @@ import {
 	styled,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import React from "react";
 
 interface Props {
 	title: string;
@@ -30,7 +29,8 @@ function HomeOrganizerCard({ title, organizer, chips, image, star }: Props) {
 		<Box
 			sx={{
 				maxWidth: 366,
-				minWidth: 275,
+				minWidth: 294,
+				mx: "12px",
 				display: "flex",
 				flexDirection: "column",
 				gap: 1,
@@ -45,7 +45,7 @@ function HomeOrganizerCard({ title, organizer, chips, image, star }: Props) {
 					display: "flex",
 					flexDirection: "column",
 					gap: "16px",
-					padding: "24px 12px 0px",
+					p: "24px 12px 0px",
 				}}
 			>
 				<CardMedia
@@ -65,7 +65,7 @@ function HomeOrganizerCard({ title, organizer, chips, image, star }: Props) {
 						display: "flex",
 						flexDirection: "column",
 						gap: "8px",
-						padding: 0,
+						p: 0,
 					}}
 				>
 					<CustomTypography
@@ -73,7 +73,7 @@ function HomeOrganizerCard({ title, organizer, chips, image, star }: Props) {
 						color={theme.palette.secondary.main}
 						align="center"
 						gutterBottom
-						sx={{ margin: 0 }}
+						m={0}
 					>
 						{title}
 					</CustomTypography>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, SyntheticEvent } from "react";
+import { useState, useEffect, SyntheticEvent, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 
 import OrganizerLayout from "@/components/layout/OrganizerLayout/OrganizerLayout";
@@ -19,7 +19,6 @@ function OrganizerActivityList() {
 	const { organizer } = axios;
 
 	const [activityList, setActivityList] = useState<OrganizerActivityState[]>([]);
-	const [load, setLoad] = useState(true);
 	const [errorMsg, setErrorMsg] = useState("");
 	const [tagValue, setTagValue] = useState(type?Number(type):1);
 	const [sortValue, setSortValue] = useState(true);
@@ -33,7 +32,6 @@ function OrganizerActivityList() {
 	};
 	useEffect(() => {
 		async function loadData() {
-			setLoad(true)
 			try {
 				const responseBody = await organizer.getActivity({
 					status: tagValue, 
@@ -49,12 +47,9 @@ function OrganizerActivityList() {
 					setErrorMsg(String(error?.message));
 				}
 			}
-			setLoad(false)
 		}
 		loadData()
 	}, [tagValue, sortValue]);
-
-	if (load) return <Loading />;
 
 	return (
 		<OrganizerLayout>
@@ -97,4 +92,12 @@ function OrganizerActivityList() {
 	);
 }
 
-export default OrganizerActivityList;
+function WrappedOrganizerActivityPage() {
+	return (
+		<Suspense fallback={<Loading/>}>
+			<OrganizerActivityList />
+		</Suspense>
+	);
+}
+
+export default WrappedOrganizerActivityPage;

@@ -6,10 +6,8 @@ import { Box, Typography, Avatar, Grid, Paper, CardMedia } from "@mui/material";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import LocationIcon from "@/components/icon/locationIcon";
-import StarFullIcon from "@/components/icon/starFullIcon";
-import StarEmptyIcon from "@/components/icon/starEmptyIcon";
 import PeopleIcon from "@/components/icon/peopleIcon";
-
+import RatingStar from "@/components/ui/shared/RatingStar"
 type Activity = {
 	title: string;
 	location: string;
@@ -22,39 +20,11 @@ type Activity = {
 	rating: number;
 };
 
-interface CardActivityProps {
-	type?: "sm" | "lg";
+function CardActivity({ 
+	activity
+}: {
 	activity: Activity;
-}
-
-const RatingStars = ({ rating = 0 }: { rating: number }) => (
-	<Box sx={{ height: "16px" }}>
-		{Array.from({ length: rating }, (_, i) => (
-			<StarFullIcon
-				key={`start-full-${i}`}
-				sx={{
-					marginRight: "3px",
-					width: "12px",
-					height: "12px",
-				}}
-				color="action"
-			/>
-		))}
-		{Array.from({ length: 5 - rating }, (_, i) => (
-			<StarEmptyIcon
-				key={`start-${i}`}
-				sx={{
-					marginRight: "1px",
-					width: "12px",
-					height: "12px",
-				}}
-				color="action"
-			/>
-		))}
-	</Box>
-);
-
-function CardActivity({ activity, type = "sm" }: CardActivityProps) {
+}) {
 	const parseDate = () => {
 		return dayjs(activity.date).format("YYYY/MM/DD");
 	};
@@ -81,8 +51,8 @@ function CardActivity({ activity, type = "sm" }: CardActivityProps) {
 	return (
 		<Paper
 			sx={{
-				width: type === "lg" ? 366 : 272,
-				height: type === "lg" ? 436 : 392,
+				width: {xs: 366, sm:"auto"},
+				height: {xs: 436, sm:"auto"},
 				backgroundColor: "#fff",
 				borderRadius: "24px",
 				m: "auto",
@@ -113,7 +83,7 @@ function CardActivity({ activity, type = "sm" }: CardActivityProps) {
 					<CardMedia
 						component="img"
 						alt={activity.title}
-						height={type === "lg" ? "244px" : "181px"}
+						height={244}
 						image={activity.photo}
 					/>
 				</Box>
@@ -137,7 +107,7 @@ function CardActivity({ activity, type = "sm" }: CardActivityProps) {
 							alignItems="center"
 							sx={{
 								...roundInfoBoxStyle,
-								width: `${type === "lg" ? "159px" : "155px"}`,
+								width: "159px",
 								padding: "3px",
 							}}
 						>
@@ -152,11 +122,11 @@ function CardActivity({ activity, type = "sm" }: CardActivityProps) {
 							/>
 							<Box
 								sx={{
-									width: type === "lg" ? "106px" : "103px",
+									width: 106,
 								}}
 							>
 								{/* 星星評分 */}
-								<RatingStars rating={activity.rating} />
+								<RatingStar rating={activity.rating} />
 
 								{/* 主揪名稱 */}
 								<Typography
@@ -178,20 +148,18 @@ function CardActivity({ activity, type = "sm" }: CardActivityProps) {
 					</Grid>
 
 					{/* 參加人數 */}
-					{type === "lg" && (
-						<Grid item>
-							<Box
-								display="inline-flex"
-								alignItems="center"
-								sx={roundInfoBoxStyle}
-							>
-								<PeopleIcon sx={infoIconStyle} />
-								<Typography sx={infoIconTextStyle}>
-									{activity.capacity || 0}
-								</Typography>
-							</Box>
-						</Grid>
-					)}
+					<Grid item>
+						<Box
+							display="inline-flex"
+							alignItems="center"
+							sx={roundInfoBoxStyle}
+						>
+							<PeopleIcon sx={infoIconStyle} />
+							<Typography sx={infoIconTextStyle}>
+								{activity.capacity || 0}
+							</Typography>
+						</Box>
+					</Grid>
 
 					{/* 愛心數 */}
 					<Grid item>
@@ -208,7 +176,7 @@ function CardActivity({ activity, type = "sm" }: CardActivityProps) {
 			</Box>
 
 			{/* Info 區塊 */}
-			<Box sx={{ padding: type === "lg" ? "20px 32px 20px 32px" : "28px" }}>
+			<Box sx={{ padding: "20px 32px 20px 32px" }}>
 				<Box
 					sx={{
 						display: "flex",
@@ -246,6 +214,7 @@ function CardActivity({ activity, type = "sm" }: CardActivityProps) {
 						fontWeight: "700",
 						lineHeight: "30px",
 					}}
+					className="multiline-ellipsis"
 				>
 					{activity.title}
 				</Typography>
