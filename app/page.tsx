@@ -17,9 +17,9 @@ function Home() {
 	return (
 		<MainLayout>
 			<Grid container justifyContent="center">
-				{/* <Grid xs={12}> */}
-				{/* <HomeBannerCarouselfrom /> */}
-				{/* </Grid> */}
+				<Grid xs={12}>
+					<HomeBannerCarouselfrom />
+				</Grid>
 				<Grid xs={12}>
 					<Box sx={{ height: "100vh", backgroundColor: "#F8F9FF" }}>
 						熱門活動

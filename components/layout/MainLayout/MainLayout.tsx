@@ -21,7 +21,8 @@ function MainLayout({ children }: MainLayoutProps) {
 				maxWidth="xl"
 				sx={{
 					px: { sm: 0, lg: 0 },
-					py: 1.5,
+					pt: 12,
+					pb: 1.5,
 					wordWrap: "break-word",
 					backgroundColor: "#F8F9FF",
 				}}
