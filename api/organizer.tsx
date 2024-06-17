@@ -8,7 +8,7 @@ const organizerApi = (axios: any, event: any) => ({
 		return axios.get(`${event}/activity`, { params });
 	},
 	getActivityById(id: string) {
-		return axios.post(`${event}/${id}/activities`);
+		return axios.get(`${event}/activity/${id}`);
 	},
 	createActivity(post: ICreateActivity) {
 		return axios.post(`${event}/activities`, post);

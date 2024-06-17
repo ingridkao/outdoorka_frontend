@@ -1,18 +1,15 @@
 /*  MUI Button */
 .MuiButton-root {
-	border-radius: 32px;
+	border-radius: 3rem;
 }
 
 /*  MUI Button sizeSmall */
 .MuiButton-sizeSmall {
-	padding: 4px 16px;
-	align-items: center;
-	font-size: 18px;
-	margin-left: 8px;
+	font-size: 1rem;
 }
 
 .MuiButton-sizeSmall svg {
-	margin-right: 8px;
+	margin-right: 0.5rem;
 }
 
 /*  MUI Button colorPrimary */
@@ -32,25 +29,25 @@
 	background-color: #f8f9ff;
 }
 .MuiButton-containedSizeMedium {
-	padding: 16px 48px 16px 48px;
-	font-size: 18px;
+	padding: 1rem 3rem 1rem 3rem;
+	font-size: 1rem;
 }
 
 /* MUI Typography  */
 .MuiTypography-h4 {
-	margin-bottom: 16px;
+	margin-bottom: 1rem;
 }
 
 /* MUI Accordion  */
 .MuiAccordion-rounded.customAccordion {
-	border-radius: 20px;
+	border-radius: 1.5rem;
 	box-shadow: none;
 }
 .MuiAccordion-rounded.customAccordion::before {
 	display: none;
 }
 .MuiAccordion-rounded.customAccordion .MuiAccordionSummary-content {
-	font-size: 24px;
+	font-size: 1.5rem;
 	font-weight: 700;
 }
 

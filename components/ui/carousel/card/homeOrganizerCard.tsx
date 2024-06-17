@@ -109,7 +109,7 @@ function HomeOrganizerCard({ title, organizer, chips, image, star }: Props) {
 				>
 					{organizer}
 				</Typography>
-				<Stars star={star} />
+				<Stars star={star||5} />
 			</Box>
 		</Box>
 	);
@@ -118,7 +118,7 @@ function HomeOrganizerCard({ title, organizer, chips, image, star }: Props) {
 // TODO
 const Stars = ({ star }: { star: number }) => {
 	const theme = useTheme();
-	const stars = Array(5).fill(null);
+	const stars = Array(star).fill(null);
 
 	return (
 		<Stack direction="row" spacing="2px" sx={{ justifyContent: "center" }}>

@@ -44,10 +44,19 @@
 	border: 1px solid #fff;
 }
 
-.multiline-ellipsis{
+.multiline-ellipsis {
 	display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   overflow: hidden;
-	min-height: 2.75em;
+	min-height: 4.5rem;
+}
+
+.singleline-ellipsis {
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 1;
+	overflow: hidden;
+	height: 1em;
+	min-height: 1em;
 }

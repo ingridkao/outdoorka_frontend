@@ -69,6 +69,11 @@ function LoginAction() {
 		router.push("/ticket");
 	};
 
+	const goToFavorites = () => {
+		handleProfileMenuClose(new Event("favorites"));
+		router.push("/favorites");
+	};
+
 	const profileMenu = (
 		<Box
 			sx={{
@@ -89,7 +94,7 @@ function LoginAction() {
 				<Typography>{profile?.name}</Typography>
 			</Box>
 			<MenuItem onClick={handleProfile}>管理帳號</MenuItem>
-			<MenuItem onClick={handleProfileMenuClose}>我的收藏</MenuItem>
+			<MenuItem onClick={goToFavorites}>我的收藏</MenuItem>
 			<MenuItem onClick={goToTicket}>我的票卷</MenuItem>
 			<MenuItem onClick={handleLogout}>登出</MenuItem>
 		</Box>
@@ -145,21 +150,23 @@ function LoginAction() {
 								component={NextLink}
 								href="/ticket"
 								color="inherit"
-								sx={{ mr: 1 }}
 							>
 								<Badge badgeContent={4} color="secondary">
 									<Image src={TicketSvg} width={24} height={24} alt="ticket" />
 								</Badge>
 							</Button>
 
-							<IconButton
-								color="info"
-								sx={{ display: { xs: "none", md: "block" } }}
+							<Button
+								component={NextLink}
+								href="/favorites"
+								color="inherit"
+								sx={{ display: { xs: "none", md: "inline-flex" } }}
 							>
 								<Badge badgeContent={4} color="secondary">
-									<Image src={LikedSvg} width={24} height={24} alt="liked" />
+									<Image src={LikedSvg} width={24} height={24} alt="favorites" />
 								</Badge>
-							</IconButton>
+							</Button>
+
 						</Box>
 						<ClickAwayListener onClickAway={handleProfileMenuClose}>
 							<Menu

@@ -40,6 +40,7 @@ function HotActivities() {
 			sx={{
 				position: "relative",
 				mb: 25,
+				px: 2
 			}}
 		>
 			<TitleSection title="熱門活動" />
@@ -48,10 +49,12 @@ function HotActivities() {
 				{activityList?.map((value) => (
 					<Grid item xs={12} sm={6} md={4} lg={3} key={value._id}>
 						<CardActivity
+							home={true}
 							activity={{
 								title: value.subtitle,
 								location: `${value.region} ${value.city}`,
-								date: value.activityEndTime,
+								startTime: value.activityStartTime,
+								endTime: value.activityEndTime,
 								photo: value.activityImageUrls[0],
 								avatar: value.organizer.photo,
 								name: value.organizer.name,
@@ -72,7 +75,7 @@ function HotActivities() {
 						sx={{
 							width: "236px",
 							backgroundColor: theme.palette.primary.main,
-							color: theme.palette.primary.light,
+							color: theme.palette.background.default,
 						}}
 					>
 						載入更多

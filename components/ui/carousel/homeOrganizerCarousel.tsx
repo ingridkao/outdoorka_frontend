@@ -13,13 +13,45 @@ import organizerData from "@/_mock/organizerCarousel.json";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 
+const settings = {
+	infinite: true,
+	speed: 500,
+	slidesToShow: 4,
+	slidesToScroll: 4,
+	nextArrow: <SampleNextArrow />,
+	prevArrow: <SamplePrevArrow />,
+	responsive: [
+		{
+			breakpoint: 1919,
+			settings: {
+				slidesToShow: 3,
+				slidesToScroll: 3,
+			},
+		},
+		{
+			breakpoint: 1279,
+			settings: {
+				slidesToShow: 2,
+				slidesToScroll: 2,
+			},
+		},
+		{
+			breakpoint: 780,
+			settings: {
+				slidesToShow: 1,
+				slidesToScroll: 1,
+			},
+		},
+	],
+};
+
 // TODO: 調整成共用元件
 function HomeOrganizerCarousel() {
 	return (
 		<Box className="slider-container">
 			<TitleSection title="優質主揪" />
 
-			<Box sx={{ marginLeft: { sm: 0, xs: "-44px" } }}>
+			<Box sx={{ marginLeft: { xs: "-44px", sm: 0 } }}>
 				<Slider {...settings}>
 					{organizerData.map((el, i) => (
 						<HomeOrganizerCard
@@ -80,38 +112,6 @@ const arrowBtnConfig = {
 	py: "28px",
 	borderColor: "#DFE2EB",
 	borderRadius: "100px",
-};
-
-const settings = {
-	infinite: true,
-	speed: 500,
-	slidesToShow: 4,
-	slidesToScroll: 4,
-	nextArrow: <SampleNextArrow />,
-	prevArrow: <SamplePrevArrow />,
-	responsive: [
-		{
-			breakpoint: 1919,
-			settings: {
-				slidesToShow: 3,
-				slidesToScroll: 3,
-			},
-		},
-		{
-			breakpoint: 1119,
-			settings: {
-				slidesToShow: 2,
-				slidesToScroll: 2,
-			},
-		},
-		{
-			breakpoint: 376,
-			settings: {
-				slidesToShow: 1,
-				slidesToScroll: 1,
-			},
-		},
-	],
 };
 
 export default HomeOrganizerCarousel;

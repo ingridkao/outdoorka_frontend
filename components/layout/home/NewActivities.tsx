@@ -78,7 +78,7 @@ function NewActivities() {
 						"linear-gradient(180deg, rgba(196, 221, 255, 0.18) 0%, #C4DDFF 100%)",
 					borderRadius: "48px",
 					px: 0,
-					py: 43,
+					py: 45,
 					pointerEvents: "none",
 				},
 			}}
@@ -98,7 +98,8 @@ function NewActivities() {
 							activity={{
 								title: value.subtitle,
 								location: `${value.region} ${value.city}`,
-								date: value.activityEndTime,
+								startTime: value.activityStartTime,
+								endTime: value.activityEndTime,
 								photo: value.activityImageUrls[0],
 								avatar: value.organizer.photo,
 								name: value.organizer.name,

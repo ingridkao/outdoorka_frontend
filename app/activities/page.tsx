@@ -1,5 +1,6 @@
 "use client";
 
+import NextLink from "next/link";
 import PageLayout from "@/components/layout/MainLayout/PageLayout";
 import Loading from "@/components/ui/loading/loading";
 import CardActivity from "@/components/ui/card/CardActivity";
@@ -78,8 +79,14 @@ function Activities() {
 
 	return (
 		<PageLayout>
-			<Grid container spacing={5}>
-				<Grid item lg={2} xs={3} columnSpacing={2}>
+			<Grid container sx={{width:"100%",m:"auto", gap:5}}>
+				<Grid 
+					sx={{
+						display: { xs: "none", lg: "block" },
+						minWidth: "320px",
+					}} 
+					columnSpacing={2}
+				>
 					<Typography
 						variant="h6"
 						sx={{ color: theme.palette.text.primary, fontWeight: 700, mb: 3 }}
@@ -204,7 +211,13 @@ function Activities() {
 					</Stack>
 				</Grid>
 
-				<Grid item lg={10} xs={9} columnSpacing={2}>
+				<Grid 
+					xs 
+					sx={{ 
+						maxWidth: "1440px"
+					}} 
+					columnSpacing={2}
+				>
 					<Paper
 						sx={{
 							borderRadius: "44px",
@@ -312,21 +325,24 @@ function Activities() {
 						{activityList.length === 0 && <Loading />}
 						{error && <div>Failed to load</div>}
 						{activityList?.map((value: any) => (
-							<Grid item xs={12} sm={6} md={4} key={value._id}>
-								<CardActivity
-									key={value._id}
-									activity={{
-										title: value.subtitle,
-										location: `${value.region} ${value.city}`,
-										date: value.activityEndTime,
-										photo: value.activityImageUrls[0],
-										avatar: "", // TODO: API response data 未回傳
-										name: value.organzierName,
-										rating: value.organizerRating,
-										capacity: value.bookedCapacity,
-										likers: value.likers,
-									}}
-								/>
+							<Grid item xs={12} sm={6} lg={4} key={value._id}>
+								<Box component={NextLink} href={`/activity/${value._id}`}>
+									<CardActivity
+										home={false}
+										activity={{
+											title: value.subtitle,
+											location: `${value.region} ${value.city}`,
+											startTime: value.activityStartTime,
+											endTime: value.activityEndTime,
+											photo: value.activityImageUrls[0],
+											avatar: "", // TODO: API response data 未回傳
+											name: value.organzierName,
+											rating: value.organizerRating,
+											capacity: value.bookedCapacity,
+											likers: value.likers,
+										}}
+									/>
+								</Box>
 							</Grid>
 						))}
 					</Grid>

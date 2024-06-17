@@ -20,13 +20,13 @@ import {
 import { useTheme } from "@mui/material/styles";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import PageLayout from "@/components/layout/MainLayout/PageLayout";
-import CardTicket from "@/components/ui/card/CardTicket";
+// import CardActivity from "@/components/ui/card/CardActivity";
 import Loading from "@/components/ui/loading/loading";
 import NoData from "@/components/ui/shared/NoData";
 import SortIcon from "@/components/icon/SortIcon";
 import ListSearchHeader from "@/components/ui/shared/ListSearchHeader";
 
-function Tickets() {
+function Favorites() {
 	const { ticket } = axios;
 	const theme = useTheme();
 	const [load, setLoad] = useState(true);
@@ -212,20 +212,22 @@ function Tickets() {
 						>
 							{displayList?.map((value) => (
 								<Grid key={value._id} xs={12} sm={6} md={4}>
-									<Box component={NextLink} href={`/ticket/${value._id}`}>
-										<CardTicket
-											ticketItem={{
-												title: value.title,
+									<Box component={NextLink} href={`/activity/${value._id}`}>
+										{/* <CardActivity
+											home={false}
+											activity={{
+												title: value.subtitle,
 												location: `${value.region} ${value.city}`,
 												startTime: value.activityStartTime,
 												endTime: value.activityEndTime,
-												photo: value.activityImageUrl,
+												photo: value.activityImageUrls[0],
+												avatar: "",
+												name: value.organzierName,
+												rating: value.organizerRating,
 												capacity: value.bookedCapacity,
-												ticketCount: value.ticketCount,
-												tickets: value.tickets,
-												status: value.status,
+												likers: value.likers,
 											}}
-										/>
+										/> */}
 									</Box>
 								</Grid>
 							))}
@@ -237,4 +239,4 @@ function Tickets() {
 	);
 }
 
-export default Tickets;
+export default Favorites;

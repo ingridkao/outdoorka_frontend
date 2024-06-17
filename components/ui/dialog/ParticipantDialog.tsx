@@ -5,7 +5,6 @@ import { SimpleDialogProps } from "@/types";
 
 import {
 	Box,
-	Button,
 	Tab,
 	Tabs,
 	Typography,

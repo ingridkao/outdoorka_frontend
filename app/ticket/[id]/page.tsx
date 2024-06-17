@@ -10,11 +10,11 @@ import {
 	AccordionDetails,
 	Typography,
 } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
 import { parseDetailDate } from "@/utils/dateHandler";
 import ExpandMoreIcon from "@/components/icon/ExpandMoreIcon";
 import PageLayout from "@/components/layout/MainLayout/PageLayout";
 import BackBtn from "@/components/ui/shared/BackBtn";
+import useCustomTheme from "@/components/ui/shared/useCustomTheme";
 
 const ticketData = {
 	_id: "664cb717ae8e74de4ae74872",
@@ -39,22 +39,9 @@ const ticketData = {
 };
 
 function Ticket() {
-	const theme = useTheme();
+	const customStyle = useCustomTheme();
 	// const params = useParams<{ id: string }>();
-	// console.log(params);
-	const paperStyle = {
-		width: "100%",
-		backgroundColor: "#EDF1F9",
-		p: 5,
-		borderRadius: 1,
-	};
-	const accordionStyle = {
-		backgroundColor: "#EDF1F9",
-		px: 0,
-		borderRadius: 5,
-		width: "100%",
-		maxWidth: "1016px",
-	};
+
 	return (
 		<PageLayout>
 			<Box
@@ -70,49 +57,48 @@ function Ticket() {
 			>
 				<BackBtn href="/ticket" name="票卷清單" />
 
-				<Box sx={{ ...paperStyle, my: 3 }}>
-					<Typography
-						variant="h2"
-						sx={{
-							fontSize: "44px",
-							fontWeight: "700",
-							color: theme.palette.text.primary,
-							mb: 3,
-						}}
-					>
-						{/* {params?.id} */}
+				<Box sx={{ ...customStyle.paperStyle, my: 3 }}>
+					<Typography variant="h2" sx={customStyle.h2Style}>
 						{ticketData.subtitle}
 					</Typography>
-					<Typography sx={{ color: "#74777D", mb: 1 }}>
+					<Typography sx={customStyle.descStyle}>
 						{parseDetailDate(
 							ticketData.activityStartTime,
 							ticketData.activityEndTime,
 						)}
 					</Typography>
-					<Typography sx={{ color: "#74777D" }}>
+					<Typography sx={customStyle.descStyle}>
 						{ticketData.region} {ticketData.city}
 					</Typography>
 				</Box>
 
-				<Accordion className="customAccordion" sx={paperStyle}>
+				<Accordion className="customAccordion" sx={customStyle.paperStyle}>
 					<AccordionSummary
 						expandIcon={<ExpandMoreIcon />}
 						aria-controls="票卷明細"
-						sx={accordionStyle}
+						sx={customStyle.accordionStyle}
 					>
 						票卷明細
 					</AccordionSummary>
-					<AccordionDetails sx={{ ...paperStyle, p: 0 }}>
-						<p>票券內容：XXX</p>
-						<p>票券狀態：{ticketData.ticketStatus ? "已使用" : "已報名"}</p>
-						<p>票價：NT$ XXX</p>
-						<p>備註：無</p>
+					<AccordionDetails sx={{ ...customStyle.paperStyle, p: 0 }}>
+						<Typography sx={customStyle.descStyle}>
+							票券內容：XXX
+						</Typography>
+						<Typography sx={customStyle.descStyle}>
+							票券狀態：{ticketData.ticketStatus ? "已使用" : "已報名"}
+						</Typography>
+						<Typography sx={customStyle.descStyle}>
+							票價：NT$ XXX
+						</Typography>
+						<Typography sx={customStyle.descStyle}>
+							備註：無
+						</Typography>
 					</AccordionDetails>
 				</Accordion>
 
 				<Box
 					sx={{
-						...paperStyle,
+						...customStyle.paperStyle,
 						backgroundColor: "#FFF",
 						my: 3,
 						display: "flex",
@@ -127,13 +113,10 @@ function Ticket() {
 							alignItems: "center",
 							justifyContent: "center",
 							margin: { xs: "0 auto 8px auto", sm: "auto" },
-							p:1
+							p: 1,
 						}}
 					>
-						<QRCodeSVG 
-							value={ticketData._id} 
-							size={270}
-						/>
+						<QRCodeSVG value={ticketData._id} size={270} />
 					</Box>
 					<Box
 						sx={{
