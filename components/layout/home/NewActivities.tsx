@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import NextLink from "next/link";
 import Slider from "react-slick";
 import { Box } from "@mui/material";
 import TitleSection from "@/components/layout/home/TitleSection";
@@ -89,6 +90,8 @@ function NewActivities() {
 				{activityList.map((value) => (
 					<Box
 						key={value._id}
+						component={NextLink}
+						href={`/activity/${value._id}`}
 						sx={{
 							px: 1.5,
 							py: 0.5
@@ -101,9 +104,9 @@ function NewActivities() {
 								startTime: value.activityStartTime,
 								endTime: value.activityEndTime,
 								photo: value.activityImageUrls[0],
-								avatar: value.organizer.photo,
-								name: value.organizer.name,
-								rating: value.organizer.rating,
+								avatar: value.organizer?.photo,
+								name: value.organizer?.name,
+								rating: value.organizer?.rating,
 								capacity: value.bookedCapacity,
 								likers: value.likers
 							}}

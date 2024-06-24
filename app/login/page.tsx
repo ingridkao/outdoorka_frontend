@@ -4,11 +4,10 @@ import { ChangeEvent, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import NextLink from "next/link";
-
-import { RootState } from "@/types";
-import { LoginForm } from "@/types/AuthType";
+import { RootState, LoginForm } from "@/types";
 import { loginUser } from "@/features/user/authSlice";
 import { EMAIL_REGEX, PWD_REGEX } from "@/utils/regexHandler";
+import { USER_T0KEN_COOKIE, USER_ACCOUNT_COOKIE, removeCookie, getCookie, setCookie } from "@/utils/cookieHandler";
 
 import {
 	Unstable_Grid2 as Grid,
@@ -26,24 +25,35 @@ import {
 export default function Login() {
 	const router = useRouter();
 	const dispatch = useDispatch();
-
-	const { profile: authUser } = useSelector((x: RootState) => x.auth);
-	useEffect(() => {
-		if (authUser) {
-			router.push("/");
-		}
-	}, [authUser, router]);
-
-	const [errorMsg, setErrorMsg] = useState("");
-	const [successMsg, setSuccessMsg] = useState("");
-	const displayName: Record<keyof LoginForm, string> = {
-		account: "帳號",
-		password: "密碼",
-	};
+	const { profile: authUser } = useSelector((state: RootState) => state.auth);
 	const [loginField, setLoginField] = useState<LoginForm>({
 		account: "",
 		password: "",
+		remember: true,
 	});
+
+	useEffect(() => {
+		const getT0ken = getCookie(USER_T0KEN_COOKIE);
+		const getAcc = getCookie(USER_ACCOUNT_COOKIE);
+		if (getT0ken) {
+			// 已登入導轉到首頁
+			router.push("/");
+		}else if (getAcc) {
+			setLoginField({
+				account: getAcc,
+				password: "",
+				remember: true,
+			});
+		}
+	}, [authUser]);
+
+	const [errorMsg, setErrorMsg] = useState("");
+	const [successMsg, setSuccessMsg] = useState("");
+
+	const loginLabel:{ [key: string]: string } = {
+		account: "帳號",
+		password: "密碼",
+	};
 	const [loginValid, setLoginValid] = useState<LoginForm>({
 		account: "",
 		password: "",
@@ -55,23 +65,20 @@ export default function Login() {
 		e.preventDefault();
 		const { name, value } = e.target;
 
-		if (name in displayName) {
-			const fieldName = name as keyof LoginForm;
-			const displayStr = displayName[fieldName];
-			let errorMessage = "";
-			if (value === "") {
-				errorMessage = `請輸入${displayStr}`;
-			} else if (fieldName === "account" && !EMAIL_REGEX.test(value)) {
-				errorMessage = "請輸入Email格式";
-			} else if (fieldName === "password" && !PWD_REGEX.test(value)) {
-				errorMessage = "請確認正確密碼格式，規則為大小寫英數字並且至少八碼";
-			}
-
-			setLoginValid((prevValid) => ({
-				...prevValid,
-				[fieldName]: errorMessage,
-			}));
+		let errorMessage = "";
+		if (value === "") {
+			const displayStr = loginLabel[name];
+			errorMessage = `請輸入${displayStr}`;
+		} else if (name === "account" && !EMAIL_REGEX.test(value)) {
+			errorMessage = "請輸入Email正確格式";
+		} else if (name === "password" && !PWD_REGEX.test(value)) {
+			errorMessage = "請確認正確密碼格式，規則為大小寫英數字並且至少八碼";
 		}
+
+		setLoginValid((prevValid) => ({
+			...prevValid,
+			[name]: errorMessage,
+		}));
 
 		setLoginField((prevForm) => ({
 			...prevForm,
@@ -79,20 +86,36 @@ export default function Login() {
 		}));
 	};
 
+	const handleChecked = (e: ChangeEvent<HTMLInputElement>) => {
+		if (e.target.name === "remember") {
+			setLoginField((prevForm: any) => ({
+				...prevForm,
+				remember: e.target.checked,
+			}));
+		}
+	};
+
 	const handleSubmit = (e: { preventDefault: () => void }) => {
 		e.preventDefault();
-		const { account, password } = loginField;
-		if (!EMAIL_REGEX.test(account) || !PWD_REGEX.test(password)) return;
+		const { account, password, remember } = loginField;
 
+		if (!EMAIL_REGEX.test(account) || !PWD_REGEX.test(password)) return;
 		setErrorMsg("");
 		setSuccessMsg("");
-		dispatch(loginUser(loginField)).then((res: any) => {
+
+		dispatch(loginUser(loginField) as any).then((res: any) => {
 			if (res.payload?.data) {
 				setSuccessMsg(res.payload.message);
-				// 2秒後跳轉到首頁
+
+				if (remember) {
+					setCookie(USER_ACCOUNT_COOKIE, account, 30);
+				} else {
+					removeCookie(USER_ACCOUNT_COOKIE);
+				}
+
 				setTimeout(() => {
 					router.replace("/");
-				}, 2000);
+				}, 2000); // 2秒後跳轉到首頁
 			} else if (res.error.message) {
 				setErrorMsg(res.error.message);
 			}
@@ -157,7 +180,7 @@ export default function Login() {
 								name="account"
 								type="email"
 								value={loginField.account}
-								label="帳號"
+								label={loginLabel.account}
 								margin="normal"
 								error={loginValid.account !== ""}
 								helperText={loginValid.account}
@@ -170,7 +193,7 @@ export default function Login() {
 								required
 								name="password"
 								value={loginField.password}
-								label="密碼"
+								label={loginLabel.password}
 								margin="normal"
 								type="password"
 								error={loginValid.password !== ""}
@@ -203,9 +226,14 @@ export default function Login() {
 								}}
 							>
 								<FormControlLabel
-									control={<Checkbox defaultChecked />}
 									label="記住我"
-								/>
+									control={
+										<Checkbox
+											name="remember"
+											checked={loginField.remember}
+											onChange={handleChecked}
+										/>
+									}								/>
 								<MuiLink component={NextLink} href="/forget" underline="always">
 									忘記密碼
 								</MuiLink>

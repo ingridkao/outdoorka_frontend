@@ -98,6 +98,7 @@ function Header() {
 						flexWrap: "wrap",
 					}}
 				>
+
 					{/* Mobile: 漢堡選單按鈕 */}
 					<IconButton
 						color="inherit"
@@ -107,11 +108,12 @@ function Header() {
 						sx={{
 							display: { md: "none" },
 							justifyContent: "flex-start",
-							flex: "0 1 96px",
+							flex: "0 1 112px",
 						}}
 					>
 						<MenuIcon />
 					</IconButton>
+
 					{/* Desktop: Menu*/}
 					<Box
 						sx={{

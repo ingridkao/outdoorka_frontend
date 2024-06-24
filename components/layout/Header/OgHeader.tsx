@@ -1,21 +1,26 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Image from "next/image";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import NextLink from "next/link";
-import { getOrganizer } from "@/features/organizer/ogAuthSlice";
+import {
+	getOrganizer,
+	logoutOrganizer,
+} from "@/features/organizer/ogAuthSlice";
 import { getCookie } from "@/utils/cookieHandler";
 import {
 	AppBar,
 	Avatar,
 	Box,
 	Button,
+	IconButton,
 	Stack,
 	Toolbar,
 	Typography,
 } from "@mui/material";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import LogoHeader1 from "@/public/images/logoHeader_1.svg";
 
 import { RootState } from "@/types";
@@ -25,7 +30,7 @@ function OgHeader() {
 	const router = useRouter();
 	const dispatch = useDispatch();
 	// Get ogAuth from redux
-	const {profile} = useSelector((state: RootState) => state.ogAuth);
+	const { profile } = useSelector((state: RootState) => state.ogAuth);
 	// const [profile, setProfile] = useState<ProfileOgItem | null>(null);
 
 	useEffect(() => {
@@ -38,10 +43,15 @@ function OgHeader() {
 					router.push("/organizer/login");
 				}
 			});
-		}else{
+		} else {
 			router.push("/organizer/login");
 		}
 	}, []);
+
+	const logout = () => {
+		dispatch(logoutOrganizer());
+		router.push("/organizer/login");
+	};
 
 	return (
 		<Box sx={{ display: "flex" }}>
@@ -99,6 +109,14 @@ function OgHeader() {
 										{profile.name}
 									</Typography>
 								</Button>
+								<IconButton
+									color="secondary"
+									size="large"
+									aria-label="logout"
+									onClick={logout}
+								>
+									<ExitToAppIcon />
+								</IconButton>
 							</Stack>
 						)}
 					</Box>

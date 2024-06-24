@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "@/plugins/api/axios";
-import { removeCookie, setCookie } from "@/utils/cookieHandler";
+import { OG_TOK0N_COOKIE, removeOgCookie, setCookie } from "@/utils/cookieHandler";
 
 import {
 	AuthItem,
@@ -10,11 +10,11 @@ import {
 } from "@/types/AuthType";
 
 const { auth, organizer } = axios;
-const COOKIE_OG_TOKEN = "OUTDOORKA_OG_TOKEN";
 
 const initialState = {
 	token: null,
 	profile: null,
+	error: null,
 } as OgAuthState;
 
 const ogAuthSlice: any = createSlice({
@@ -24,39 +24,43 @@ const ogAuthSlice: any = createSlice({
 		logoutOrganizer: (state: OgAuthState) => {
 			state.token = null;
 			state.profile = null;
-			removeCookie(COOKIE_OG_TOKEN);
+			removeOgCookie();
 		},
 	},
 	extraReducers: (builder: any) => {
-		builder.addCase(loginOrganizer.pending, (state: OgAuthState) => {
+		const { pending, fulfilled, rejected } = loginOrganizer;
+		builder.addCase(pending, (state: OgAuthState) => {
 			// loading start
+			state.error = null;
 			state.token = null;
 			state.profile = null;
 		});
-		builder.addCase(loginOrganizer.rejected, (state: OgAuthState) => {
+		builder.addCase(rejected, (state: OgAuthState, action: any) => {
+			state.error = action.error;
 			state.token = null;
 			state.profile = null;
 		});
 		builder.addCase(
-			loginOrganizer.fulfilled,
+			fulfilled,
 			(state: OgAuthState, action: any) => {
 				// loading end
 				if (action.payload.error) {
+					state.error = action.payload.error;
 					state.token = null;
 					state.profile = null;
-					removeCookie(COOKIE_OG_TOKEN);
+					removeOgCookie();
 				} else if (action.payload.data) {
 					const { organizer, token } = action.payload.data;
 					state.profile = organizer as ProfileOgItem;
 					state.token = token as AuthItem;
-
-					setCookie(COOKIE_OG_TOKEN, state.token.access_token, 3);
+					setCookie(OG_TOK0N_COOKIE, state.token.access_token, 3);
 				}
 			},
 		);
 
 		// getOrganizer
-		builder.addCase(getOrganizer.rejected, (state: OgAuthState) => {
+		builder.addCase(getOrganizer.rejected, (state: OgAuthState, action: any) => {
+			state.error = action.error;
 			state.token = null;
 			state.profile = null;
 		});
@@ -65,9 +69,10 @@ const ogAuthSlice: any = createSlice({
 			(state: OgAuthState, action: any) => {
 				// loading end
 				if (action.payload.error) {
+					state.error = action.payload.error;
 					state.token = null;
 					state.profile = null;
-					removeCookie(COOKIE_OG_TOKEN);
+					removeOgCookie();
 				} else if (action.payload.data) {
 					const organizer = action.payload.data;
 					state.profile = organizer as ProfileOgItem;

@@ -84,7 +84,7 @@ function Favorites() {
 					const parseData = responseBody.data.map((ticketItem:TicketState)=>{
 						return {
 							...ticketItem,
-							status: parstTicketStatus(ticketItem.activityStartTime, ticketItem.activityEndTime)
+							status: parstTicketStatus(ticketItem.activityStartTime, ticketItem.activityEndTime, ticketItem.tickets)
 						}
 					})
 					setSource(parseData);

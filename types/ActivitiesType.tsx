@@ -18,11 +18,11 @@ export type ActivityProp = {
 	startTime: string;
 	endTime: string;
 	photo: string;
-	avatar: string;
-	name: string;
-	rating: number;
-	capacity: number;
-	likers: number;
+	avatar?: string;
+	name?: string;
+	rating?: number;
+	capacity?: number;
+	likers?: number;
 };
 
 export interface IActivityLink {

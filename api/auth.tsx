@@ -15,6 +15,12 @@ const auth = (axios: any, event: any) => ({
 			password: post.password,
 		});
 	},
+	forgotPassword(post: { email: string }) {
+		return axios.post(`${event}/forget`, post);
+	},
+	resetPassword(post: { password: string; token: string }) {
+		return axios.post(`${event}/forget/confirm`, post);
+	},
 	loginOrganizer(post: LoginOrganizerForm) {
 		return axios.post(`${event}/organizer/login`, {
 			email: post.email,
@@ -23,6 +29,12 @@ const auth = (axios: any, event: any) => ({
 	},
 	registerOrganizer(post: RegisterOgForm) {
 		return axios.post(`${event}/organizer/register`, post);
+	},
+	organizerForgotPassword(post: { email: string }) {
+		return axios.post(`${event}/organizer/forget`, post);
+	},
+	organizerResetPassword(post: { password: string; token: string }) {
+		return axios.post(`${event}/organizer/forget/confirm`, post);
 	},
 });
 

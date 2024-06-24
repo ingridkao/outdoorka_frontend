@@ -48,21 +48,23 @@ function HotActivities() {
 			<Grid container spacing={2}>
 				{activityList?.map((value) => (
 					<Grid item xs={12} sm={6} md={4} lg={3} key={value._id}>
-						<CardActivity
-							home={true}
-							activity={{
-								title: value.subtitle,
-								location: `${value.region} ${value.city}`,
-								startTime: value.activityStartTime,
-								endTime: value.activityEndTime,
-								photo: value.activityImageUrls[0],
-								avatar: value.organizer.photo,
-								name: value.organizer.name,
-								rating: value.organizer.rating,
-								capacity: value.bookedCapacity,
-								likers: value.likers
-							}}
-						/>
+						<Box component={NextLink} href={`/activity/${value._id}`}>
+							<CardActivity
+								home={true}
+								activity={{
+									title: value.subtitle,
+									location: `${value.region} ${value.city}`,
+									startTime: value.activityStartTime,
+									endTime: value.activityEndTime,
+									photo: value.activityImageUrls[0],
+									avatar: value.organizer?.photo,
+									name: value.organizer?.name,
+									rating: value.organizer?.rating,
+									capacity: value.bookedCapacity,
+									likers: value.likers
+								}}
+							/>
+						</Box>
 					</Grid>
 				))}
 

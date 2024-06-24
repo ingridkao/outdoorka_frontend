@@ -2,7 +2,7 @@
 import React, { useEffect } from "react";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import axios from "@/plugins/api/axios";
-import { getCookie } from "@/utils/cookieHandler";
+import { USER_T0KEN_COOKIE, getCookie } from "@/utils/cookieHandler";
 
 import MainLayout from "@/components/layout/MainLayout/MainLayout";
 import UserProfile from "@/components/layout/user/userProfile";
@@ -25,7 +25,7 @@ function UserPage() {
 	const [switchTab, setSwitchTab] = React.useState(0);
 
 	useEffect(() => {
-		const token = getCookie("OUTDOORKA_TOKEN");
+		const token = getCookie(USER_T0KEN_COOKIE);
 		if (!token) return console.log("no token");
 
 		const fetchUser = async () => {

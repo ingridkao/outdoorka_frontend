@@ -2,7 +2,7 @@
 
 import React from "react";
 import NextLink from "next/link";
-import axios from "@/plugins/api/axios";
+import { useRouter } from "next/navigation";
 import {
 	Grid,
 	Box,
@@ -13,33 +13,44 @@ import {
 	Alert,
 	AlertTitle,
 } from "@mui/material";
-import { EMAIL_REGEX } from "@/utils/regexHandler";
+import axios from "@/plugins/api/axios";
+import { PWD_REGEX } from "@/utils/regexHandler";
 
-function Login() {
+function ResetPwd({ params }: { params: { id: string } }) {
+	const router = useRouter();
 	const { auth } = axios;
 
-	const [email, setEmail] = React.useState("");
-	const [validEmail, setValidEmail] = React.useState("");
+	const [password, setPassword] = React.useState("");
+	const [checkPassword, setCheckPassword] = React.useState("");
+	const [validPassword, setValidPassword] = React.useState("");
 	const [isSuccess, setIsSuccess] = React.useState(false);
 	const [resultMsg, setResultMsg] = React.useState("");
 	const [isPending, setIsPending] = React.useState(false);
 
 	const handleSubmit = async () => {
-		if (email === "" || !EMAIL_REGEX.test(email)) {
-			setValidEmail("請輸入正確 Email 帳號");
+		if (!password || !checkPassword || !PWD_REGEX.test(password)) {
+			setValidPassword("請確認正確密碼，規則為大小寫英數字並且至少八碼");
+			return;
+		}
+
+		if (password !== checkPassword) {
+			setValidPassword("兩次密碼輸入不一致");
 			return;
 		}
 
 		setIsPending(true);
 		auth
-			.forgotPassword({ email })
+			.organizerResetPassword({ token: params.id, password: password })
 			.then(() => {
-				setResultMsg("已寄送重設密碼連結至您的 Email，請查收!");
+				setResultMsg("密碼已重設，請重新登入");
 				setIsSuccess(true);
+				setTimeout(() => {
+					router.push("/organizer/login");
+				}, 600); // 後跳轉
 			})
 			.catch((err: any) => {
 				console.error(err);
-				setResultMsg("寄送重設密碼連結失敗，請重新操作");
+				setResultMsg("重設密碼失敗，請重新操作");
 				setIsSuccess(false);
 			})
 			.finally(() => {
@@ -75,9 +86,9 @@ function Login() {
 				) : (
 					<>
 						<Grid item sx={{ width: "100%" }}>
-							<Typography variant="h6">會員重設密碼</Typography>
+							<Typography variant="h6">主揪重置密碼</Typography>
 							<Typography variant="body1">
-								請輸入您註冊時所使用的 Email 帳號
+								請輸入密碼為大小寫英數字並且至少八碼
 							</Typography>
 						</Grid>
 						<Grid item sx={{ width: "100%", textAlign: "center" }}>
@@ -92,14 +103,27 @@ function Login() {
 							>
 								<TextField
 									required
-									id="email"
-									label="Email"
+									id="password"
+									type="password"
+									label="新密碼"
 									variant="outlined"
 									margin="dense"
-									value={email}
-									error={validEmail !== ""}
-									helperText={validEmail}
-									onChange={(e) => setEmail(e.target.value)}
+									value={password}
+									error={validPassword !== ""}
+									helperText={validPassword}
+									onChange={(e) => setPassword(e.target.value)}
+								/>
+								<TextField
+									required
+									id="checkPassword"
+									type="password"
+									label="再次輸入密碼"
+									variant="outlined"
+									margin="dense"
+									value={checkPassword}
+									error={validPassword !== ""}
+									helperText={validPassword}
+									onChange={(e) => setCheckPassword(e.target.value)}
 								/>
 								<Button
 									variant="contained"
@@ -108,7 +132,7 @@ function Login() {
 									onClick={handleSubmit}
 									disabled={isPending}
 								>
-									寄送重設密碼連結
+									重設密碼
 								</Button>
 							</Box>
 						</Grid>
@@ -127,7 +151,7 @@ function Login() {
 						</Typography>
 						<Button
 							component={NextLink}
-							href="/login"
+							href="/organizer/login"
 							variant="outlined"
 							size="large"
 						>
@@ -135,7 +159,11 @@ function Login() {
 						</Button>
 						<Typography variant="body1" sx={{ marginTop: 2 }}>
 							尚未註冊帳號？
-							<MuiLink component={NextLink} href="/register" underline="always">
+							<MuiLink
+								component={NextLink}
+								href="/organizer/register"
+								underline="always"
+							>
 								立即註冊
 							</MuiLink>
 						</Typography>
@@ -146,4 +174,4 @@ function Login() {
 	);
 }
 
-export default Login;
+export default ResetPwd;

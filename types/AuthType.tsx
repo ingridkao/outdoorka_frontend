@@ -18,6 +18,7 @@ export interface RegisterOgForm {
 export interface LoginForm {
 	account: string;
 	password: string;
+	remember?: boolean;
 }
 
 export interface AuthItem {

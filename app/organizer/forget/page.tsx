@@ -3,6 +3,7 @@
 import React from "react";
 import NextLink from "next/link";
 import axios from "@/plugins/api/axios";
+import { EMAIL_REGEX } from "@/utils/regexHandler";
 import {
 	Grid,
 	Box,
@@ -13,9 +14,8 @@ import {
 	Alert,
 	AlertTitle,
 } from "@mui/material";
-import { EMAIL_REGEX } from "@/utils/regexHandler";
 
-function Login() {
+function Forget() {
 	const { auth } = axios;
 
 	const [email, setEmail] = React.useState("");
@@ -32,7 +32,7 @@ function Login() {
 
 		setIsPending(true);
 		auth
-			.forgotPassword({ email })
+			.organizerForgotPassword({ email })
 			.then(() => {
 				setResultMsg("已寄送重設密碼連結至您的 Email，請查收!");
 				setIsSuccess(true);
@@ -75,7 +75,7 @@ function Login() {
 				) : (
 					<>
 						<Grid item sx={{ width: "100%" }}>
-							<Typography variant="h6">會員重設密碼</Typography>
+							<Typography variant="h6">主揪重設密碼</Typography>
 							<Typography variant="body1">
 								請輸入您註冊時所使用的 Email 帳號
 							</Typography>
@@ -127,7 +127,7 @@ function Login() {
 						</Typography>
 						<Button
 							component={NextLink}
-							href="/login"
+							href="/organizer/login"
 							variant="outlined"
 							size="large"
 						>
@@ -135,7 +135,11 @@ function Login() {
 						</Button>
 						<Typography variant="body1" sx={{ marginTop: 2 }}>
 							尚未註冊帳號？
-							<MuiLink component={NextLink} href="/register" underline="always">
+							<MuiLink
+								component={NextLink}
+								href="/organizer/register"
+								underline="always"
+							>
 								立即註冊
 							</MuiLink>
 						</Typography>
@@ -146,4 +150,4 @@ function Login() {
 	);
 }
 
-export default Login;
+export default Forget;

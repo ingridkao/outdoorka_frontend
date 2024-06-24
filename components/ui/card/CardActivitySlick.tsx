@@ -53,8 +53,8 @@ function CardActivity({
 							}}
 						>
 							<Avatar
-								alt={activity.name}
-								src={activity.avatar}
+								alt={activity.name || ''}
+								src={activity.avatar || ''}
 								sx={{
 									width: 32,
 									height: 32,
@@ -67,7 +67,7 @@ function CardActivity({
 								}}
 							>
 								{/* 星星評分 */}
-								<RatingStar rating={activity.rating} />
+								<RatingStar rating={activity.rating || 0} />
 
 								{/* 主揪名稱 */}
 								<Typography sx={cardStyle.chipOrganizerName}>

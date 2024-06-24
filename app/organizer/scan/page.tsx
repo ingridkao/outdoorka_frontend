@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, ChangeEvent } from "react";
-import { useParams } from "next/navigation";
 import { Html5QrcodeScanner} from "html5-qrcode";
 
 import axios from "@/plugins/api/axios";
@@ -9,9 +8,10 @@ import axios from "@/plugins/api/axios";
 import { Grid, Box, Typography, TextField, Button, Alert } from "@mui/material";
 import BackBtn from "@/components/ui/shared/BackBtn";
 import TicketCheckinDialog from "@/components/ui/dialog/TicketCheckinDialog";
+import useCustomTheme from "@/components/ui/shared/useCustomTheme";
 
 export default function Scan() {
-	const params = useParams<{ ticket: string }>();
+	const customStyle = useCustomTheme();
 	const { organizerTicket } = axios;
 
 	const [ticketId, setTicketId] = useState("");
@@ -32,13 +32,24 @@ export default function Scan() {
 			// 阻止scanner一直讀取進入無限循環
 			if(isRes) return
 			fetchTicket(result)
+			scanner.clear().then(res => {
+				console.log(res);
+				// the UI should be cleared here
+			}).catch(error => {
+				console.log(error);
+				// Could not stop scanning for reasons specified in `error`.
+				// This conditions should ideally not happen.
+			});
 		};
-		scanner.render(onScanSuccess);
+		if(scanner){
+			scanner.render(onScanSuccess);
+		}
 	},[]);
 
 	const fetchTicket = async (id: string) => {
-		if(resSucesee) return
-		if (id === "") {
+		if(resSucesee){
+			setDialogOpen(true)
+		}else if (id === "") {
 			setErrorMsg("請填寫票卷編號");
 		} else {
 			setErrorMsg("");
@@ -61,7 +72,7 @@ export default function Scan() {
 		}
 	};
 
-	const sendTicket = () => {
+	const sendTicket = () => {		
 		if (ticketId === "") {
 			setErrorMsg("請填寫票卷編號");
 		} else {
@@ -70,13 +81,11 @@ export default function Scan() {
 		}
 	};
 
-	///api/v1/tickets/{ticket-id}/confirm
-	const paperStyle = {
-		width: "100%",
-		backgroundColor: "#EDF1F9",
-		borderRadius: 1,
-		py: 2,
-	};
+	const closeDialog = () => {
+		setDialogOpen(false)
+		setResSucesee(null)
+		setTicketId("")
+	}
 
 	return (
 		<Box sx={{ width: 400, my: 2, mx: "auto" }}>
@@ -87,9 +96,10 @@ export default function Scan() {
 				alignItems="center"
 				rowSpacing={2}
 				sx={{
-					...paperStyle,
+					...customStyle.paperStyle,
 					textAlign: "center",
 					mt: 0.5,
+					py: 2,
 				}}
 			>
 				<Grid item>
@@ -141,8 +151,6 @@ export default function Scan() {
 						</Button>
 					</Box>
 				</Grid>
-				{/* TODO 之後刪掉 */}
-				<Grid item>活動uuid：{params?.ticket}</Grid>
 				<Grid item>
 					{errorMsg !== "" && <Alert severity="warning">{errorMsg}</Alert>}
 				</Grid>
@@ -150,7 +158,7 @@ export default function Scan() {
 			<TicketCheckinDialog
 				info={resSucesee}
 				open={dialogOpen}
-				onClose={() => setDialogOpen(false)}
+				onClose={closeDialog}
 			/>
 		</Box>
 	);

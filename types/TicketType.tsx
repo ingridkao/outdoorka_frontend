@@ -13,7 +13,8 @@ export interface TicketsState {
 	ticketOwnerId?: string;
 }
 export interface TicketState {
-	_id: string;
+	_id: string; // activityId
+	paymentId: string;
 	title: string;
 	status: number;
 	region: string;
@@ -27,6 +28,7 @@ export interface TicketState {
 	bookedCapacity: number;
 	totalCapacity?: number;
 	organizer?: OrganizerState;
+	ticketStatus?: number;
 }
 
 export type TicketProp = {
@@ -39,6 +41,7 @@ export type TicketProp = {
 	status: number;
 	ticketCount: number;
 	tickets: TicketsState[];
+	ticketStatus?: number;
 };
 
 export type CheckinTicketInfoProp = {
@@ -47,4 +50,25 @@ export type CheckinTicketInfoProp = {
 	ticketNote: string;
 	payment: string;
 	activity: ActivityState;
+};
+
+export type TicketInfoState = {
+	_id: string;
+	ticketStatus: number;
+	ticketNote: string;
+	organizer: {
+		_id: string;
+		name: string;
+		photo: string;
+		rating: number;
+	};
+	activity: {
+		title: string;
+		subtitle: string;
+		region: string;
+		city: string;
+		activityStartTime: string;
+		activityEndTime: string;
+		cbookedCapacityapacity: number;
+	};
 };
