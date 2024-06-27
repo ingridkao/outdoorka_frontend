@@ -79,7 +79,7 @@ function NewActivities() {
 						"linear-gradient(180deg, rgba(196, 221, 255, 0.18) 0%, #C4DDFF 100%)",
 					borderRadius: "48px",
 					px: 0,
-					py: 45,
+					py: 44,
 					pointerEvents: "none",
 				},
 			}}
@@ -94,7 +94,7 @@ function NewActivities() {
 						href={`/activity/${value._id}`}
 						sx={{
 							px: 1.5,
-							py: 0.5
+							py: 0.5,
 						}}
 					>
 						<CardActivitySlick
@@ -108,7 +108,7 @@ function NewActivities() {
 								name: value.organizer?.name,
 								rating: value.organizer?.rating,
 								capacity: value.bookedCapacity,
-								likers: value.likers
+								likers: value.likers,
 							}}
 						/>
 					</Box>

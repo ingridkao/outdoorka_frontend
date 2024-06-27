@@ -14,6 +14,15 @@ export const parseDate = (startTime: string, endTime: string) => {
 	}
 };
 
+/**
+ * 取得票卷顯示開始時間
+ * @param  startTime
+ */
+export const parseStartTime = (startTime: string) => {
+	const startDate = dayjs(startTime);
+	return `${startDate.format("YYYY/MM/DD HH:mm")}`;
+};
+
 const parseTimeZone = (value: string) => {
 	const Date = dayjs(value);
 	return `(GMT${Date.format("Z").slice(0, 3)})`;

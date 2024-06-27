@@ -1,15 +1,15 @@
 "use client";
 
 import { useState, useEffect, MouseEvent, SyntheticEvent } from "react";
-import Image from "next/image";
+import { useDispatch } from "react-redux";
 import NextLink from "next/link";
 import { useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
+
 import { logoutUser } from "@/features/user/authSlice";
 import {
-	getProfileCookieObj,
 	getCookie,
-	OG_TOK0N_COOKIE
+	getProfileCookieObj,
+	USER_T0KEN_COOKIE,
 } from "@/utils/cookieHandler";
 
 import {
@@ -23,30 +23,35 @@ import {
 	ClickAwayListener,
 	Chip,
 } from "@mui/material";
-import TicketSvg from "@/public/icons/ticket.svg";
-import LikedSvg from "@/public/icons/liked.svg";
+import HeartIcon from "@/components/icon/HeartIcon";
+import TicketIcon from "@/components/icon/TicketIcon";
+import LogoutIcon from "@/components/icon/LogoutIcon";
+import ProfileIcon from "@/components/icon/ProfileIcon";
 import LoginDialog from "./LoginDialog";
 
 function LoginAction() {
 	const router = useRouter();
 	const dispatch = useDispatch();
-	const [authUser, setAuthUser] = useState(null);
+	const [authUser, setAuthUser] = useState<{
+		name: string;
+		photo: string;
+	} | null>(null);
 	const [isClient, setIsClient] = useState(false);
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const [dialogOpen, setDialogOpen] = useState(false);
 	const open = Boolean(anchorEl);
 
-
 	useEffect(() => {
 		setIsClient(true);
-		if(isClient) return
-		const ogT0ken = getCookie(OG_TOK0N_COOKIE);
-		if(ogT0ken){
-			router.push("/organizer/activity-create");
-		}
-		const userObj = getProfileCookieObj();
-		if(userObj){
-			setAuthUser(userObj);
+		if (isClient) return;
+		const getUserT0ken = getCookie(USER_T0KEN_COOKIE);
+		console.log(getUserT0ken);
+
+		if (getUserT0ken) {
+			const profile = getProfileCookieObj();
+			setAuthUser(profile);
+		} else {
+			router.push("/");
 		}
 	}, []);
 
@@ -62,6 +67,7 @@ function LoginAction() {
 	const handleLogout = () => {
 		handleProfileMenuClose(new Event("logout"));
 		dispatch(logoutUser());
+		setAuthUser(null);
 		router.push("/");
 	};
 
@@ -80,29 +86,51 @@ function LoginAction() {
 		router.push("/favorites");
 	};
 
+	const MenuIconStyle = {
+		mr: 1,
+		width: 24,
+		height: 24,
+	};
 	const profileMenu = (
 		<Box
 			sx={{
-				margin: "0 auto 32px auto",
-				borderRadius: "4px",
-				padding: 2,
+				borderRadius: 0.75,
+				p: 2,
 				backgroundColor: "#fff",
 			}}
 		>
-			<Box sx={{ 
-				display: "inline-flex", 
-				alignItems: "center",
-				marginBottom: 1
-			}}>
-				<Avatar sx={{ width: 40, height: 40, marginRight: 1 }}>
+			<Box
+				sx={{
+					display: "inline-flex",
+					alignItems: "center",
+					mb: 2,
+				}}
+			>
+				<Avatar
+					// alt={profile.name}
+					// src={profile.photo}
+					sx={{ width: 40, height: 40, mr: 1 }}
+				>
 					{authUser?.name.charAt(0).toUpperCase()}
 				</Avatar>
 				<Typography>{authUser?.name}</Typography>
 			</Box>
-			<MenuItem onClick={handleProfile}>管理帳號</MenuItem>
-			<MenuItem onClick={goToFavorites}>我的收藏</MenuItem>
-			<MenuItem onClick={goToTicket}>我的票卷</MenuItem>
-			<MenuItem onClick={handleLogout}>登出</MenuItem>
+			<MenuItem onClick={handleProfile}>
+				<ProfileIcon sx={MenuIconStyle} fillcolor="#B1AAA5" />
+				<Typography>管理帳號</Typography>
+			</MenuItem>
+			<MenuItem onClick={goToFavorites}>
+				<HeartIcon sx={MenuIconStyle} fillcolor="#B1AAA5" />
+				<Typography>我的收藏</Typography>
+			</MenuItem>
+			<MenuItem onClick={goToTicket}>
+				<TicketIcon sx={MenuIconStyle} fillcolor="#B1AAA5" />
+				<Typography>我的票卷</Typography>
+			</MenuItem>
+			<MenuItem onClick={handleLogout}>
+				<LogoutIcon sx={MenuIconStyle} fillcolor="#B1AAA5" />
+				<Typography>登出</Typography>
+			</MenuItem>
 		</Box>
 	);
 
@@ -116,89 +144,83 @@ function LoginAction() {
 		>
 			{!isClient ? (
 				<Box></Box>
-			) : (
-				!authUser ? (
+			) : authUser ? (
+				<>
 					<Box display="inline-flex">
-						<Button color="inherit" onClick={() => setDialogOpen(true)}>
-							登入 | 註冊
-						</Button>
-						<LoginDialog
-							open={dialogOpen}
-							onClose={() => setDialogOpen(false)}
+						<Chip
+							onClick={handleProfileMenuClick}
+							className="chipAvatar"
+							avatar={
+								<Avatar alt={authUser.name}>
+									{authUser.name.charAt(0).toUpperCase()}
+								</Avatar>
+							}
+							label={
+								<Typography
+									color="#22252A"
+									sx={{
+										display: { xs: "none", md: "block" },
+										pr: { xs: 0, md: 1 },
+									}}
+								>
+									CIAO! <b>{authUser.name}</b>
+								</Typography>
+							}
+							sx={{
+								width: { xs: "48px", md: "auto" },
+								pl: { xs: 1.5, md: 0 },
+							}}
 						/>
+						<Button component={NextLink} href="/ticket" color="inherit">
+							<Badge badgeContent={4} color="secondary">
+								<TicketIcon
+									sx={{ width: 24, height: 24 }}
+									fillcolor="#4a4642"
+								/>
+							</Badge>
+						</Button>
+
+						<Button
+							component={NextLink}
+							href="/favorites"
+							color="inherit"
+							sx={{ display: { xs: "none", md: "inline-flex" } }}
+						>
+							<Badge badgeContent={4} color="secondary">
+								<HeartIcon sx={{ width: 24, height: 24 }} fillcolor="#4a4642" />
+							</Badge>
+						</Button>
 					</Box>
-				) : (
-					<>
-						<Box display="inline-flex">
-							<Chip
-								onClick={handleProfileMenuClick}
-								className="chipAvatar"
-								avatar={
-									<Avatar alt={authUser.name}>
-										{authUser.name.charAt(0).toUpperCase()}
-									</Avatar>
-								}
-								label={
-									<Typography
-										color="#22252A"
-										sx={{ 
-											display: { xs: "none", md: "block" }, 
-											pr: { xs: 0, md: 1 }
-										}}
-									>
-										CIAO! <b>{authUser.name}</b>
-									</Typography>
-								}
-								sx={{ 
-									width: { xs: "48px", md: "auto" }, 
-									pl: { xs: 1.5, md: 0 }, 
-								}}
-							/>
-							<Button
-								component={NextLink}
-								href="/ticket"
-								color="inherit"
-							>
-								<Badge badgeContent={4} color="secondary">
-									<Image src={TicketSvg} width={24} height={24} alt="ticket" />
-								</Badge>
-							</Button>
-
-							<Button
-								component={NextLink}
-								href="/favorites"
-								color="inherit"
-								sx={{ display: { xs: "none", md: "inline-flex" } }}
-							>
-								<Badge badgeContent={4} color="secondary">
-									<Image src={LikedSvg} width={24} height={24} alt="favorites" />
-								</Badge>
-							</Button>
-
-						</Box>
-						<ClickAwayListener onClickAway={handleProfileMenuClose}>
-							<Menu
-								id="account-menu"
-								anchorEl={anchorEl}
-								open={open}
-								onClose={handleProfileMenuClose}
-								transformOrigin={{ horizontal: "left", vertical: "top" }}
-								anchorOrigin={{ horizontal: "left", vertical: "top" }}
-								PaperProps={{
-									sx: {
-										width: 336,
-										px: 1,
-										borderRadius: 1,
-										backdropFilter: "invert(5%)",
-										backgroundColor: "rgba(255, 255, 255, .5)",
-									},
-								}}
-							>
-								{profileMenu}
-							</Menu>
-						</ClickAwayListener>
-					</>
-				)
+					<ClickAwayListener onClickAway={handleProfileMenuClose}>
+						<Menu
+							anchorEl={anchorEl}
+							open={open}
+							onClose={handleProfileMenuClose}
+							transformOrigin={{ horizontal: "left", vertical: "top" }}
+							anchorOrigin={{ horizontal: "left", vertical: "top" }}
+							PaperProps={{
+								sx: {
+									width: 336,
+									px: 2,
+									pt: 1,
+									pb: 4,
+									borderRadius: 0.75,
+									backdropFilter: "invert(5%)",
+									backgroundColor: "rgba(255, 255, 255, .5)",
+								},
+							}}
+						>
+							{profileMenu}
+						</Menu>
+					</ClickAwayListener>
+				</>
+			) : (
+				<Box display="inline-flex">
+					<Button color="inherit" onClick={() => setDialogOpen(true)}>
+						登入 | 註冊
+					</Button>
+					<LoginDialog open={dialogOpen} onClose={() => setDialogOpen(false)} />
+				</Box>
 			)}
 		</Box>
 	);

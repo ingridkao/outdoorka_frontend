@@ -40,7 +40,7 @@ function HotActivities() {
 			sx={{
 				position: "relative",
 				mb: 25,
-				px: 2
+				px: 2,
 			}}
 		>
 			<TitleSection title="熱門活動" />
@@ -61,7 +61,7 @@ function HotActivities() {
 									name: value.organizer?.name,
 									rating: value.organizer?.rating,
 									capacity: value.bookedCapacity,
-									likers: value.likers
+									likers: value.likers,
 								}}
 							/>
 						</Box>

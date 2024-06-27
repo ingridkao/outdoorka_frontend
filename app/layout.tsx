@@ -2,9 +2,13 @@
 
 import { useMemo, useEffect } from "react";
 import { Inter } from "next/font/google";
-import { usePathname } from 'next/navigation'
+import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
-import { USER_T0KEN_COOKIE, OG_TOK0N_COOKIE,  getCookie } from "@/utils/cookieHandler";
+import {
+	USER_T0KEN_COOKIE,
+	OG_TOK0N_COOKIE,
+	getCookie,
+} from "@/utils/cookieHandler";
 
 import { Provider } from "react-redux";
 import { ThemeProvider } from "@mui/material/styles";
@@ -23,7 +27,7 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	const router = useRouter();
-	const pathname = usePathname()
+	const pathname = usePathname();
 	const initialReduxState = {};
 
 	const store = useMemo(
@@ -33,16 +37,24 @@ export default function RootLayout({
 
 	useEffect(() => {
 		// 首頁不判斷權限
-		if(pathname === "/") return
+		if (pathname === "/") return;
 		// 註冊登入不判斷權限
-		if(pathname && ["/login/", "/register/", "/organizer/login/", "/organizer/register/"].includes(pathname)) return
+		if (
+			pathname &&
+			[
+				"/login/",
+				"/register/",
+				"/organizer/login/",
+				"/organizer/register/",
+			].includes(pathname)
+		)
+			return;
 
 		const token = getCookie(USER_T0KEN_COOKIE);
 		const getOgToken = getCookie(OG_TOK0N_COOKIE);
-		if (!token && !getOgToken){
+		if (!token && !getOgToken) {
 			router.push("/");
 		}
-
 	}, [pathname, router]);
 
 	return (

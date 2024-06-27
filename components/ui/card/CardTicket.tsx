@@ -87,7 +87,7 @@ function CardTicket({
 			</Box>
 
 			{/* 下方 區塊 */}
-			<CardBottomInfo info={ticketItem}/>
+			<CardBottomInfo row={2} info={ticketItem}/>
 		</Paper>
 	);
 }

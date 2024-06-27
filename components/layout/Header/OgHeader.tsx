@@ -1,45 +1,42 @@
 "use client";
 
-import { useEffect } from "react";
-import Image from "next/image";
+import { useState, useEffect, MouseEvent, SyntheticEvent } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useRouter } from "next/navigation";
 import NextLink from "next/link";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { RootState } from "@/types";
+
 import {
 	getOrganizer,
 	logoutOrganizer,
 } from "@/features/organizer/ogAuthSlice";
-import { getCookie } from "@/utils/cookieHandler";
+import { OG_TOK0N_COOKIE, getCookie } from "@/utils/cookieHandler";
 import {
 	AppBar,
 	Avatar,
 	Box,
 	Button,
-	IconButton,
 	Stack,
 	Toolbar,
 	Typography,
+	ClickAwayListener,
+	Menu,
+	MenuItem,
 } from "@mui/material";
-import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import LogoHeader1 from "@/public/images/logoHeader_1.svg";
-
-import { RootState } from "@/types";
-// import { ProfileOgItem } from "@/types/AuthType";
+import LogoutIcon from "@/components/icon/LogoutIcon";
 
 function OgHeader() {
 	const router = useRouter();
 	const dispatch = useDispatch();
-	// Get ogAuth from redux
 	const { profile } = useSelector((state: RootState) => state.ogAuth);
-	// const [profile, setProfile] = useState<ProfileOgItem | null>(null);
 
 	useEffect(() => {
-		const getOgToken = getCookie("OUTDOORKA_OG_TOKEN");
+		const getOgToken = getCookie(OG_TOK0N_COOKIE);
 		if (getOgToken) {
 			dispatch(getOrganizer() as any).then((res: any) => {
-				if (res.payload?.data) {
-					// setProfile(res.payload.data);
-				} else if (res.error.message) {
+				if (res.error?.message) {
 					router.push("/organizer/login");
 				}
 			});
@@ -48,7 +45,17 @@ function OgHeader() {
 		}
 	}, []);
 
-	const logout = () => {
+	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+	const open = Boolean(anchorEl);
+	const handleProfileMenuClick = (event: MouseEvent<HTMLElement>) => {
+		setAnchorEl(event.currentTarget);
+	};
+	const handleProfileMenuClose = (event: Event | SyntheticEvent) => {
+		if (anchorEl && anchorEl.contains(event.target as HTMLElement)) return;
+		setAnchorEl(null);
+	};
+	const handleLogout = () => {
+		handleProfileMenuClose(new Event("logout"));
 		dispatch(logoutOrganizer());
 		router.push("/organizer/login");
 	};
@@ -59,7 +66,6 @@ function OgHeader() {
 				component="nav"
 				sx={{
 					color: "#4A4642",
-
 					boxShadow: "none",
 				}}
 			>
@@ -96,8 +102,7 @@ function OgHeader() {
 										margin: "0 8px 0 0",
 										borderRadius: "5px",
 									}}
-									component={NextLink}
-									href="#"
+									onClick={handleProfileMenuClick}
 								>
 									<Typography
 										variant="h6"
@@ -109,14 +114,58 @@ function OgHeader() {
 										{profile.name}
 									</Typography>
 								</Button>
-								<IconButton
-									color="secondary"
-									size="large"
-									aria-label="logout"
-									onClick={logout}
-								>
-									<ExitToAppIcon />
-								</IconButton>
+
+								<ClickAwayListener onClickAway={handleProfileMenuClose}>
+									<Menu
+										anchorEl={anchorEl}
+										open={open}
+										onClose={handleProfileMenuClose}
+										transformOrigin={{ horizontal: "left", vertical: "top" }}
+										anchorOrigin={{ horizontal: "left", vertical: "top" }}
+										PaperProps={{
+											sx: {
+												width: 336,
+												px: 2,
+												pt: 1,
+												pb: 4,
+												borderRadius: 0.75,
+												backdropFilter: "invert(5%)",
+												backgroundColor: "rgba(255, 255, 255, .5)",
+											},
+										}}
+									>
+										<Box
+											sx={{
+												borderRadius: 0.75,
+												p: 2,
+												backgroundColor: "#fff",
+											}}
+										>
+											<Box
+												sx={{
+													display: "inline-flex",
+													alignItems: "center",
+													mb: 2,
+												}}
+											>
+												<Avatar
+													alt={profile.name}
+													src={profile.photo}
+													sx={{ width: 40, height: 40, mr: 1 }}
+												/>
+												<Typography>{profile.name}</Typography>
+											</Box>
+											{/* <MenuItem onClick={handleProfile}>管理帳號</MenuItem> */}
+											<MenuItem onClick={handleLogout}>
+												<LogoutIcon
+													sx={{ mr: 1, width: 24, height: 24 }}
+													fillcolor="#B1AAA5"
+												/>
+												<Typography>登出</Typography>
+											</MenuItem>
+										</Box>
+									</Menu>
+								</ClickAwayListener>
 							</Stack>
 						)}
 					</Box>

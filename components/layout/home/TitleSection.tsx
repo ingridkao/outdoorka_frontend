@@ -9,8 +9,8 @@ const TitleSection = ({ title }: { title: string }) => {
 			sx={{
 				fontSize: "56px",
 				fontWeight: "700",
-				mt: "80px",
-				mb: "64px",
+				mt: 10,
+				mb: 7.5,
 				textAlign: "center",
 				letterSpacing: "-0.25px",
 				color: "#00497D",

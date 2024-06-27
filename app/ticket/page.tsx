@@ -39,8 +39,8 @@ function Tickets() {
 	const updateDisplayStatus = (type: number | null = null) => {
 		if (type === null) {
 			setDisplayList(source);
-		} else {
-			const filterList = source.filter((ticketItem:TicketState) => ticketItem.status === type);
+		} else {			
+			const filterList = source.filter((ticketItem:TicketState) => ticketItem.ticketStatus === type);
 			setDisplayList(filterList);
 		}
 	};
@@ -157,14 +157,15 @@ function Tickets() {
 						<Button
 							variant="outlined"
 							size="small"
-							onClick={() => updateDisplayStatus(1)}
+							sx={{mr:1}}
+							onClick={() => updateDisplayStatus(0)}
 						>
 							已報名
 						</Button>
 						<Button
 							variant="outlined"
 							size="small"
-							onClick={() => updateDisplayStatus(0)}
+							onClick={() => updateDisplayStatus(1)}
 						>
 							已使用
 						</Button>

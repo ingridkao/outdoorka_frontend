@@ -2,9 +2,17 @@
 
 import { ActivityProp } from "@/types/ActivitiesType";
 
-import { Box, Typography, Avatar, Grid, Paper, CardMedia, Chip } from "@mui/material";
+import {
+	Box,
+	Typography,
+	Avatar,
+	Grid,
+	Paper,
+	CardMedia,
+	Chip,
+} from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import RatingStar from "@/components/ui/shared/RatingStar"
+import RatingStar from "@/components/ui/shared/RatingStar";
 import CardBottomInfo from "@/components/ui/card/CardBottomInfo";
 import useCardTheme from "@/components/ui/card/useCardTheme";
 
@@ -12,35 +20,34 @@ import useCardTheme from "@/components/ui/card/useCardTheme";
  * 活動卡片for 首頁最新輪播活動
  * @param activity 單一活動資料
  */
-function CardActivity({ 
-	activity
-}: {
-	activity: ActivityProp;
-}) {
+function CardActivity({ activity }: { activity: ActivityProp }) {
 	const cardStyle = useCardTheme();
 	return (
 		<Paper
 			sx={{
 				...cardStyle.container,
-				width: 296,
+				width: 272,
 			}}
 		>
 			{/* 上方 區塊 */}
-			<Box sx={cardStyle.topInfoWrapper }>
+			<Box sx={cardStyle.topInfoWrapperSmall}>
 				{/* 底圖 */}
 				<Box sx={cardStyle.topBg}>
 					<CardMedia
 						component="img"
 						alt={activity.title}
-						height={197}
+						height={181}
 						image={activity.photo}
 					/>
 				</Box>
 
-				<Grid container sx={{
-					...cardStyle.topInfoTopRow,
-					...cardStyle.topInfoTopMainRow
-				}}>
+				<Grid
+					container
+					sx={{
+						...cardStyle.topInfoTopRow,
+						...cardStyle.topInfoTopMainRow,
+					}}
+				>
 					{/* 主揪資訊 */}
 					<Grid item>
 						<Box
@@ -48,13 +55,14 @@ function CardActivity({
 							alignItems="center"
 							sx={{
 								...cardStyle.chip,
-								width: 155,
+								height: "2.5rem",
+								width: { xs: 155, xl: 150},
 								py: 0.5,
 							}}
 						>
 							<Avatar
-								alt={activity.name || ''}
-								src={activity.avatar || ''}
+								alt={activity.name || ""}
+								src={activity.avatar || ""}
 								sx={{
 									width: 32,
 									height: 32,
@@ -63,7 +71,7 @@ function CardActivity({
 							/>
 							<Box
 								sx={{
-									width: 103
+									width: 103,
 								}}
 							>
 								{/* 星星評分 */}
@@ -84,7 +92,12 @@ function CardActivity({
 							label={
 								<Box display="inline-flex" alignItems="center">
 									<FavoriteIcon sx={cardStyle.chipIcon} />
-									<Typography sx={cardStyle.chipText}>
+									<Typography
+										sx={{
+											...cardStyle.chipText,
+											width: 30,
+										}}
+									>
 										{activity.likers || 0}
 									</Typography>
 								</Box>
@@ -94,7 +107,7 @@ function CardActivity({
 				</Grid>
 			</Box>
 
-			<CardBottomInfo info={activity} />
+			<CardBottomInfo row={3} info={activity} />
 		</Paper>
 	);
 }

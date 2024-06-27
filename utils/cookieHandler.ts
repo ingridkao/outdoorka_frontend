@@ -1,8 +1,8 @@
 "use client";
 import Cookies from "js-cookie";
 
-export const USER_ACCOUNT_COOKIE = "OUTDOORKA_U_ACC"; // For login remember
 export const USER_T0KEN_COOKIE = "OUTDOORKA_U";
+export const USER_ACCOUNT_COOKIE = "OUTDOORKA_U_ACC"; // For login remember
 export const USER_PROFILE_COOKIE = "OUTDOORKA_U_PROFILE";
 
 export const OG_TOK0N_COOKIE = "OUTDOORKA_OG";
@@ -37,10 +37,10 @@ export const setProfileCookie = (name: string, value: any, days: number) => {
  */
 export const getProfileCookieObj = () => {
 	const value = Cookies.get(USER_PROFILE_COOKIE);
-	if(value && typeof value === "string" ){
-		return JSON.parse(value)
-	}else{
-		return null
+	if (value && typeof value === "string") {
+		return JSON.parse(value);
+	} else {
+		return null;
 	}
 };
 
@@ -58,4 +58,3 @@ export const removeUserCookie = () => {
 export const removeOgCookie = () => {
 	Cookies.remove(OG_TOK0N_COOKIE);
 };
-
