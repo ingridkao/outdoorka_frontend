@@ -45,7 +45,6 @@ function LoginAction() {
 		setIsClient(true);
 		if (isClient) return;
 		const getUserT0ken = getCookie(USER_T0KEN_COOKIE);
-		console.log(getUserT0ken);
 
 		if (getUserT0ken) {
 			const profile = getProfileCookieObj();

@@ -7,7 +7,13 @@ import NextLink from "next/link";
 import { RootState, LoginForm } from "@/types";
 import { loginUser } from "@/features/user/authSlice";
 import { EMAIL_REGEX, PWD_REGEX } from "@/utils/regexHandler";
-import { USER_T0KEN_COOKIE, USER_ACCOUNT_COOKIE, removeCookie, getCookie, setCookie } from "@/utils/cookieHandler";
+import {
+	USER_T0KEN_COOKIE,
+	USER_ACCOUNT_COOKIE,
+	removeCookie,
+	getCookie,
+	setCookie,
+} from "@/utils/cookieHandler";
 
 import {
 	Unstable_Grid2 as Grid,
@@ -21,6 +27,9 @@ import {
 	Link as MuiLink,
 	Alert,
 } from "@mui/material";
+
+const baseUrl =
+	process.env.NEXT_PUBLIC_BASE_URL_USER || "http://localhost:3006";
 
 export default function Login() {
 	const router = useRouter();
@@ -38,7 +47,7 @@ export default function Login() {
 		if (getT0ken) {
 			// 已登入導轉到首頁
 			router.push("/");
-		}else if (getAcc) {
+		} else if (getAcc) {
 			setLoginField({
 				account: getAcc,
 				password: "",
@@ -50,7 +59,7 @@ export default function Login() {
 	const [errorMsg, setErrorMsg] = useState("");
 	const [successMsg, setSuccessMsg] = useState("");
 
-	const loginLabel:{ [key: string]: string } = {
+	const loginLabel: { [key: string]: string } = {
 		account: "帳號",
 		password: "密碼",
 	};
@@ -233,7 +242,8 @@ export default function Login() {
 											checked={loginField.remember}
 											onChange={handleChecked}
 										/>
-									}								/>
+									}
+								/>
 								<MuiLink component={NextLink} href="/forget" underline="always">
 									忘記密碼
 								</MuiLink>
@@ -251,7 +261,12 @@ export default function Login() {
 							my: 2,
 						}}
 					>
-						<Button variant="outlined" size="large">
+						<Button
+							variant="outlined"
+							size="large"
+							component={NextLink}
+							href={`${baseUrl}/api/v1/auth/google`}
+						>
 							使用 Google 帳號登入
 						</Button>
 						<Button variant="outlined" size="large">

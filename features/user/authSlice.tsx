@@ -7,7 +7,7 @@ import {
 	removeUserCookie,
 	setCookie,
 } from "@/utils/cookieHandler";
-import { AuthState, ProfileItem, LoginForm } from "@/types/AuthType";
+import { AuthState, LoginForm } from "@/types/AuthType";
 const { auth } = axios;
 
 export const loginUser = createAsyncThunk(
@@ -27,7 +27,8 @@ const authSlice: any = createSlice({
 	reducers: {
 		logoutUser: (state: AuthState) => {
 			// state.profile = null;
-			removeUserCookie()
+			state.error = null;
+			removeUserCookie();
 		},
 	},
 	extraReducers: (builder: any) => {
@@ -42,7 +43,7 @@ const authSlice: any = createSlice({
 			if (action.payload.error) {
 				state.error = action.payload.error;
 				// state.profile = null;
-				removeUserCookie()
+				removeUserCookie();
 			} else if (action.payload.data) {
 				const { user, token } = action.payload.data;
 				// state.profile = user as ProfileItem;
