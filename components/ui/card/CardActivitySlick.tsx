@@ -1,6 +1,6 @@
 "use client";
 
-import { ActivityProp } from "@/types/ActivitiesType";
+import { ActivityState } from "@/types/ActivitiesType";
 
 import {
 	Box,
@@ -20,8 +20,10 @@ import useCardTheme from "@/components/ui/card/useCardTheme";
  * 活動卡片for 首頁最新輪播活動
  * @param activity 單一活動資料
  */
-function CardActivity({ activity }: { activity: ActivityProp }) {
+function CardActivity({ activity }: { activity: ActivityState }) {
 	const cardStyle = useCardTheme();
+	const activityImageUrl = activity.activityImageUrls? activity.activityImageUrls[0]: ""	
+
 	return (
 		<Paper
 			sx={{
@@ -35,9 +37,9 @@ function CardActivity({ activity }: { activity: ActivityProp }) {
 				<Box sx={cardStyle.topBg}>
 					<CardMedia
 						component="img"
-						alt={activity.title}
+						alt={activity.subtitle}
 						height={181}
-						image={activity.photo}
+						image={activityImageUrl}
 					/>
 				</Box>
 
@@ -61,8 +63,8 @@ function CardActivity({ activity }: { activity: ActivityProp }) {
 							}}
 						>
 							<Avatar
-								alt={activity.name || ""}
-								src={activity.avatar || ""}
+								alt={activity.organizer?.name || ""}
+								src={activity.organizer?.photo || ""}
 								sx={{
 									width: 32,
 									height: 32,
@@ -75,11 +77,11 @@ function CardActivity({ activity }: { activity: ActivityProp }) {
 								}}
 							>
 								{/* 星星評分 */}
-								<RatingStar rating={activity.rating || 0} />
+								<RatingStar rating={activity.organizer?.rating || 0} />
 
 								{/* 主揪名稱 */}
 								<Typography sx={cardStyle.chipOrganizerName}>
-									{activity.name}
+								{activity.organizer?.name}
 								</Typography>
 							</Box>
 						</Box>

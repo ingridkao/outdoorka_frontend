@@ -2,8 +2,7 @@
 
 import { useMemo, useEffect } from "react";
 import { Inter } from "next/font/google";
-import { usePathname } from "next/navigation";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import {
 	USER_T0KEN_COOKIE,
 	OG_TOK0N_COOKIE,

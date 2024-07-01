@@ -17,20 +17,23 @@ function HotActivities() {
 	const [activityList, setActivityList] = useState<ActivityState[]>([]);
 	const [error, setError] = useState("");
 
-	useEffect(() => {
-		async function loadData() {
-			try {
-				const responseBody = await activity.getHotActivityList();
-				if (responseBody && responseBody.data) {
-					const resArray = responseBody.data.slice(0, 8);
-					setActivityList(resArray);
-				}
-			} catch (error) {
-				setError("Failed to fetch data: " + String(error));
+	async function loadData() {
+		try {
+			const responseBody = await activity.getHotActivityList();
+			if (responseBody && responseBody.data) {
+				const resArray = responseBody.data.slice(0, 8);
+				setActivityList(resArray);
 			}
+		} catch (error) {
+			setError("Failed to fetch data: " + String(error));
 		}
+	}
+	useEffect(() => {
 		loadData();
 	}, []);
+	const reload = (res:boolean) => {
+		if(res) loadData();
+	}
 
 	if (error) return <div>Failed to load</div>;
 	if (activityList.length === 0) return <Loading />;
@@ -46,25 +49,13 @@ function HotActivities() {
 			<TitleSection title="熱門活動" />
 
 			<Grid container spacing={2}>
-				{activityList?.map((value) => (
+				{activityList && activityList.map((value:ActivityState) => (
 					<Grid item xs={12} sm={6} md={4} lg={3} key={value._id}>
-						<Box component={NextLink} href={`/activity/${value._id}`}>
-							<CardActivity
-								home={true}
-								activity={{
-									title: value.subtitle,
-									location: `${value.region} ${value.city}`,
-									startTime: value.activityStartTime,
-									endTime: value.activityEndTime,
-									photo: value.activityImageUrls[0],
-									avatar: value.organizer?.photo,
-									name: value.organizer?.name,
-									rating: value.organizer?.rating,
-									capacity: value.bookedCapacity,
-									likers: value.likers,
-								}}
-							/>
-						</Box>
+						<CardActivity
+							home={true}
+							activity={value}
+							onLoad={reload}
+						/>
 					</Grid>
 				))}
 

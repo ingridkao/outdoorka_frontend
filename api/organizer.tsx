@@ -26,6 +26,9 @@ const organizerApi = (axios: any, event: any) => ({
 	imageDelete(fileName: string) {
 		return axios.delete(`${event}/image?fileName=${fileName}`);
 	},
+	updateProfile(post: any) {
+		return axios.patch(`${event}/profile`, post);
+	},
 });
 
 export default organizerApi;

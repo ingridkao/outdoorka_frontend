@@ -11,7 +11,11 @@ import {
 	getOrganizer,
 	logoutOrganizer,
 } from "@/features/organizer/ogAuthSlice";
-import { OG_TOK0N_COOKIE, getCookie } from "@/utils/cookieHandler";
+import {
+	OG_TOK0N_COOKIE,
+	getCookie,
+	removeOgCookie,
+} from "@/utils/cookieHandler";
 import {
 	AppBar,
 	Avatar,
@@ -35,11 +39,17 @@ function OgHeader() {
 	useEffect(() => {
 		const getOgToken = getCookie(OG_TOK0N_COOKIE);
 		if (getOgToken) {
-			dispatch(getOrganizer() as any).then((res: any) => {
-				if (res.error?.message) {
-					router.push("/organizer/login");
-				}
-			});
+			dispatch(getOrganizer() as any)
+				.then((res: any) => {
+					if (res.error?.message) {
+						removeOgCookie();
+						router.push("/organizer/login");
+					}
+				})
+				.catch((err: any) => {
+					console.error(err);
+					removeOgCookie();
+				});
 		} else {
 			router.push("/organizer/login");
 		}

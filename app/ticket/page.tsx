@@ -2,7 +2,7 @@
 
 import { useState, useEffect, SyntheticEvent } from "react";
 import NextLink from "next/link";
-import { TicketState } from "@/types/TicketType";
+import { PaymentState } from "@/types/TicketType";
 import axios from "@/plugins/api/axios";
 import { parstTicketStatus, sortTimeData } from "@/utils/dateHandler";
 
@@ -15,7 +15,7 @@ import {
 	IconButton,
 	Select,
 	MenuItem,
-	SelectChangeEvent
+	SelectChangeEvent,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
@@ -30,8 +30,8 @@ function Tickets() {
 	const theme = useTheme();
 	const { ticket } = axios;
 	const [load, setLoad] = useState(true);
-	const [source, setSource] = useState<TicketState[]>([]);
-	const [displayList, setDisplayList] = useState<TicketState[]>([]);
+	const [source, setSource] = useState<PaymentState[]>([]);
+	const [displayList, setDisplayList] = useState<PaymentState[]>([]);
 	const [sortValue, setSortValue] = useState("");
 	const [ascValue, setAscValue] = useState(true);
 	const [searchValue, setSearchValue] = useState("");
@@ -39,8 +39,10 @@ function Tickets() {
 	const updateDisplayStatus = (type: number | null = null) => {
 		if (type === null) {
 			setDisplayList(source);
-		} else {			
-			const filterList = source.filter((ticketItem:TicketState) => ticketItem.ticketStatus === type);
+		} else {
+			const filterList = source.filter(
+				(ticketItem: PaymentState) => ticketItem.ticketStatus === type,
+			);
 			setDisplayList(filterList);
 		}
 	};
@@ -52,24 +54,26 @@ function Tickets() {
 	const handleSort = (event: SyntheticEvent) => {
 		event.preventDefault();
 		setAscValue(!ascValue);
-		let filterList = []
-		if(sortValue === "activityStartTime" || sortValue === "activityEndTime"){
-			filterList = sortTimeData(source, sortValue, ascValue)
-		}else{
-			filterList = source.sort((a:any, b:any) => {
-				return ascValue? (a[sortValue]- b[sortValue]): (b[sortValue] - a[sortValue])
+		let filterList = [];
+		if (sortValue === "activityStartTime" || sortValue === "activityEndTime") {
+			filterList = sortTimeData(source, sortValue, ascValue);
+		} else {
+			filterList = source.sort((a: any, b: any) => {
+				return ascValue
+					? a[sortValue] - b[sortValue]
+					: b[sortValue] - a[sortValue];
 			});
 		}
 		setDisplayList(filterList);
 	};
 
-	const handleSearchChange = (searchInput: string) => {		
+	const handleSearchChange = (searchInput: string) => {
 		setSearchValue(searchInput);
-		if(searchInput === ""){
+		if (searchInput === "") {
 			setDisplayList(source);
-		}else{
-			const filterList = source.filter((ticketItem:TicketState) => {
-				return ticketItem.title.includes(searchInput)
+		} else {
+			const filterList = source.filter((ticketItem: PaymentState) => {
+				return ticketItem.title.includes(searchInput);
 			});
 			setDisplayList(filterList);
 		}
@@ -80,24 +84,31 @@ function Tickets() {
 			setLoad(true);
 			try {
 				const responseBody = await ticket.getTicketList();
+				setLoad(false);
 				if (responseBody && responseBody.data) {
-					const parseData = responseBody.data.map((ticketItem:TicketState)=>{
-						return {
-							...ticketItem,
-							ticketStatus: parstTicketStatus(ticketItem.activityStartTime, ticketItem.activityEndTime, ticketItem.tickets)
-						}
-					})
+					const parseData = responseBody.data.map(
+						(ticketItem: PaymentState) => {
+							return {
+								...ticketItem,
+								ticketStatus: parstTicketStatus(
+									ticketItem.activityStartTime,
+									ticketItem.activityEndTime,
+									ticketItem.tickets,
+								),
+							};
+						},
+					);
 					setSource(parseData);
-					setDisplayList(parseData)
+					setDisplayList(parseData);
 				}
 			} catch (error: any) {
+				setLoad(false);
 				if (error?.status == 404) {
 					setSource([]);
 				} else {
 					console.error(String(error?.message));
 				}
 			}
-			setLoad(false);
 		}
 		loadData();
 	}, []);
@@ -106,7 +117,7 @@ function Tickets() {
 
 	return (
 		<PageLayout>
-			<Grid container sx={{width:"100%",m:"auto", gap:5}}>
+			<Grid container sx={{ width: "100%", m: "auto", gap: 5 }}>
 				<Grid
 					sx={{
 						display: { xs: "none", lg: "block" },
@@ -157,7 +168,7 @@ function Tickets() {
 						<Button
 							variant="outlined"
 							size="small"
-							sx={{mr:1}}
+							sx={{ mr: 1 }}
 							onClick={() => updateDisplayStatus(0)}
 						>
 							已報名
@@ -173,7 +184,7 @@ function Tickets() {
 				</Grid>
 
 				<Grid xs sx={{ maxWidth: "1440px" }}>
-					<ListSearchHeader 
+					<ListSearchHeader
 						title={"票卷列表"}
 						subTitle={"你的票卷清單已準備好囉！"}
 						search={searchValue}
@@ -188,7 +199,7 @@ function Tickets() {
 					>
 						<Box>
 							排序方法：
-							<Select 
+							<Select
 								defaultValue={"activityStartTime"}
 								onChange={handleSelectChange}
 							>
@@ -211,23 +222,10 @@ function Tickets() {
 							columnSpacing={{ xs: 0, sm: 1, md: 5 }}
 							justifyContent="flex-start"
 						>
-							{displayList?.map((value) => (
-								<Grid key={value._id} xs={12} sm={6} md={4}>
+							{displayList?.map((value: PaymentState) => (
+								<Grid key={value.paymentId} xs={12} sm={6} md={4}>
 									<Box component={NextLink} href={`/ticket/${value.paymentId}`}>
-										<CardTicket
-											ticketItem={{
-												title: value.title,
-												location: `${value.region} ${value.city}`,
-												startTime: value.activityStartTime,
-												endTime: value.activityEndTime,
-												photo: value.activityImageUrl,
-												capacity: value.bookedCapacity,
-												ticketCount: value.ticketCount,
-												ticketStatus: value.ticketStatus,
-												tickets: value.tickets,
-												status: value.status,
-											}}
-										/>
+										<CardTicket ticketItem={value} />
 									</Box>
 								</Grid>
 							))}

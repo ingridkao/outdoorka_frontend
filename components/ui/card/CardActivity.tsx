@@ -1,8 +1,7 @@
 "use client";
 
-import { SyntheticEvent } from "react";
-import { ActivityProp } from "@/types/ActivitiesType";
-
+import { useRouter } from "next/navigation";
+import { ActivityState } from "@/types/ActivitiesType";
 import {
 	Box,
 	Typography,
@@ -10,39 +9,48 @@ import {
 	Grid,
 	Paper,
 	CardMedia,
-	Chip,
-	IconButton,
+	Chip
 } from "@mui/material";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import PeopleIcon from "@/components/icon/peopleIcon";
 import RatingStar from "@/components/ui/shared/RatingStar";
 import CardBottomInfo from "@/components/ui/card/CardBottomInfo";
+import FavoriteAction from "@/components/ui/button/FavoriteAction";
 import useCardTheme from "@/components/ui/card/useCardTheme";
 
 /**
  * 活動卡片
+ * @param home     呈現於首頁
  * @param activity 單一活動資料
  */
-function CardActivity({
-	home = false,
-	activity,
-}: {
-	home: boolean;
-	activity: ActivityProp;
-}) {
+function CardActivity(props: {
+	home: boolean,
+	activity: ActivityState,
+	onLoad: (res:boolean) => void;
+}){
 	const cardStyle = useCardTheme();
+	const router = useRouter();
 
-	// 加入收藏
-	const likeAction = (event: SyntheticEvent) => {
-		event.preventDefault();
-	};
+	const { home, activity, onLoad } = props;
+	const activityImageUrl = activity.activityImageUrls? activity.activityImageUrls[0]: ""	
+
+	const linkToInfo = (
+		e: { preventDefault: () => void }
+	) => {
+		e.preventDefault();
+		router.push(`/activity/${activity._id}`);
+	}
+	const reload = (res:boolean) => {
+		onLoad(res)
+	}
 
 	return (
 		<Paper
 			sx={{
 				...cardStyle.container,
 				maxWidth: home ? 380 : 464,
+				cursor: "pointer"
 			}}
+			onClick={linkToInfo}
 		>
 			{/* 上方 區塊 */}
 			<Box sx={{
@@ -53,11 +61,11 @@ function CardActivity({
 				<Box sx={cardStyle.topBg}>
 					<CardMedia
 						component="img"
-						alt={activity.title}
+						alt={activity.subtitle}
 						sx={{
 							height: home ? 244 : 310,
 						}}
-						image={activity.photo}
+						image={activityImageUrl}
 					/>
 				</Box>
 
@@ -80,14 +88,14 @@ function CardActivity({
 							alignItems="center"
 							sx={{
 								...cardStyle.chip,
-								width: home ? { xs: 158, sm: 145, xl: 140} : "100%",
+								width: home ? { xs: 158, sm: 144, xl: 140} : "100%",
 								height: 40,
 								py: 0.5,
 							}}
 						>
 							<Avatar
-								alt={activity.name || ""}
-								src={activity.avatar || ""}
+								alt={activity.organizer?.name || ""}
+								src={activity.organizer?.photo || ""}
 								sx={{
 									width: 32,
 									height: 32,
@@ -96,14 +104,14 @@ function CardActivity({
 							/>
 							<Box>
 								{/* 星星評分 */}
-								<RatingStar rating={activity.rating || 0} />
+								<RatingStar rating={activity.organizer?.rating || 0} />
 
 								{/* 主揪名稱 */}
 								<Typography sx={{
 									...cardStyle.chipOrganizerName,
 									maxWidth: home? "6rem":{ sm: "10rem" }
 								}}>
-									{activity.name}
+									{activity.organizer?.name}
 								</Typography>
 							</Box>
 						</Box>
@@ -124,7 +132,7 @@ function CardActivity({
 												: { xs: "1rem", sm: "0.75rem", md: "1.5rem" },
 										}}
 									>
-										{activity.capacity || 0}
+										{activity.bookedCapacity || 0}
 									</Typography>
 								</Box>
 							}
@@ -136,25 +144,11 @@ function CardActivity({
 						<Chip
 							sx={cardStyle.chip}
 							label={
-								<Box display="inline-flex" alignItems="center">
-									<IconButton
-										sx={{ p: 0 }}
-										aria-label="愛心數"
-										onClick={likeAction}
-									>
-										<FavoriteIcon sx={cardStyle.chipIcon} />
-									</IconButton>
-									<Typography
-										sx={{
-											...cardStyle.chipText,
-											minWidth: home
-												? "2rem"
-												: { xs: "1rem", sm: "0.75rem", md: "1.5rem" },
-										}}
-									>
-										{activity.likers || 0}
-									</Typography>
-								</Box>
+								<FavoriteAction 
+									home={home} 
+									activity={activity}
+									onLoad={reload}
+								/>
 							}
 						/>
 					</Grid>

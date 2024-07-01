@@ -25,6 +25,7 @@ import RatingEmptyIcon from "@/components/icon/ratingEmptyIcon";
 import HikingIcon from "@/components/icon/hikingIcon";
 import MainLayout from "@/components/layout/MainLayout/MainLayout";
 import { format, parseISO } from "date-fns";
+import axios from "@/plugins/api/axios";
 
 const StyledRating = styled(Rating)({
 	marginBottom: "8px",
@@ -45,7 +46,7 @@ const StyledImageBox = styled(Box)({
 
 const mockData = {
 	data: {
-		_id: "xxxx64563801ba8f24d555c45",
+		_id: "664cb717ae8e74de4ae74871",
 		title: "跑山幫越野跑訓練營",
 		subtitle: "象山夜跑",
 		address: "台灣台北市臺北市信義區信義路5段152號",
@@ -84,7 +85,7 @@ const mockData = {
 				igUrl: "https://www.instrgram.com/KailasTaiwan/",
 			},
 		},
-		isLiked: true,
+		isLiked: false,
 	},
 };
 
@@ -139,6 +140,7 @@ const listItemData = [
 	},
 ];
 function Activity() {
+	const { favorite } = axios;
 	const [timeLeft, setTimeLeft] = React.useState({
 		days: 0,
 		hours: 0,
@@ -186,6 +188,19 @@ function Activity() {
 				</Typography>
 			);
 		});
+	};
+
+	const toggleFavorite = async() => {
+		try {
+			if(mockData.data.isLiked){
+				await favorite.removeFavorite(mockData.data._id);
+			}else{
+				await favorite.addFavorite(mockData.data._id);
+			}
+			// TODO reload isLike info
+		} catch (error: any) {
+			console.error(String(error?.message));
+		}
 	};
 
 	useEffect(() => {
@@ -301,6 +316,7 @@ function Activity() {
 											borderRadius: "25px",
 											p: "6px 16px",
 										}}
+										onClick={toggleFavorite}
 									>
 										<FavoriteIcon
 											sx={{
