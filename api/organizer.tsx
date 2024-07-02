@@ -29,6 +29,9 @@ const organizerApi = (axios: any, event: any) => ({
 	updateProfile(post: any) {
 		return axios.patch(`${event}/profile`, post);
 	},
+	getActivityParticipant(activityId: string) {
+		return axios.get(`${event}/activity/${activityId}/participants`);
+	},
 });
 
 export default organizerApi;

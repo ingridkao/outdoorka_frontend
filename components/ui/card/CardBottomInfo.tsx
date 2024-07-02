@@ -12,19 +12,15 @@ import { PaymentState } from "@/types/TicketType";
  * 卡片:標題地點時間資訊
  * @param info 資料
  */
-function CardBottomInfo({
-	row,
-	info,
-}: {
-	row: number;
-	info: ActivityState | PaymentState;
-}) {
+function CardBottomInfo({ row, info }: { row: number; info: ActivityState | PaymentState }) {
 	const cardStyle = useCardTheme();
 	return (
 		<Box sx={{ py: 3, px: 4 }}>
 			<Box sx={cardStyle.infoRow}>
 				<LocationIcon sx={{ mr: 1.5 }} />
-				<span className="singleline-ellipsis">{info.region} {info.city}</span>
+				<span className="singleline-ellipsis">
+					{info.region} {info.city}
+				</span>
 			</Box>
 			<Box sx={cardStyle.infoRow}>
 				<CalendarTodayIcon sx={{ mr: 1.5 }} />
@@ -40,7 +36,7 @@ function CardBottomInfo({
 				className={
 					row === 3 ? "triplex-ellipsis" : 
 					row === 2 ? "multiline-ellipsis" :
-					""
+					"singleline-ellipsis"
 				}
 			>
 				{info.subtitle || info.title}

@@ -8,7 +8,13 @@ import { LoginOrganizerForm } from "@/types";
 
 import { loginOrganizer } from "@/features/organizer/ogAuthSlice";
 import { EMAIL_REGEX, PWD_REGEX } from "@/utils/regexHandler";
-import { OG_TOK0N_COOKIE, OG_ACCOUNT_COOKIE, removeCookie, getCookie, setCookie } from "@/utils/cookieHandler";
+import {
+	OG_TOK0N_COOKIE,
+	OG_ACCOUNT_COOKIE,
+	removeCookie,
+	getCookie,
+	setCookie,
+} from "@/utils/cookieHandler";
 
 import {
 	Grid,
@@ -32,15 +38,14 @@ export default function Login() {
 		password: "",
 		remember: true,
 	});
-	
+
 	useEffect(() => {
 		const getOgToken = getCookie(OG_TOK0N_COOKIE);
 		const getAcc = getCookie(OG_ACCOUNT_COOKIE);
 
-		if(getOgToken){
-			router.push("/organizer/activity-create");
-
-		}else if (getAcc) {
+		if (getOgToken) {
+			router.push("/organizer/activity");
+		} else if (getAcc) {
 			setLoginForm({
 				email: getAcc,
 				password: "",
@@ -122,7 +127,7 @@ export default function Login() {
 				}
 
 				setTimeout(() => {
-					router.push("/organizer/activity-create");
+					router.push("/organizer/activity");
 				}, 300); // 後跳轉
 			} else if (res.error.message) {
 				setErrorMsg(res.error.message);
