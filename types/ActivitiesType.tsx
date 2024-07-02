@@ -21,6 +21,7 @@ export interface Activity {
 	activityImageUrl: string;
 	activityStartTime: string;
 	activityEndTime: string;
+	activityNotice?: string;
 	
 	activityExpired?: boolean;
 	bookedCapacity?: number; // 參加人數
@@ -80,7 +81,7 @@ export interface OrganizerActivityState extends Activity {
 }
 
 export interface ActivityState extends Activity {
-	_id: string;
+	_id?: string;
 	activityImageUrls: string[];
 	organizer?: OrganizerState;
 	likers?: number;

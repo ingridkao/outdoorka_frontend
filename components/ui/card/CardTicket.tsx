@@ -13,18 +13,18 @@ import useCardTheme from "@/components/ui/card/useCardTheme";
  */
 function CardTicket({ ticketItem }: { ticketItem: PaymentState }) {
 	const cardStyle = useCardTheme();
-
 	const ticketCountInfo = () => {
-		if (ticketItem.ticketAssign === ticketItem.ticketTotal) {
+		if (ticketItem.ticketAssign > 0) {			
+			const unUsed = ticketItem.ticketTotal - ticketItem.ticketAssign
+			return `待分票 ${ticketItem.ticketAssign}/${unUsed}`;
+		}else{
 			return "分票完畢";
-		} else {
-			return `待分票 ${ticketItem.ticketAssign}/${ticketItem.ticketTotal}`;
 		}
 	};
 
 	const ticketStatus = () => {
 		if (ticketItem.activityExpired) return "已逾期";
-		return ticketItem.status ? "已使用" : "已報名";
+		return ticketItem.ticketStatu === 0 ? "已報名" : "已使用";
 	};
 
 	return (

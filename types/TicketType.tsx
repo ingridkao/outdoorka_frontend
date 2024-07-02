@@ -9,6 +9,8 @@ export interface OrganizerState {
 	name: string;
 	photo: string;
 	rating: number;
+	mobile?: string;
+	email?: string;
 }
 
 export interface TicketsState {
@@ -21,10 +23,11 @@ export interface TicketsState {
 }
 export interface PaymentState extends Activity {
 	paymentId: string;
-	status: number;
+	status?: number;
+	ticketStatu?: number;
 	ticketTotal: number;
 	ticketAssign: number;
-	ticketUse?: number;
+	ticketUse: number;
 }
 
 export type CheckinTicketInfoProp = {
@@ -40,7 +43,6 @@ export interface TicketInfoState extends Activity {
 	organizer: OrganizerState;
 	ticketStatus: number;
 	ticketNote: string;
-	ticketTotal: number;
-	ticketInspect: TicketsState[];
 	tickets: TicketsState[];
+	ratingList?: {ticketId:string}[]
 }

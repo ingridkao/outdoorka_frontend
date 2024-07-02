@@ -41,7 +41,7 @@ function Tickets() {
 			setDisplayList(source);
 		} else {
 			const filterList = source.filter(
-				(ticketItem: PaymentState) => ticketItem.ticketStatus === type,
+				(ticketItem: PaymentState) => ticketItem.ticketStatu === type,
 			);
 			setDisplayList(filterList);
 		}

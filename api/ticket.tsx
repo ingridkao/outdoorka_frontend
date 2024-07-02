@@ -11,6 +11,13 @@ const ticket = (axios: any, event: any) => ({
 		if (note) post.ticketNote = note;
 		return axios.patch(`${event}/${id}`, post);
 	},
+	userReview(id: string, rating: number = 5, comment: string = "") {
+		if (!(rating && comment)) return
+		return axios.post(`${event}/${id}/rating`, {
+			rating,
+			comment
+		});
+	},
 });
 
 export default ticket;

@@ -6,6 +6,7 @@ import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import LocationIcon from "@/components/icon/locationIcon";
 import useCardTheme from "./useCardTheme";
 import { ActivityState } from "@/types/ActivitiesType";
+import { PaymentState } from "@/types/TicketType";
 
 /**
  * 卡片:標題地點時間資訊
@@ -16,7 +17,7 @@ function CardBottomInfo({
 	info,
 }: {
 	row: number;
-	info: ActivityState;
+	info: ActivityState | PaymentState;
 }) {
 	const cardStyle = useCardTheme();
 	return (
