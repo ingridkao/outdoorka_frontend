@@ -6,12 +6,13 @@ import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import LocationIcon from "@/components/icon/locationIcon";
 import useCardTheme from "./useCardTheme";
 import { ActivityState } from "@/types/ActivitiesType";
+import { PaymentState } from "@/types/TicketType";
 
 /**
  * 卡片:標題地點時間資訊
  * @param info 資料
  */
-function CardBottomInfo({ row, info }: { row: number; info: ActivityState }) {
+function CardBottomInfo({ row, info }: { row: number; info: ActivityState | PaymentState }) {
 	const cardStyle = useCardTheme();
 	return (
 		<Box sx={{ py: 3, px: 4 }}>
@@ -32,9 +33,13 @@ function CardBottomInfo({ row, info }: { row: number; info: ActivityState }) {
 			<Typography
 				variant="h6"
 				sx={cardStyle.infoTitle}
-				className={row === 3 ? "triplex-ellipsis" : "multiline-ellipsis"}
+				className={
+					row === 3 ? "triplex-ellipsis" : 
+					row === 2 ? "multiline-ellipsis" :
+					"singleline-ellipsis"
+				}
 			>
-				{info.subtitle}
+				{info.subtitle || info.title}
 			</Typography>
 		</Box>
 	);

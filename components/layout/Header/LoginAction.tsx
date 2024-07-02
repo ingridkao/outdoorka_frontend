@@ -106,12 +106,10 @@ function LoginAction() {
 				}}
 			>
 				<Avatar
-					// alt={profile.name}
-					// src={profile.photo}
+					alt={authUser?.name}
+					src={authUser?.photo}
 					sx={{ width: 40, height: 40, mr: 1 }}
-				>
-					{authUser?.name.charAt(0).toUpperCase()}
-				</Avatar>
+				/>
 				<Typography>{authUser?.name}</Typography>
 			</Box>
 			<MenuItem onClick={handleProfile}>
@@ -150,9 +148,10 @@ function LoginAction() {
 							onClick={handleProfileMenuClick}
 							className="chipAvatar"
 							avatar={
-								<Avatar alt={authUser.name}>
-									{authUser.name.charAt(0).toUpperCase()}
-								</Avatar>
+								<Avatar
+									alt={authUser.name}
+									src={authUser.photo}
+								/>
 							}
 							label={
 								<Typography

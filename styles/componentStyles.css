@@ -57,8 +57,8 @@
 	-webkit-box-orient: vertical;
 	-webkit-line-clamp: 1;
 	overflow: hidden;
-	height: 1em;
-	min-height: 1em;
+	height: 1.75rem;
+	min-height: 1.75rem;
 }
 
 .triplex-ellipsis {

@@ -117,15 +117,7 @@ function CardOrganizerActivity({
 				</Grid>
 			</Box>
 
-			<CardBottomInfo
-				row={2}
-				info={{
-					location: `${activity?.region} ${activity?.city} ${activity?.address}`,
-					title: activity.title,
-					startTime: activity.activityStartTime,
-					endTime: activity.activityEndTime,
-				}}
-			/>
+			<CardBottomInfo row={1} info={activity} />
 
 			{!isFinish && (
 				<Grid container spacing={1.5} sx={{ pl: 2, pr: 4, pb: 3 }}>

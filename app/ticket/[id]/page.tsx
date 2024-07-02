@@ -34,13 +34,11 @@ import useCustomTheme from "@/components/ui/shared/useCustomTheme";
 function TicketAction({
 	active = 0,
 	info = null,
-	inspect = null,
 	tickets = null,
 	reload,
 }: {
 	active: number;
 	info: TicketInfoState | null;
-	inspect: TicketsState | null;
 	tickets: TicketsState[] | null;
 	reload: (res: boolean) => void;
 }) {
@@ -54,99 +52,58 @@ function TicketAction({
 		setTarget(null);
 		reload(res);
 	};
-	const handleEvaluate = () => {
-		if (!inspect) return;
-		setModifyType("evaluate");
-		setTarget(inspect);
-		setDialogOpen(true);
-	};
-	const handleNote = (ticket: TicketsState) => {
-		if (!tickets) return;
-		setModifyType("note");
-		setTarget(ticket);
-		setDialogOpen(true);
-	};
-	const handleAssign = (e: { preventDefault: () => void }) => {
+	
+	const handleAction = (type:string) => {
+		if (!type )return;
+		if ( type === "evaluate" && info.rating === 1 ) return;
 		if (!(tickets && tickets[active])) return;
-		setModifyType("email");
+		setModifyType(type);
 		setTarget(tickets[active]);
 		setDialogOpen(true);
 	};
 
-	// 活動已結束並已使用
-	if (
-		info.activityExpired &&
-		inspect &&
-		inspect.ticketStatus == TicketStatus.Used
-	) {
-		return (
-			<>
-				<Button variant="contained" size="large" onClick={handleEvaluate}>
-					填寫評價
-				</Button>
-				<TicketModifyDialog
-					payment={modifyType}
-					type={modifyType}
-					target={target}
-					open={dialogOpen}
-					onClose={closeDialog}
-				/>
-			</>
-		);
-	}
+	if(!tickets)return <Box />;
 
-	// 活動未結束且未使用的票卷
-	if (
-		tickets &&
-		tickets[active] &&
-		tickets[active].ticketStatus == TicketStatus.Unused
-	) {
-		const targetTicket = tickets[active];
-		return (
-			<>
-				<Box>
-					{inspect && inspect.ticketId == targetTicket.ticketId ? (
-						<Button
-							variant="contained"
-							size="large"
-							onClick={() => handleNote(inspect)}
-						>
-							填寫備註
-						</Button>
-					) : (
-						<>
-							{!targetTicket.assignedAt && (
-								<Button
-									variant="contained"
-									size="large"
-									sx={{ mr: 1 }}
-									onClick={handleAssign}
-								>
-									進行分票
-								</Button>
-							)}
-							<Button
-								variant="contained"
-								size="large"
-								onClick={() => handleNote(targetTicket)}
-							>
-								填寫備註
-							</Button>
-						</>
-					)}
-				</Box>
-				<TicketModifyDialog
-					payment={info._id}
-					type={modifyType}
-					target={target}
-					open={dialogOpen}
-					onClose={closeDialog}
-				/>
-			</>
-		);
-	} else {
-		return <Box />;
-	}
+	const targetTicket:TicketsState | null = tickets[active];
+	if(!targetTicket)return <Box />;
+
+	const checkEvaluate = info.ratingList && info.ratingList.find((item:any) => item.ticketId === targetTicket.ticketId)
+	
+	return (
+		<>
+			<Box>
+				{/* 超過一張票卷，未使用及未分票的票卷 */}
+				{tickets.length > 1 && targetTicket.ticketStatus == TicketStatus.Unused &&
+					<Button variant="contained" size="large" sx={{wordBreak: "keep-all" }} onClick={() => handleAction("email")}>
+						進行分票
+					</Button>
+				}
+				{tickets.length === 1 && targetTicket.ticketStatus == TicketStatus.Unused  && 
+					<Button variant="contained" size="large" sx={{wordBreak: "keep-all" }} onClick={() => handleAction("note")}>
+						填寫備註
+					</Button>
+				}
+				{targetTicket.ticketStatus == TicketStatus.Used  && 
+					<Button 
+						variant="contained" 
+						size="large" 
+						sx={{wordBreak: "keep-all" }} 
+						disabled={checkEvaluate}
+						onClick={() => handleAction("evaluate")}
+					>
+						{checkEvaluate? "已評價": "填寫評價"}
+					</Button>					
+				}
+			</Box>
+			<TicketModifyDialog
+				payment={info}
+				type={modifyType}
+				target={target}
+				open={dialogOpen}
+				onClose={closeDialog}
+			/>
+		</>
+	);
 }
 
 function TicketInfo() {
@@ -193,11 +150,8 @@ function TicketInfo() {
 		return <Loading />;
 	}
 
-	const inspectData =
-		paymentData.ticketInspect.length > 0 ? paymentData.ticketInspect[0] : null;
-	const ticketsData =
-		paymentData.tickets.length > 0 ? paymentData.tickets : null;
-	const ticketTotal = paymentData.ticketTotal || 0;
+	const ticketTotal = paymentData.tickets.length;
+	const ticketsData = ticketTotal > 0 ? paymentData.tickets : null;
 	const prevAssignActive = () => {
 		if (assignActive === 0) return;
 		setAssignActive(assignActive - 1);
@@ -263,7 +217,6 @@ function TicketInfo() {
 					<TicketAction
 						active={assignActive}
 						info={paymentData}
-						inspect={inspectData}
 						tickets={ticketsData}
 						reload={actionHandle}
 					/>
@@ -300,88 +253,128 @@ function TicketInfo() {
 						</Accordion>
 
 						<Box sx={customStyle.paperStyle2}>
-							{ticketsData[assignActive].assignedAt ? (
-								<>
-									<Box
-										display="flex"
-										justifyContent="center"
-										alignItems="center"
-										sx={{
-											margin: { xs: "0 auto 8px auto", sm: "auto" },
-											p: 1,
-										}}
-									>
-										{ticketsData[assignActive].ticketStatus ? (
-											<></>
-										) : (
-											<QRCodeSVG
-												value={ticketsData[assignActive].ticketId}
-												size={270}
-											/>
-										)}
-									</Box>
-									<Box
-										display="flex"
-										sx={{
-											flexDirection: "column",
-											justifyContent: "space-between",
-											alignItems: { xs: "flex-start", sm: "flex-end" },
-											width: { xs: "350px", sm: "calc(100% - 286px)" },
-											margin: { xs: "8px auto 0 auto", sm: "auto auto 0 auto" },
-										}}
-									>
-										<Box sx={customStyle.labelStyle}>
-											{inspectData?.ticketId !=
-											ticketsData[assignActive].ticketId
-												? "已分票"
-												: ticketsData[assignActive].ticketStatus
-													? "已使用"
-													: "已報名"}
-										</Box>
-										<Box sx={rowContainer}>
-											<Typography sx={columnDesc}>參加人</Typography>
-											<Typography sx={{ fontSize: "28px", fontWeight: 700 }}>
-												{ticketsData[assignActive].ownerName || ""}
-											</Typography>
-										</Box>
-										<Box sx={rowContainer}>
-											<Typography sx={columnDesc}>訂單編號</Typography>
-											<Typography sx={{ fontSize: "18px" }}>
-												{paymentData._id}
-											</Typography>
-										</Box>
-										<Box sx={rowContainer}>
-											<Typography sx={columnDesc}>票卷編號</Typography>
-											<Typography sx={{ fontSize: "18px" }}>
-												{ticketsData[assignActive].ticketId
-													? ticketsData[assignActive].ticketId
-													: ""}
-											</Typography>
-										</Box>
-									</Box>
-								</>
-							) : (
-								<Typography sx={customStyle.h3BodyStyle}>未分票</Typography>
-							)}
+							<Box
+								display="flex"
+								justifyContent="center"
+								alignItems="center"
+								sx={{
+									margin: { xs: "0 auto 8px auto", sm: "auto" },
+									p: 1,
+								}}
+							>
+								{ticketsData[assignActive].ticketStatus ? (
+									<Box sx={{
+										width:{ xs: 0, sm: 270 },
+										height:{ xs: 0, sm: 270 },
+									}} />
+								) : (
+									<QRCodeSVG size={270} value={ticketsData[assignActive].ticketId} />
+								)}
+							</Box>
+							<Box
+								display="flex"
+								sx={{
+									flexDirection: "column",
+									justifyContent: "space-between",
+									alignItems: { xs: "flex-start", sm: "flex-end" },
+									width: { xs: "350px", sm: "calc(100% - 286px)" },
+									margin: { xs: "8px auto 0 auto", sm: "auto auto 0 auto" },
+								}}
+							>
+								<Box sx={customStyle.labelStyle}>
+									{ticketsData[assignActive].ticketStatus
+										? "已使用"
+										: "已報名"
+									}
+								</Box>
+								<Box sx={rowContainer}>
+									<Typography sx={columnDesc}>
+										{ticketsData.length === 0 || ticketsData[assignActive].ticketStatus
+											? "參加人"
+											: "購買人"
+										}
+									</Typography>
+									<Typography sx={{ fontSize: "28px", fontWeight: 700 }}>
+										{ticketsData[assignActive].ownerName || ""}
+									</Typography>
+								</Box>
+								<Box sx={rowContainer}>
+									<Typography sx={columnDesc}>訂單編號</Typography>
+									<Typography sx={{ fontSize: "18px" }}>
+										{paymentData._id}
+									</Typography>
+								</Box>
+								<Box sx={rowContainer}>
+									<Typography sx={columnDesc}>票卷編號</Typography>
+									<Typography sx={{ fontSize: "18px" }}>
+										{ticketsData[assignActive].ticketId
+											? ticketsData[assignActive].ticketId
+											: ""}
+									</Typography>
+								</Box>
+							</Box>
 						</Box>
 					</>
 				)}
-				<Box
-					width={"100%"}
-					display="flex"
-					justifyContent="center"
-					alignItems="center"
-				>
-					<IconButton onClick={prevAssignActive}>
-						<KeyboardArrowLeftIcon />
-					</IconButton>
-					<Typography sx={{ ...customStyle.h3BodyStyle, px: 3 }}>
-						{assignActive + 1} / 共 {ticketTotal} 張
-					</Typography>
-					<IconButton onClick={nextAssignActive}>
-						<KeyboardArrowRightIcon />
-					</IconButton>
-				</Box>
+				{ticketTotal > 1 &&
+					<Box
+						width={"100%"}
+						display="flex"
+						justifyContent="center"
+						alignItems="center"
+					>
+						<IconButton onClick={prevAssignActive}>
+							<KeyboardArrowLeftIcon />
+						</IconButton>
+						<Typography sx={{ ...customStyle.h3BodyStyle, px: 3 }}>
+							{assignActive + 1} / 共 {ticketTotal} 張
+						</Typography>
+						<IconButton onClick={nextAssignActive}>
+							<KeyboardArrowRightIcon />
+						</IconButton>
+					</Box>
+				}
+
+				{paymentData && <>
+					<Accordion className="customAccordion" sx={{...customStyle.paperStyle, my: 3}}>
+							<AccordionSummary
+								expandIcon={<ExpandMoreIcon />}
+								aria-controls="注意事項"
+								sx={customStyle.accordionStyle}
+							>
+								注意事項
+							</AccordionSummary>
+							<AccordionDetails sx={{ ...customStyle.paperStyle, p: 0 }}>
+								<Typography sx={customStyle.descStyle}>
+									{paymentData.activityNotice}
+								</Typography>
+							</AccordionDetails>
+						</Accordion>
+
+						<Accordion className="customAccordion" sx={customStyle.paperStyle}>
+							<AccordionSummary
+								expandIcon={<ExpandMoreIcon />}
+								aria-controls="聯絡主揪"
+								sx={customStyle.accordionStyle}
+							>
+								聯絡主揪
+							</AccordionSummary>
+							<AccordionDetails sx={{ ...customStyle.paperStyle, p: 0 }}>
+								<Typography sx={customStyle.descStyle}>
+									主揪： {paymentData.organizer?.name}
+								</Typography>
+								<Typography sx={customStyle.descStyle}>
+									手機： {paymentData.organizer?.mobile}
+								</Typography>
+								<Typography sx={customStyle.descStyle}>
+									Email： {paymentData.organizer?.email}
+								</Typography>
+								<Typography sx={customStyle.descStyle}>
+									如果對於活動有任何問題,請聯繫主辦單位。
+								</Typography>
+							</AccordionDetails>
+						</Accordion>
+					</>}
 			</Box>
 		</PageLayout>
 	);
