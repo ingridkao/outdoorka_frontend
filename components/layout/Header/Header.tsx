@@ -72,7 +72,7 @@ function Header() {
 			</List>
 		</Box>
 	);
-	
+
 	useEffect(() => {
 		setContainer(
 			typeof window !== "undefined" ? window.document.body : undefined,
@@ -98,7 +98,6 @@ function Header() {
 						flexWrap: "wrap",
 					}}
 				>
-
 					{/* Mobile: 漢堡選單按鈕 */}
 					<IconButton
 						color="inherit"

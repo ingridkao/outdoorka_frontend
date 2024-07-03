@@ -22,11 +22,11 @@ export interface Activity {
 	activityStartTime: string;
 	activityEndTime: string;
 	activityNotice?: string;
-	
+
 	activityExpired?: boolean;
 	bookedCapacity?: number; // 參加人數
 	likers?: number;
-	
+
 	totalCapacity?: number; // 參加人數上限
 	likeCount?: number;
 	organizerId?: string;

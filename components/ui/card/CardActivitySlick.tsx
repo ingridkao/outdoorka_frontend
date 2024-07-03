@@ -22,7 +22,9 @@ import useCardTheme from "@/components/ui/card/useCardTheme";
  */
 function CardActivity({ activity }: { activity: ActivityState }) {
 	const cardStyle = useCardTheme();
-	const activityImageUrl = activity.activityImageUrls? activity.activityImageUrls[0]: ""	
+	const activityImageUrl = activity.activityImageUrls
+		? activity.activityImageUrls[0]
+		: "";
 
 	return (
 		<Paper
@@ -58,7 +60,7 @@ function CardActivity({ activity }: { activity: ActivityState }) {
 							sx={{
 								...cardStyle.chip,
 								height: "2.5rem",
-								width: { xs: 155, xl: 150},
+								width: { xs: 155, xl: 150 },
 								py: 0.5,
 							}}
 						>
@@ -81,7 +83,7 @@ function CardActivity({ activity }: { activity: ActivityState }) {
 
 								{/* 主揪名稱 */}
 								<Typography sx={cardStyle.chipOrganizerName}>
-								{activity.organizer?.name}
+									{activity.organizer?.name}
 								</Typography>
 							</Box>
 						</Box>

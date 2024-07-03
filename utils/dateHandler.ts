@@ -52,16 +52,20 @@ export const parseDetailDate = (startTime: string, endTime: string) => {
  * @param  startTime
  * @param  endTime
  */
-export const parstTicketStatus = (startTime: string, endTime: string, tickets:any) => {
-	const status = tickets && tickets[0] ? tickets[0]['ticketStatus']: 0;
-	if(status == 0) return 0
+export const parstTicketStatus = (
+	startTime: string,
+	endTime: string,
+	tickets: any,
+) => {
+	const status = tickets && tickets[0] ? tickets[0]["ticketStatus"] : 0;
+	if (status == 0) return 0;
 
 	const now = dayjs();
 	const startDate = dayjs(startTime);
 	const endDate = dayjs(endTime);
-	if (now.isAfter(endDate, "date")) return 1
-	if (now.isAfter(startDate, "date")) return 0
-	return 0
+	if (now.isAfter(endDate, "date")) return 1;
+	if (now.isAfter(startDate, "date")) return 0;
+	return 0;
 };
 
 /**
@@ -70,12 +74,12 @@ export const parstTicketStatus = (startTime: string, endTime: string, tickets:an
  * @param  asc
  */
 export const sortTimeData = (dataArray: any, key: string, asc: boolean) => {
-	const newDataArray = dataArray.sort((a:any, b:any) => {
-		if(asc){
+	const newDataArray = dataArray.sort((a: any, b: any) => {
+		if (asc) {
 			return dayjs(a[key]).isAfter(dayjs(b[key])) ? 1 : -1;
-		}else{
+		} else {
 			return dayjs(a[key]).isAfter(dayjs(b[key])) ? -1 : 1;
 		}
 	});
-	return newDataArray
+	return newDataArray;
 };

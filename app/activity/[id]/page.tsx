@@ -190,11 +190,11 @@ function Activity() {
 		});
 	};
 
-	const toggleFavorite = async() => {
+	const toggleFavorite = async () => {
 		try {
-			if(mockData.data.isLiked){
+			if (mockData.data.isLiked) {
 				await favorite.removeFavorite(mockData.data._id);
-			}else{
+			} else {
 				await favorite.addFavorite(mockData.data._id);
 			}
 			// TODO reload isLike info
@@ -240,7 +240,6 @@ function Activity() {
 							backgroundImage: 'url("/images/sample_one.png")',
 							mr: 3,
 							borderRadius: "12px",
-							maxWidth: "800px"
 						}}
 					/>
 					<Box sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
@@ -261,8 +260,8 @@ function Activity() {
 						/>
 					</Box>
 				</Box>
-				<Box display="flex">
-					<Box maxWidth={800}>
+				<Box display="flex" justifyContent="space-between">
+					<Box flex={2}>
 						<Paper
 							elevation={0}
 							sx={{

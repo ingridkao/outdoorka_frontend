@@ -147,12 +147,7 @@ function LoginAction() {
 						<Chip
 							onClick={handleProfileMenuClick}
 							className="chipAvatar"
-							avatar={
-								<Avatar
-									alt={authUser.name}
-									src={authUser.photo}
-								/>
-							}
+							avatar={<Avatar alt={authUser.name} src={authUser.photo} />}
 							label={
 								<Typography
 									color="#22252A"

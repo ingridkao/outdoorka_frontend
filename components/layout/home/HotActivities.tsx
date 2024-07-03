@@ -31,9 +31,9 @@ function HotActivities() {
 	useEffect(() => {
 		loadData();
 	}, []);
-	const reload = (res:boolean) => {
-		if(res) loadData();
-	}
+	const reload = (res: boolean) => {
+		if (res) loadData();
+	};
 
 	if (error) return <div>Failed to load</div>;
 	if (activityList.length === 0) return <Loading />;
@@ -49,15 +49,12 @@ function HotActivities() {
 			<TitleSection title="熱門活動" />
 
 			<Grid container spacing={2}>
-				{activityList && activityList.map((value:ActivityState) => (
-					<Grid item xs={12} sm={6} md={4} lg={3} key={value._id}>
-						<CardActivity
-							home={true}
-							activity={value}
-							onLoad={reload}
-						/>
-					</Grid>
-				))}
+				{activityList &&
+					activityList.map((value: ActivityState) => (
+						<Grid item xs={12} sm={6} md={4} lg={3} key={value._id}>
+							<CardActivity home={true} activity={value} onLoad={reload} />
+						</Grid>
+					))}
 
 				<Grid item xs={12} textAlign="center" mt={4}>
 					<Button

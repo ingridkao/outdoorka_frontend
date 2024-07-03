@@ -44,5 +44,5 @@ export interface TicketInfoState extends Activity {
 	ticketStatus: number;
 	ticketNote: string;
 	tickets: TicketsState[];
-	ratingList?: {ticketId:string}[]
+	ratingList?: { ticketId: string }[];
 }
