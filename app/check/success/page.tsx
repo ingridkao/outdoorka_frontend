@@ -1,7 +1,6 @@
 import React from "react";
 import {
 	Accordion,
-	AccordionActions,
 	AccordionSummary,
 	AccordionDetails,
 	Box,
@@ -11,7 +10,7 @@ import {
 	Typography,
 } from "@mui/material";
 import StepperLayout from "@/components/layout/PaymentLayout/StepperLayout";
-import SuccessIcon from "@/components/Icon/successIcon";
+import SuccessIcon from "@/components/icon/successIcon";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 const mockData = {
