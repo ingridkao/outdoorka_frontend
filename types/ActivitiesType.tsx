@@ -25,10 +25,9 @@ export interface Activity {
 	
 	activityExpired?: boolean;
 	bookedCapacity?: number; // 參加人數
-	likers?: number;
-	
 	totalCapacity?: number; // 參加人數上限
 	likeCount?: number;
+	likers?: number; // TODO 待後端移除
 	organizerId?: string;
 	organizerRating?: number;
 	organzierName?: string;
@@ -84,7 +83,6 @@ export interface ActivityState extends Activity {
 	_id?: string;
 	activityImageUrls: string[];
 	organizer?: OrganizerState;
-	likers?: number;
 	popularity?: number;
 
 	isLike?: boolean;

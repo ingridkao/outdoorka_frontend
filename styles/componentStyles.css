@@ -26,6 +26,9 @@
 	border-radius: 48px;
 	background-color: #eff0f7;
 }
+.chipAvatar.og {
+	background-color: #22252A;
+}
 .chipAvatar .MuiChip-avatar {
 	width: 40px;
 	height: 40px;

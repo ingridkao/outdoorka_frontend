@@ -140,16 +140,11 @@ function CardActivity(props: {
 					</Grid>
 
 					{/* 愛心數 */}
-					<Grid item>
-						<Chip
-							sx={cardStyle.chip}
-							label={
-								<FavoriteAction 
-									home={home} 
-									activity={activity}
-									onLoad={reload}
-								/>
-							}
+					<Grid item >
+						<FavoriteAction 
+							home={home} 
+							activity={activity}
+							onLoad={reload}
 						/>
 					</Grid>
 				</Grid>
