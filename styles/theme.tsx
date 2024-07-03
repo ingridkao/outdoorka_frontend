@@ -35,7 +35,7 @@ const lightTheme = createTheme({
 		text: {
 			primary: "#22262C",
 			secondary: "#B1AAA5",
-		}
+		},
 	},
 	breakpoints: {
 		values: {

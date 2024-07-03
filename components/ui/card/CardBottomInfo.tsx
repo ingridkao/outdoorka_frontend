@@ -12,7 +12,13 @@ import { PaymentState } from "@/types/TicketType";
  * 卡片:標題地點時間資訊
  * @param info 資料
  */
-function CardBottomInfo({ row, info }: { row: number; info: ActivityState | PaymentState }) {
+function CardBottomInfo({
+	row,
+	info,
+}: {
+	row: number;
+	info: ActivityState | PaymentState;
+}) {
 	const cardStyle = useCardTheme();
 	return (
 		<Box sx={{ py: 3, px: 4 }}>
@@ -34,9 +40,11 @@ function CardBottomInfo({ row, info }: { row: number; info: ActivityState | Paym
 				variant="h6"
 				sx={cardStyle.infoTitle}
 				className={
-					row === 3 ? "triplex-ellipsis" : 
-					row === 2 ? "multiline-ellipsis" :
-					"singleline-ellipsis"
+					row === 3
+						? "triplex-ellipsis"
+						: row === 2
+							? "multiline-ellipsis"
+							: "singleline-ellipsis"
 				}
 			>
 				{info.subtitle || info.title}

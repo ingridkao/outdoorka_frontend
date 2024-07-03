@@ -15,10 +15,10 @@ const ticket = (axios: any, event: any) => ({
 		return axios.get(`${event}/suspense`);
 	},
 	userReview(id: string, rating: number = 5, comment: string = "") {
-		if (!(rating && comment)) return
+		if (!(rating && comment)) return;
 		return axios.post(`${event}/${id}/rating`, {
 			rating,
-			comment
+			comment,
 		});
 	},
 });

@@ -37,7 +37,7 @@ function OrganizerActivityList() {
 	useEffect(() => {
 		async function loadData() {
 			try {
-				setDataLoad(true)
+				setDataLoad(true);
 				const responseBody = await organizer.getActivity({
 					status: tagValue,
 					sort: sortValue ? "asc" : "desc",
@@ -52,7 +52,7 @@ function OrganizerActivityList() {
 					setErrorMsg(String(error?.message));
 				}
 			}
-			setDataLoad(false)
+			setDataLoad(false);
 		}
 		loadData();
 	}, [tagValue, sortValue]);
@@ -78,28 +78,29 @@ function OrganizerActivityList() {
 
 			{errorMsg && <Alert severity="error">{errorMsg}</Alert>}
 
-			{dataLoad 
-				? <ListLoading/>
-				: activityList.length === 0 
-					? <NoData target="活動" />
-					: <Grid container spacing={2}>
-						<Grid item xs={11}></Grid>
-						<Grid item xs={1}>
-							<IconButton aria-label="排序" onClick={handleSort}>
-								<SortIcon />
-							</IconButton>
-						</Grid>
-						{activityList?.map((value) => (
-							<Grid item xs={12} sm={6} md={4} key={value._id}>
-								<CardOrganizerActivity
-									isFinish={tagValue === 2}
-									isPublish={tagValue}
-									activity={value}
-								/>
-							</Grid>
-						))}
+			{dataLoad ? (
+				<ListLoading />
+			) : activityList.length === 0 ? (
+				<NoData target="活動" />
+			) : (
+				<Grid container spacing={2}>
+					<Grid item xs={11}></Grid>
+					<Grid item xs={1}>
+						<IconButton aria-label="排序" onClick={handleSort}>
+							<SortIcon />
+						</IconButton>
 					</Grid>
-			}
+					{activityList?.map((value) => (
+						<Grid item xs={12} sm={6} md={4} key={value._id}>
+							<CardOrganizerActivity
+								isFinish={tagValue === 2}
+								isPublish={tagValue}
+								activity={value}
+							/>
+						</Grid>
+					))}
+				</Grid>
+			)}
 		</OrganizerLayout>
 	);
 }

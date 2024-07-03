@@ -15,7 +15,7 @@ import {
 	DialogActions,
 	FormControl,
 	TextField,
-	Rating
+	Rating,
 } from "@mui/material";
 import useCustomTheme from "@/components/ui/shared/useCustomTheme";
 
@@ -68,14 +68,14 @@ function TicketModifyDialog(props: {
 		if (!target) return;
 		try {
 			setLoad(true);
-			let responseBody = null
+			let responseBody = null;
 			if (type === "evaluate") {
 				responseBody = await ticket.userReview(
 					target.ticketId,
 					ratingValue,
-					eventEvaluate
+					eventEvaluate,
 				);
-			}else{
+			} else {
 				responseBody = await ticket.updateTicketInfo(
 					target.ticketId,
 					ticketEmail,
@@ -103,20 +103,22 @@ function TicketModifyDialog(props: {
 	};
 
 	return (
-		<Dialog 
-			onClose={() => onClose(false)} 
-			open={open} 
-			fullWidth={type !== "email"} 
+		<Dialog
+			onClose={() => onClose(false)}
+			open={open}
+			fullWidth={type !== "email"}
 			maxWidth="sm"
 		>
 			<DialogTitle>{displayTitle[type] || ""}</DialogTitle>
 			<DialogContent>
-				<Box sx={{ 
-					px: 5, 
-					py: 3, 
-					textAlign: type === "evaluate"?"left":"center"
-				}}>
-					{type === "note" && 
+				<Box
+					sx={{
+						px: 5,
+						py: 3,
+						textAlign: type === "evaluate" ? "left" : "center",
+					}}
+				>
+					{type === "note" && (
 						<FormControl fullWidth sx={{ m: 1 }}>
 							<TextField
 								required
@@ -128,75 +130,80 @@ function TicketModifyDialog(props: {
 								onChange={(e) => setTicketNote(e.target.value)}
 							/>
 						</FormControl>
-					}
+					)}
 
-					{type === "email" && <>
-						<Typography sx={customStyle.descStyle}>
-							票卷編號：{payment?._id}
-						</Typography>
-						<Typography sx={customStyle.descStyle}>
-							訂單編號：{target?.ticketId}
-						</Typography>
-						<FormControl fullWidth sx={{ m: 1 }}>
-							<TextField
-								required
-								type="email"
-								value={ticketEmail}
-								label="Email"
-								margin="normal"
-								InputLabelProps={{ shrink: true }}
-								onChange={(e) => setTicketEmail(e.target.value)}
-							/>
-						</FormControl>
-						<Typography sx={customStyle.descStyle}>
-							此步驟無法還原!請確認取票人email是否正確，
-							<br />
-							一旦分票後，票券即消失於票券夾
-						</Typography>
-					</>}
-
-					{type === "evaluate" && <>
-						{ payment && <>
-							<Typography variant="h3" sx={customStyle.h3TitleStyle}>
-								{payment.title}
-							</Typography>
-							<Typography variant="h2" sx={customStyle.h2Style}>
-								{payment.subtitle}
+					{type === "email" && (
+						<>
+							<Typography sx={customStyle.descStyle}>
+								票卷編號：{payment?._id}
 							</Typography>
 							<Typography sx={customStyle.descStyle}>
-								{parseDetailDate(
-									payment.activityStartTime,
-									payment.activityEndTime,
-								)}
+								訂單編號：{target?.ticketId}
 							</Typography>
-							<Typography sx={customStyle.descStyle}>
-								{payment.organizer?.name}
-							</Typography>
-						</>}
-						<FormControl fullWidth sx={{ mx:1 }}>
-							<Box sx={{ my: 3,textAlign: "center"}}>
-								<Rating
-									size="large"
-									value={ratingValue}
-									onChange={(event:any, newValue:number | null) => {
-										setRatingValue(newValue? newValue: 5);
-									}}
+							<FormControl fullWidth sx={{ m: 1 }}>
+								<TextField
+									required
+									type="email"
+									value={ticketEmail}
+									label="Email"
+									margin="normal"
+									InputLabelProps={{ shrink: true }}
+									onChange={(e) => setTicketEmail(e.target.value)}
 								/>
-							</Box>
-							<TextField
-								required
-								label="評論內容(限200字)"
-								variant="outlined"
-								margin="dense"
-								multiline
-								rows={4}
-								inputProps={{ maxLength: 200 }}
-								value={eventEvaluate}
-								onChange={(e) => setEventEvaluate(e.target.value)}
-							/>
-						</FormControl>
+							</FormControl>
+							<Typography sx={customStyle.descStyle}>
+								此步驟無法還原!請確認取票人email是否正確，
+								<br />
+								一旦分票後，票券即消失於票券夾
+							</Typography>
+						</>
+					)}
 
-					</>}
+					{type === "evaluate" && (
+						<>
+							{payment && (
+								<>
+									<Typography variant="h3" sx={customStyle.h3TitleStyle}>
+										{payment.title}
+									</Typography>
+									<Typography variant="h2" sx={customStyle.h2Style}>
+										{payment.subtitle}
+									</Typography>
+									<Typography sx={customStyle.descStyle}>
+										{parseDetailDate(
+											payment.activityStartTime,
+											payment.activityEndTime,
+										)}
+									</Typography>
+									<Typography sx={customStyle.descStyle}>
+										{payment.organizer?.name}
+									</Typography>
+								</>
+							)}
+							<FormControl fullWidth sx={{ mx: 1 }}>
+								<Box sx={{ my: 3, textAlign: "center" }}>
+									<Rating
+										size="large"
+										value={ratingValue}
+										onChange={(event: any, newValue: number | null) => {
+											setRatingValue(newValue ? newValue : 5);
+										}}
+									/>
+								</Box>
+								<TextField
+									required
+									label="評論內容(限200字)"
+									variant="outlined"
+									margin="dense"
+									multiline
+									rows={4}
+									inputProps={{ maxLength: 200 }}
+									value={eventEvaluate}
+									onChange={(e) => setEventEvaluate(e.target.value)}
+								/>
+							</FormControl>
+						</>
+					)}
 				</Box>
 
 				<Box sx={{ px: 5, mb: 0.5 }}>

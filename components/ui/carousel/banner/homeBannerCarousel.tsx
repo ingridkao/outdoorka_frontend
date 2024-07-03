@@ -20,25 +20,24 @@ function homeBannerCarousel() {
 	const originalImages = [
 		{
 			index: 1,
-			src: banner01
+			src: banner01,
 		},
 		{
 			index: 2,
-			src: banner02
+			src: banner02,
 		},
 		{
 			index: 3,
-			src: banner04
+			src: banner04,
 		},
 		{
 			index: 4,
-			src: banner05
+			src: banner05,
 		},
 	];
 	const [images, setImages] = useState([...originalImages, ...originalImages]);
 	const [index, setIndex] = useState(0);
 	const visibleCount = 5; // 一次顯示的元素數
-	const transitionTime = 5000;
 	const refIndex = useRef(index);
 
 	const nextImage = () => {
@@ -57,23 +56,8 @@ function homeBannerCarousel() {
 		refIndex.current = index; // 更新 ref 的當前值
 	}, [index]);
 
-	useEffect(() => {
-		const interval = setInterval(() => {
-			if (refIndex.current + 1 >= images.length / 2) {
-				// 如果接近原始圖片列表的結尾，再次複製圖片列表到尾部
-				setImages((prev) => [...prev, ...originalImages]);
-			}
-			setIndex(refIndex.current + 1);
-		}, transitionTime);
-
-		return () => clearInterval(interval);
-	}, [images.length]);
-
-	const middleIndex =
-		(index + Math.floor(visibleCount / 2)) % originalImages.length;
-
 	return (
-		<div
+		<Box
 			style={{
 				width: "100%",
 				height: "1010px",
@@ -94,12 +78,7 @@ function homeBannerCarousel() {
 			<Box mb={6}>
 				<img src="./images/banner_logo.png" alt="" />
 			</Box>
-			<Box
-				position="relative"
-				width="100%"
-				height="773px"
-				padding="2rem 0.5rem 5.75rem"
-			>
+			<Box>
 				<Button
 					variant="outlined"
 					onClick={prevImage}
@@ -116,15 +95,22 @@ function homeBannerCarousel() {
 				>
 					<ArrowBackIosNewIcon />
 				</Button>
+			</Box>
+			<Box
+				position="relative"
+				maxWidth="1280px"
+				height="773px"
+				padding="2rem 0.5rem 5.75rem"
+			>
 				<Box>
-					<div
+					<Box
 						style={{
 							overflow: "hidden",
-							width: "1492px",
+							width: "100%",
 							margin: "0 auto",
 						}}
 					>
-						<div
+						<Box
 							style={{
 								display: "flex",
 								transition: "transform 0.4s ease-in",
@@ -133,11 +119,11 @@ function homeBannerCarousel() {
 							}}
 						>
 							{images.map((img, i) => (
-								<div
+								<Box
 									key={`${img.index}-${i}`}
 									style={{
 										height: "725px",
-										minWidth: 
+										minWidth:
 											i % originalImages.length ===
 											(index + Math.floor(visibleCount / 2)) %
 												originalImages.length
@@ -148,9 +134,9 @@ function homeBannerCarousel() {
 										margin: "0 16px",
 									}}
 								>
-									<Image 
-										src={img.src} 
-										width={266} 
+									<Image
+										src={img.src}
+										width={266}
 										height={725}
 										alt={`Background ${i}`}
 										style={{
@@ -160,12 +146,13 @@ function homeBannerCarousel() {
 											borderRadius: "30px",
 										}}
 									/>
-								</div>
+								</Box>
 							))}
-						</div>
-					</div>
+						</Box>
+					</Box>
 				</Box>
-
+			</Box>
+			<Box>
 				<Button
 					variant="outlined"
 					onClick={nextImage}
@@ -183,7 +170,7 @@ function homeBannerCarousel() {
 					<ArrowForwardIosIcon />
 				</Button>
 			</Box>
-		</div>
+		</Box>
 	);
 }
 

@@ -22,7 +22,7 @@ export interface Activity {
 	activityStartTime: string;
 	activityEndTime: string;
 	activityNotice?: string;
-	
+
 	activityExpired?: boolean;
 	bookedCapacity?: number; // 參加人數
 	totalCapacity?: number; // 參加人數上限

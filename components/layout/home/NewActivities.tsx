@@ -87,7 +87,7 @@ function NewActivities() {
 			<TitleSection title="最新活動" />
 
 			<Slider {...SliderSettings}>
-				{activityList.map((value:ActivityState) => (
+				{activityList.map((value: ActivityState) => (
 					<Box
 						key={value._id}
 						component={NextLink}

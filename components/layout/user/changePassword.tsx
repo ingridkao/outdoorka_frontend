@@ -76,7 +76,7 @@ export default function ChangePassword({ userData }: Props) {
 				if (result.data && result.data._id) {
 					setSuccessMsg("密碼變更成功，請重新登入");
 					setTimeout(() => {
-						removeUserCookie()
+						removeUserCookie();
 						router.push("/login");
 					}, 2000); // 2秒後跳轉到登入頁
 				} else {

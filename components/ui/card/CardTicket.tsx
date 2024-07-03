@@ -14,10 +14,10 @@ import useCardTheme from "@/components/ui/card/useCardTheme";
 function CardTicket({ ticketItem }: { ticketItem: PaymentState }) {
 	const cardStyle = useCardTheme();
 	const ticketCountInfo = () => {
-		if (ticketItem.ticketAssign > 0) {			
-			const unUsed = ticketItem.ticketTotal - ticketItem.ticketAssign
+		if (ticketItem.ticketAssign > 0) {
+			const unUsed = ticketItem.ticketTotal - ticketItem.ticketAssign;
 			return `待分票 ${ticketItem.ticketAssign}/${unUsed}`;
-		}else{
+		} else {
 			return "分票完畢";
 		}
 	};
@@ -73,8 +73,6 @@ function CardTicket({ ticketItem }: { ticketItem: PaymentState }) {
 					</Grid>
 				</Grid>
 			</Box>
-
-			{/* 下方 區塊 */}
 			<CardBottomInfo row={2} info={ticketItem} />
 		</Paper>
 	);

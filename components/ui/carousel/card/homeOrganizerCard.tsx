@@ -109,7 +109,7 @@ function HomeOrganizerCard({ title, organizer, chips, image, star }: Props) {
 				>
 					{organizer}
 				</Typography>
-				<Stars star={star||5} />
+				<Stars star={star || 5} />
 			</Box>
 		</Box>
 	);

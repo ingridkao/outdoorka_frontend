@@ -49,9 +49,9 @@
 
 .multiline-ellipsis {
 	display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  overflow: hidden;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	overflow: hidden;
 	min-height: 4rem;
 }
 
@@ -66,8 +66,8 @@
 
 .triplex-ellipsis {
 	display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-  overflow: hidden;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 3;
+	overflow: hidden;
 	min-height: 5.75rem;
 }

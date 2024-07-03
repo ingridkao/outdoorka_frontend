@@ -4,11 +4,7 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { showLikes } from "@/features/user/likeSlice";
 import { ActivityState } from "@/types/ActivitiesType";
-import {
-	Chip,
-	Box,
-	Typography
-} from "@mui/material";
+import { Chip, Box, Typography } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import useCardTheme from "@/components/ui/card/useCardTheme";
@@ -21,10 +17,10 @@ import { getCookie, USER_T0KEN_COOKIE } from "@/utils/cookieHandler";
  * @param activity 單一活動資料
  */
 function FavoriteAction(props: {
-	home: boolean,
-	activity: ActivityState,
-	onLoad: (res:boolean) => void;
-}){
+	home: boolean;
+	activity: ActivityState;
+	onLoad: (res: boolean) => void;
+}) {
 	const { home, activity, onLoad } = props;
 	const { favorite } = axios;
 	const dispatch = useDispatch();
@@ -40,9 +36,7 @@ function FavoriteAction(props: {
 		if(getUserT0ken)setIsLogin(true)
 	}, []);
 
-	const toggleFavorite = async(
-		e: { stopPropagation: () => void }
-	) => {
+	const toggleFavorite = async (e: { stopPropagation: () => void }) => {
 		// 阻止事件冒泡，防止觸發卡片的點擊事件
 		e.stopPropagation()
 		// 未登入無法點擊
@@ -50,7 +44,7 @@ function FavoriteAction(props: {
 		try {
 			if(isLike){
 				await favorite.removeFavorite(activity._id);
-			}else{
+			} else {
 				await favorite.addFavorite(activity._id);
 			}
 			// 觸發資料更新
@@ -64,8 +58,8 @@ function FavoriteAction(props: {
 		} catch (error: any) {
 			console.error(String(error?.message));
 			// TODO 顯示錯誤提示
-		}		
-	}
+		}
+	};
 
 	return (
 		<Chip

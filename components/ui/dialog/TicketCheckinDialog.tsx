@@ -6,7 +6,7 @@ import { CheckinTicketInfoProp } from "@/types/TicketType";
 import axios from "@/plugins/api/axios";
 import { parseDetailDate } from "@/utils/dateHandler";
 import useCustomTheme from "@/components/ui/shared/useCustomTheme";
-import {TicketStatus} from "@/types/TicketType";
+import { TicketStatus } from "@/types/TicketType";
 import {
 	Box,
 	Typography,
