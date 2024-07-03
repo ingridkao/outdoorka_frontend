@@ -1,4 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
+import Image from "next/image";
+import banner01 from "@/public/images/banner01.jpeg";
+import banner02 from "@/public/images/banner02.jpeg";
+import banner04 from "@/public/images/banner04.jpeg";
+import banner05 from "@/public/images/banner05.jpeg";
 
 import {
 	Box,
@@ -15,29 +20,25 @@ function homeBannerCarousel() {
 	const originalImages = [
 		{
 			index: 1,
-			src: "./images/banner01.jpeg",
+			src: banner01
 		},
 		{
 			index: 2,
-			src: "./images/banner02.jpeg",
+			src: banner02
 		},
 		{
 			index: 3,
-			src: "./images/banner04.jpeg",
+			src: banner04
 		},
 		{
 			index: 4,
-			src: "./images/banner05.jpeg",
-		},
-		{
-			index: 5,
-			src: "./images/banner01.jpeg",
+			src: banner05
 		},
 	];
 	const [images, setImages] = useState([...originalImages, ...originalImages]);
 	const [index, setIndex] = useState(0);
 	const visibleCount = 5; // 一次顯示的元素數
-	const transitionTime = 3000;
+	const transitionTime = 5000;
 	const refIndex = useRef(index);
 
 	const nextImage = () => {
@@ -135,21 +136,22 @@ function homeBannerCarousel() {
 								<div
 									key={`${img.index}-${i}`}
 									style={{
-										minWidth: "calc(20% - 32px)",
 										height: "725px",
-										transform:
+										minWidth: 
 											i % originalImages.length ===
 											(index + Math.floor(visibleCount / 2)) %
 												originalImages.length
-												? "scaleX(1.1) scaleY(1)" // 宽度放大到两倍，高度保持不变
-												: "scaleX(1) scaleY(1)",
-										transition: "scale 0.2s linear",
+												? "calc(30% - 16px)" // 宽度放大到两倍，高度保持不变
+												: "15%",
+										transition: "min-width 1.5s linear",
 										position: "relative",
 										margin: "0 16px",
 									}}
 								>
-									<img
-										src={img.src}
+									<Image 
+										src={img.src} 
+										width={266} 
+										height={725}
 										alt={`Background ${i}`}
 										style={{
 											width: "100%",

@@ -1,11 +1,20 @@
 "use client";
+
 import { ChangeEvent, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import NextLink from "next/link";
+import { LoginOrganizerForm } from "@/types";
+
 import { loginOrganizer } from "@/features/organizer/ogAuthSlice";
 import { EMAIL_REGEX, PWD_REGEX } from "@/utils/regexHandler";
-import { removeCookie, getCookie, setCookie } from "@/utils/cookieHandler";
+import {
+	OG_TOK0N_COOKIE,
+	OG_ACCOUNT_COOKIE,
+	removeCookie,
+	getCookie,
+	setCookie,
+} from "@/utils/cookieHandler";
 
 import {
 	Grid,
@@ -20,28 +29,23 @@ import {
 	Alert,
 	Fade,
 } from "@mui/material";
-import { LoginOrganizerForm } from "@/types/AuthType";
-
-const OUTDOORKA_OG_ACC_COOKIE = "OUTDOORKA_OG_ACC";
 
 export default function Login() {
 	const router = useRouter();
 	const dispatch = useDispatch();
-	// const token = useSelector((state: any) => state.auth.token);
-
 	const [loginForm, setLoginForm] = useState<LoginOrganizerForm>({
 		email: "",
 		password: "",
 		remember: true,
 	});
-	const [validAccount, setValidAccount] = useState("");
-	const [validPwd, setValidPwd] = useState("");
-	const [errorMsg, setErrorMsg] = useState("");
-	const [successMsg, setSuccessMsg] = useState("");
 
 	useEffect(() => {
-		const getAcc = getCookie(OUTDOORKA_OG_ACC_COOKIE);
-		if (getAcc) {
+		const getOgToken = getCookie(OG_TOK0N_COOKIE);
+		const getAcc = getCookie(OG_ACCOUNT_COOKIE);
+
+		if (getOgToken) {
+			router.push("/organizer/activity");
+		} else if (getAcc) {
 			setLoginForm({
 				email: getAcc,
 				password: "",
@@ -50,6 +54,10 @@ export default function Login() {
 		}
 	}, []);
 
+	const [validAccount, setValidAccount] = useState("");
+	const [validPwd, setValidPwd] = useState("");
+	const [errorMsg, setErrorMsg] = useState("");
+	const [successMsg, setSuccessMsg] = useState("");
 	const handleValidate = (name: string, value: string) => {
 		if (name === "email") {
 			if (value === "") {
@@ -113,14 +121,14 @@ export default function Login() {
 				setSuccessMsg('登入成功，即將跳轉至"活動管理"頁面');
 
 				if (remember) {
-					setCookie(OUTDOORKA_OG_ACC_COOKIE, email, 1);
+					setCookie(OG_ACCOUNT_COOKIE, email, 30);
 				} else {
-					removeCookie(OUTDOORKA_OG_ACC_COOKIE);
+					removeCookie(OG_ACCOUNT_COOKIE);
 				}
 
 				setTimeout(() => {
-					router.push("/organizer/activity-create");
-				}, 1000); // 1秒後跳轉
+					router.push("/organizer/activity");
+				}, 300); // 後跳轉
 			} else if (res.error.message) {
 				setErrorMsg(res.error.message);
 			}
@@ -239,7 +247,7 @@ export default function Login() {
 									/>
 									<MuiLink
 										component={NextLink}
-										href="/forget"
+										href="/organizer/forget"
 										underline="always"
 									>
 										忘記密碼?

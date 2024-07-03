@@ -1,6 +1,5 @@
 "use client";
 
-import NextLink from "next/link";
 import PageLayout from "@/components/layout/MainLayout/PageLayout";
 import Loading from "@/components/ui/loading/loading";
 import CardActivity from "@/components/ui/card/CardActivity";
@@ -33,7 +32,6 @@ import {
 } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 const FilteredBox = styled(Paper)(({ theme }) => ({
@@ -63,20 +61,22 @@ function Activities() {
 	const [activityList, setActivityList] = useState<ActivityState[]>([]);
 	const [error, setError] = useState("");
 
-	useEffect(() => {
-		async function loadData() {
-			try {
-				const responseBody = await activity.getActivitiesList();
-				if (responseBody && responseBody.data) {
-					setActivityList(responseBody.data);
-				}
-			} catch (error) {
-				setError("Failed to fetch data: " + String(error));
+	async function loadData() {
+		try {
+			const responseBody = await activity.getActivitiesList();
+			if (responseBody && responseBody.data) {
+				setActivityList(responseBody.data);
 			}
+		} catch (error) {
+			setError("Failed to fetch data: " + String(error));
 		}
+	}
+	useEffect(() => {
 		loadData();
 	}, []);
-
+	const reload = (res:boolean) => {
+		if(res) loadData();
+	}
 	return (
 		<PageLayout>
 			<Grid container sx={{width:"100%",m:"auto", gap:5}}>
@@ -324,25 +324,13 @@ function Activities() {
 					<Grid container spacing={3} sx={{ mt: 3, width: "100%" }}>
 						{activityList.length === 0 && <Loading />}
 						{error && <div>Failed to load</div>}
-						{activityList?.map((value: any) => (
+						{activityList && activityList.map((value:ActivityState) => (
 							<Grid item xs={12} sm={6} lg={4} key={value._id}>
-								<Box component={NextLink} href={`/activity/${value._id}`}>
-									<CardActivity
-										home={false}
-										activity={{
-											title: value.subtitle,
-											location: `${value.region} ${value.city}`,
-											startTime: value.activityStartTime,
-											endTime: value.activityEndTime,
-											photo: value.activityImageUrls[0],
-											avatar: "", // TODO: API response data 未回傳
-											name: value.organzierName,
-											rating: value.organizerRating,
-											capacity: value.bookedCapacity,
-											likers: value.likers,
-										}}
-									/>
-								</Box>
+								<CardActivity
+									home={false}
+									activity={value}
+									onLoad={reload}
+								/>
 							</Grid>
 						))}
 					</Grid>

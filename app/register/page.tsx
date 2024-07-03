@@ -30,10 +30,10 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 
 export default function Register() {
 	const router = useRouter();
-
-	const { profile: authUser } = useSelector((x: RootState) => x.auth);
+	const { profile: authUser } = useSelector((state: RootState) => state.auth);
 	useEffect(() => {
 		if (authUser) {
+			// 已登入導轉到首頁
 			router.push("/");
 		}
 	}, [authUser, router]);

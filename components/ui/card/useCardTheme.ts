@@ -4,18 +4,18 @@ import { useTheme } from "@mui/material/styles";
 export default function useCardTheme() {
 	const theme = useTheme();
 	return {
-		container:{
+		container: {
 			width: "100%",
 			maxWidth: "29rem",
 			m: "auto",
 			borderRadius: "1.5rem",
-			backgroundColor: theme.palette.background.default
+			backgroundColor: theme.palette.background.default,
 		},
-		topInfoWrapper:{
+		topInfoWrapperSmall: {
 			position: "relative",
-			Height: 244
+			height: 181,
 		},
-		topBg:{
+		topBg: {
 			position: "relative",
 			objectFit: "cover",
 			borderTopLeftRadius: "1.5rem",
@@ -43,26 +43,26 @@ export default function useCardTheme() {
 		topInfoTopMainRow: {
 			bottom: 0,
 			columnGap: 1,
-			alignItems:"center",
+			alignItems: "flex-end",
 		},
 		chip: {
 			display: "inline-flex",
 			alignItems: "center",
-			height: 36,
-			borderRadius: 36,
+			height: "2.25rem",
+			borderRadius: "2.25rem",
 			px: 0.25,
 			py: 0,
 			fontSize: "1rem",
 			border: "1px solid rgba(255, 255, 255, .8)",
 			backgroundColor: "rgba(255, 255, 255, .15)",
 			backdropFilter: "invert(25%)", //毛玻璃效果
-			color: theme.palette.background.default
+			color: theme.palette.background.default,
 		},
 		chipIcon: {
 			mr: 1,
 			width: "1.5rem",
 			height: "1.5rem",
-			color: theme.palette.background.default
+			color: theme.palette.background.default,
 		},
 		chipText: {
 			textAlign: "right",
@@ -75,23 +75,24 @@ export default function useCardTheme() {
 			overflow: "hidden",
 			textOverflow: "ellipsis",
 			whiteSpace: "nowrap",
-			maxWidth: "7.5em",
+			maxWidth: "6rem",
 			fontSize: "0.875rem",
 			fontWeight: "400",
-			lineHeight: 1
+			lineHeight: 1,
 		},
 		infoRow: {
 			width: "100%",
 			display: "flex",
 			alignItems: "center",
 			letterSpacing: "0.25px",
-			mb:1,
+			mb: 1,
 			color: theme.palette.text.secondary,
 		},
 		infoTitle: {
-			marginTop: "1rem",
+			mt: 1,
 			fontWeight: "700",
-			lineHeight: "2.25rem",
-		}
+			lineHeight: 1.5,
+			fontSize: "1.25rem",
+		},
 	};
 }

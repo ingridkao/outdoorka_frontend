@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import NextLink from "next/link";
 import Slider from "react-slick";
 import { Box } from "@mui/material";
 import TitleSection from "@/components/layout/home/TitleSection";
@@ -78,7 +79,7 @@ function NewActivities() {
 						"linear-gradient(180deg, rgba(196, 221, 255, 0.18) 0%, #C4DDFF 100%)",
 					borderRadius: "48px",
 					px: 0,
-					py: 45,
+					py: 44,
 					pointerEvents: "none",
 				},
 			}}
@@ -86,28 +87,17 @@ function NewActivities() {
 			<TitleSection title="最新活動" />
 
 			<Slider {...SliderSettings}>
-				{activityList.map((value) => (
+				{activityList.map((value:ActivityState) => (
 					<Box
 						key={value._id}
+						component={NextLink}
+						href={`/activity/${value._id}`}
 						sx={{
 							px: 1.5,
-							py: 0.5
+							py: 0.5,
 						}}
 					>
-						<CardActivitySlick
-							activity={{
-								title: value.subtitle,
-								location: `${value.region} ${value.city}`,
-								startTime: value.activityStartTime,
-								endTime: value.activityEndTime,
-								photo: value.activityImageUrls[0],
-								avatar: value.organizer.photo,
-								name: value.organizer.name,
-								rating: value.organizer.rating,
-								capacity: value.bookedCapacity,
-								likers: value.likers
-							}}
-						/>
+						<CardActivitySlick activity={value} />
 					</Box>
 				))}
 			</Slider>

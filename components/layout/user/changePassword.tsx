@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "@/plugins/api/axios";
-import { removeCookie } from "@/utils/cookieHandler";
+import { removeUserCookie } from "@/utils/cookieHandler";
 import {
 	Box,
 	Button,
@@ -49,8 +49,6 @@ export default function ChangePassword({ userData }: Props) {
 			confirmPassword: data.get("confirm-password"),
 		};
 
-		console.log(postData);
-
 		if (!postData || !postData.password || !postData.newPassword) {
 			setErrorMsg("請輸入密碼");
 			return;
@@ -75,12 +73,10 @@ export default function ChangePassword({ userData }: Props) {
 		user
 			.updateUserPassword(userData._id, postData)
 			.then((result: any) => {
-				console.log(result);
 				if (result.data && result.data._id) {
 					setSuccessMsg("密碼變更成功，請重新登入");
 					setTimeout(() => {
-						removeCookie("OUTDOORKA_TOKEN");
-						removeCookie("OUTDOORKA_USER");
+						removeUserCookie()
 						router.push("/login");
 					}, 2000); // 2秒後跳轉到登入頁
 				} else {

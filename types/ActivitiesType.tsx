@@ -12,18 +12,27 @@ export interface RootState {
 	ogAuth: OgAuthState;
 }
 
-export type ActivityProp = {
+export interface Activity {
 	title: string;
-	location: string;
-	startTime: string;
-	endTime: string;
-	photo: string;
-	avatar: string;
-	name: string;
-	rating: number;
-	capacity: number;
-	likers: number;
-};
+	subtitle?: string;
+	region: string;
+	city: string;
+	price?: number;
+	activityImageUrl: string;
+	activityStartTime: string;
+	activityEndTime: string;
+	activityNotice?: string;
+	
+	activityExpired?: boolean;
+	bookedCapacity?: number; // 參加人數
+	likers?: number;
+	
+	totalCapacity?: number; // 參加人數上限
+	likeCount?: number;
+	organizerId?: string;
+	organizerRating?: number;
+	organzierName?: string;
+}
 
 export interface IActivityLink {
 	name: string;
@@ -62,37 +71,21 @@ export interface OrganizerState {
 	rating: number;
 }
 
-export interface OrganizerActivityState {
+export interface OrganizerActivityState extends Activity {
 	_id: string;
-	title: string;
-	subtitle: string;
-	price: number;
 	totalCapacity: number; // 活動人數
-	bookedCapacity: number; // 參加人數
-	region: string;
-	city: string;
 	address: string;
 	location: string; // 集合地點
 	activityImageUrls: string[];
 	isPublish: boolean;
-	activityStartTime: string;
-	activityEndTime: string;
 }
 
-export interface ActivityState {
-	_id: string;
-	title: string;
-	subtitle: string;
-	activityStartTime: string;
-	activityEndTime: string;
+export interface ActivityState extends Activity {
+	_id?: string;
 	activityImageUrls: string[];
-
-	price?: number;
-
 	organizer?: OrganizerState;
-	region?: string;
-	city?: string;
 	likers?: number;
-	bookedCapacity?: number;
 	popularity?: number;
+
+	isLike?: boolean;
 }

@@ -1,9 +1,8 @@
 "use client";
 
 import { useState, ChangeEvent } from "react";
-// import { RegisterForm } from "@/types/AuthType";
 import NextLink from "next/link";
-// import { logoutUser } from "@/features/user/authSlice";
+import { useRouter } from "next/navigation";
 import {
 	EMAIL_REGEX,
 	NAME_REGEX,
@@ -24,6 +23,7 @@ import {
 } from "@mui/material";
 
 export default function Register() {
+	const router = useRouter();
 	const { auth } = axios;
 	// const dispatch = useDispatch();
 
@@ -128,16 +128,23 @@ export default function Register() {
 				password,
 			});
 
-			if (result.error && result.status == 409) {
-				setErrorMsg("此帳號已被註冊過");
-			} else if (result.error && result.status == 500) {
-				setErrorMsg("註冊失敗");
-			} else if (result.data) {
+			if (result.data) {
 				// setSuccessMsg(result.message);
 				setSuccessMsg("註冊成功");
+
+				setTimeout(() => {
+					router.push("/organizer/login");
+				}, 300);
+			} else {
+				setErrorMsg("註冊失敗");
 			}
-		} catch (err) {
-			console.error(err);
+		} catch (err: any) {
+			console.error(err.status, err.message);
+			if (err.status === "409") {
+				setErrorMsg("此帳號已被註冊過");
+			} else {
+				setErrorMsg("註冊失敗");
+			}
 		}
 	};
 

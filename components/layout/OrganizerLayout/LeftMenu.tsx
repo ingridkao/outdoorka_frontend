@@ -19,14 +19,14 @@ const linkTitles = [
 	{ title: "建立活動", link: "/organizer/activity-create/" },
 	{ title: "活動列表", link: "/organizer/activity/" },
 	{ title: "過往活動", link: "/organizer/activity/?type=2" },
-	{ title: "主揪管理", link: "#" },
+	{ title: "主揪管理", link: "/organizer/profile" },
 ];
 
 function LeftMenu() {
 	const pathname = usePathname() || "";
-	const searchParams = useSearchParams()
-	const type = searchParams?.get("type")
-	
+	const searchParams = useSearchParams();
+	const type = searchParams?.get("type");
+
 	return (
 		<Box>
 			<nav aria-label="main mailbox folders">
@@ -70,7 +70,7 @@ function LeftMenu() {
 						</ListItem>
 					</Link>
 
-					<Link href={linkTitles[2].link}>
+					<Link href={linkTitles[3].link}>
 						<ListItem disablePadding>
 							<ListItemButton
 								selected={pathname.startsWith(linkTitles[3].link)}
@@ -90,7 +90,7 @@ function LeftMenu() {
 
 function WrappedLeftMenu() {
 	return (
-		<Suspense fallback={<Loading/>}>
+		<Suspense fallback={<Loading />}>
 			<LeftMenu />
 		</Suspense>
 	);

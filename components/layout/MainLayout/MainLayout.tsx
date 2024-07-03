@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { Box, Container } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import Header from "@/components/layout/Header/Header";
