@@ -4,6 +4,7 @@ import { useState, useEffect, MouseEvent, SyntheticEvent } from "react";
 import { useDispatch } from "react-redux";
 import NextLink from "next/link";
 import { useRouter } from "next/navigation";
+import axios from "@/plugins/api/axios";
 
 import { logoutUser } from "@/features/user/authSlice";
 import {
@@ -41,14 +42,31 @@ function LoginAction() {
 	const [dialogOpen, setDialogOpen] = useState(false);
 	const open = Boolean(anchorEl);
 
+	const [suspenseCount, setSuspenseCount] = useState<number>(0);
+	const [favoritesCount, setFavoritesCount] = useState<number>(0);
+	const { ticket, favorite } = axios;
+	async function loadData() {
+		try {
+			const [res1, res2] = await Promise.all([ ticket.getSuspenseTicketInfo(), favorite.getFavorites()])
+			if (res1 && res1.data) {
+				const unusedCount = res1.data.reduce((acc: number, item: any) => acc += (item.unused > 0) ?1: 0, 0);				
+				setSuspenseCount(unusedCount);
+			}
+			if (res2 && res2.data) {
+				setFavoritesCount(res2.data.length)
+			}
+		} catch (error) {
+			console.error("Failed to fetch data: " + String(error));
+		}
+	}
 	useEffect(() => {
 		setIsClient(true);
 		if (isClient) return;
 		const getUserT0ken = getCookie(USER_T0KEN_COOKIE);
-
 		if (getUserT0ken) {
 			const profile = getProfileCookieObj();
 			setAuthUser(profile);
+			loadData();
 		} else {
 			router.push("/");
 		}
@@ -170,7 +188,7 @@ function LoginAction() {
 							}}
 						/>
 						<Button component={NextLink} href="/ticket" color="inherit">
-							<Badge badgeContent={4} color="secondary">
+							<Badge badgeContent={suspenseCount} color="secondary">
 								<TicketIcon
 									sx={{ width: 24, height: 24 }}
 									fillcolor="#4a4642"
@@ -184,7 +202,7 @@ function LoginAction() {
 							color="inherit"
 							sx={{ display: { xs: "none", md: "inline-flex" } }}
 						>
-							<Badge badgeContent={4} color="secondary">
+							<Badge badgeContent={favoritesCount} color="secondary">
 								<HeartIcon sx={{ width: 24, height: 24 }} fillcolor="#4a4642" />
 							</Badge>
 						</Button>
