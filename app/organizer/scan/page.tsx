@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect, ChangeEvent } from "react";
-import { Html5QrcodeScanner} from "html5-qrcode";
+import { useState, useEffect, ChangeEvent, Suspense } from "react";
+import { Html5QrcodeScanner } from "html5-qrcode";
+import { useSearchParams } from "next/navigation";
 
 import axios from "@/plugins/api/axios";
 
@@ -10,7 +11,9 @@ import BackBtn from "@/components/ui/shared/BackBtn";
 import TicketCheckinDialog from "@/components/ui/dialog/TicketCheckinDialog";
 import useCustomTheme from "@/components/ui/shared/useCustomTheme";
 
-export default function Scan() {
+function ScanPageContent() {
+	const searchParams = useSearchParams();
+	const getId = searchParams?.get("id") ?? "";
 	const customStyle = useCustomTheme();
 	const { organizerTicket } = axios;
 
@@ -20,49 +23,55 @@ export default function Scan() {
 	const [resSucesee, setResSucesee] = useState(null);
 	const [dialogOpen, setDialogOpen] = useState(false);
 
-	let isRes = false
-	useEffect(()=>{
-		const scanner = new Html5QrcodeScanner(
-			"reader",
-			{ fps: 10 },
-			false
-		);
-		const onScanSuccess = (result:any) => {
+	let isRes = false;
+	useEffect(() => {
+		const scanner = new Html5QrcodeScanner("reader", { fps: 10 }, false);
+		const onScanSuccess = (result: any) => {
 			setScanResult(result);
 			// 阻止scanner一直讀取進入無限循環
-			if(isRes) return
-			fetchTicket(result)
-			scanner.clear().then(res => {
-				console.log(res);
-				// the UI should be cleared here
-			}).catch(error => {
-				console.log(error);
-				// Could not stop scanning for reasons specified in `error`.
-				// This conditions should ideally not happen.
-			});
+			if (isRes) return;
+			fetchTicket(result);
+			scanner
+				.clear()
+				.then((res) => {
+					console.log(res);
+					// the UI should be cleared here
+				})
+				.catch((error) => {
+					console.log(error);
+					// Could not stop scanning for reasons specified in `error`.
+					// This conditions should ideally not happen.
+				});
 		};
-		if(scanner){
-			scanner.render(onScanSuccess);
+		if (scanner) {
+			scanner.render(onScanSuccess, (error) => {
+				console.error("scanner: ", error);
+			});
 		}
-	},[]);
+
+		// 如果有 query id 就直接帶入
+		if (getId) {
+			setTicketId(getId);
+		}
+	}, []);
 
 	const fetchTicket = async (id: string) => {
-		if(resSucesee){
-			setDialogOpen(true)
-		}else if (id === "") {
+		if (resSucesee) {
+			setDialogOpen(true);
+		} else if (id === "") {
 			setErrorMsg("請填寫票卷編號");
 		} else {
 			setErrorMsg("");
 			try {
 				const responseBody = await organizerTicket.getTicketInfo(id);
-				if(responseBody.data && responseBody.data){
-					setResSucesee(responseBody.data)
-					setDialogOpen(true)
-					isRes = true
+				if (responseBody.data && responseBody.data) {
+					setResSucesee(responseBody.data);
+					setDialogOpen(true);
+					isRes = true;
 				}
 			} catch (error: any) {
-				setResSucesee(null)
-				setDialogOpen(false)
+				setResSucesee(null);
+				setDialogOpen(false);
 				if (error?.status == 400) {
 					setErrorMsg("輸入的票卷編號錯誤");
 				} else {
@@ -72,7 +81,7 @@ export default function Scan() {
 		}
 	};
 
-	const sendTicket = () => {		
+	const sendTicket = () => {
 		if (ticketId === "") {
 			setErrorMsg("請填寫票卷編號");
 		} else {
@@ -82,10 +91,10 @@ export default function Scan() {
 	};
 
 	const closeDialog = () => {
-		setDialogOpen(false)
-		setResSucesee(null)
-		setTicketId("")
-	}
+		setDialogOpen(false);
+		setResSucesee(null);
+		setTicketId("");
+	};
 
 	return (
 		<Box sx={{ width: 400, my: 2, mx: "auto" }}>
@@ -107,17 +116,24 @@ export default function Scan() {
 					<Typography variant="body2">請掃描跟團仔出示的 QR code</Typography>
 				</Grid>
 				<Grid item>
-					<Box sx={{
-						display: "flex",
-						alignItems:"center",
-						justifyContent:"center",
-						width: 250,
-						height: 250,
-						backgroundColor: "#fff"
-					}}>
-						{scanResult
-							? <>{scanResult}</>
-							: <div id="reader" style={{width: "250px",height: "250px"}}></div>}
+					<Box
+						sx={{
+							display: "flex",
+							alignItems: "center",
+							justifyContent: "center",
+							width: 250,
+							height: 250,
+							backgroundColor: "#fff",
+						}}
+					>
+						{scanResult ? (
+							<>{scanResult}</>
+						) : (
+							<div
+								id="reader"
+								style={{ width: "250px", height: "250px" }}
+							></div>
+						)}
 					</Box>
 				</Grid>
 				<Grid item>
@@ -161,5 +177,13 @@ export default function Scan() {
 				onClose={closeDialog}
 			/>
 		</Box>
+	);
+}
+
+export default function ScanPage() {
+	return (
+		<Suspense fallback={<div>Loading...</div>}>
+			<ScanPageContent />
+		</Suspense>
 	);
 }

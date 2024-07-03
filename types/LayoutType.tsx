@@ -5,6 +5,7 @@ export interface MainLayoutProps {
 }
 
 export interface SimpleDialogProps {
-  open: boolean;
-  onClose: () => void;
+	data?: any;
+	open: boolean;
+	onClose: () => void;
 }

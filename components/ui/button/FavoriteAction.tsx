@@ -73,7 +73,7 @@ function FavoriteAction(props: {
 						: { xs: "1rem", sm: "0.75rem", md: "1.5rem" },
 				}}
 			>
-				{activity.likers || 0}
+				{ home?activity.likers || 0:activity.likeCount || 0}
 			</Typography>
 	</Box>
 	);

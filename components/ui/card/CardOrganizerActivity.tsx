@@ -37,7 +37,7 @@ function CardOrganizerActivity({
 }) {
 	const cardStyle = useCardTheme();
 	const [dialogOpen, setDialogOpen] = useState(false);
-	const canceActivity = () => {}
+	const canceActivity = () => {};
 
 	return (
 		<Paper sx={cardStyle.container}>
@@ -53,10 +53,13 @@ function CardOrganizerActivity({
 				</Box>
 
 				{!isFinish && (
-					<Grid container sx={{
-						...cardStyle.topInfoTopRow,
-						...cardStyle.topInfoTopRightBtn
-					}}>
+					<Grid
+						container
+						sx={{
+							...cardStyle.topInfoTopRow,
+							...cardStyle.topInfoTopRightBtn,
+						}}
+					>
 						<Grid item>
 							<Fab
 								size="small"
@@ -70,10 +73,13 @@ function CardOrganizerActivity({
 					</Grid>
 				)}
 
-				<Grid container sx={{
-					...cardStyle.topInfoTopRow,
-					...cardStyle.topInfoTopMainRow
-				}}>
+				<Grid
+					container
+					sx={{
+						...cardStyle.topInfoTopRow,
+						...cardStyle.topInfoTopMainRow,
+					}}
+				>
 					{/* 參加人數_活動上限人數 */}
 					<Grid item>
 						<Chip
@@ -82,7 +88,8 @@ function CardOrganizerActivity({
 								<Box display="inline-flex" alignItems="center">
 									<PeopleIcon sx={cardStyle.chipIcon} />
 									<Typography sx={cardStyle.chipText}>
-										{activity.bookedCapacity || 0} / {activity.totalCapacity || 0}
+										{activity.bookedCapacity || 0} /{" "}
+										{activity.totalCapacity || 0}
 									</Typography>
 								</Box>
 							}
@@ -93,28 +100,24 @@ function CardOrganizerActivity({
 					{!isFinish && isPublish === 1 && (
 						<Grid item>
 							<Button
-								sx={{...cardStyle.chip, px:2}}
+								sx={{ ...cardStyle.chip, px: 2 }}
 								onClick={() => setDialogOpen(true)}
 							>
-								<Typography sx={cardStyle.chipText}>
-									報名清單
-								</Typography>
+								<Typography sx={cardStyle.chipText}>報名清單</Typography>
 							</Button>
-							<ParticipantDialog
-								open={dialogOpen}
-								onClose={() => setDialogOpen(false)}
-							/>
+							{dialogOpen && (
+								<ParticipantDialog
+									data={activity}
+									open={dialogOpen}
+									onClose={() => setDialogOpen(false)}
+								/>
+							)}
 						</Grid>
 					)}
 				</Grid>
 			</Box>
 
-			<CardBottomInfo row={2} info={{
-				location: `${activity?.region} ${activity?.city} ${activity?.address}`,
-				title: activity.title,
-				startTime:activity.activityStartTime,
-				endTime:activity.activityEndTime,
-			}} />
+			<CardBottomInfo row={1} info={activity} />
 
 			{!isFinish && (
 				<Grid container spacing={1.5} sx={{ pl: 2, pr: 4, pb: 3 }}>

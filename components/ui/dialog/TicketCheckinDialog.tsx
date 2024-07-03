@@ -6,7 +6,7 @@ import { CheckinTicketInfoProp } from "@/types/TicketType";
 import axios from "@/plugins/api/axios";
 import { parseDetailDate } from "@/utils/dateHandler";
 import useCustomTheme from "@/components/ui/shared/useCustomTheme";
-
+import {TicketStatus} from "@/types/TicketType";
 import {
 	Box,
 	Typography,
@@ -39,7 +39,7 @@ function TicketCheckinDialog(props: {
 			if (
 				responseBody.data &&
 				responseBody.data &&
-				responseBody.data.ticketStatus == 1
+				responseBody.data.ticketStatus == TicketStatus.Used
 			) {
 				setErrorMsg("");
 				setSuccessMsg("驗票成功");
@@ -60,10 +60,10 @@ function TicketCheckinDialog(props: {
 				<DialogContent>
 					<Box sx={{ px: 5, py: 3 }}>
 						<Typography variant="h3" sx={customStyle.h3TitleStyle}>
-							{info.activity.subtitle}
+							{info.activity.title}
 						</Typography>
 						<Typography variant="h2" sx={customStyle.h2Style}>
-							{info.activity.title}
+							{info.activity.subtitle}
 						</Typography>
 						<Typography sx={customStyle.descStyle}>
 							{parseDetailDate(
