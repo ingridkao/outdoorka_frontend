@@ -81,18 +81,12 @@ function Ticket() {
 						票卷明細
 					</AccordionSummary>
 					<AccordionDetails sx={{ ...customStyle.paperStyle, p: 0 }}>
-						<Typography sx={customStyle.descStyle}>
-							票券內容：XXX
-						</Typography>
+						<Typography sx={customStyle.descStyle}>票券內容：XXX</Typography>
 						<Typography sx={customStyle.descStyle}>
 							票券狀態：{ticketData.ticketStatus ? "已使用" : "已報名"}
 						</Typography>
-						<Typography sx={customStyle.descStyle}>
-							票價：NT$ XXX
-						</Typography>
-						<Typography sx={customStyle.descStyle}>
-							備註：無
-						</Typography>
+						<Typography sx={customStyle.descStyle}>票價：NT$ XXX</Typography>
+						<Typography sx={customStyle.descStyle}>備註：無</Typography>
 					</AccordionDetails>
 				</Accordion>
 

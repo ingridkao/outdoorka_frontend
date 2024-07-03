@@ -15,7 +15,7 @@ import {
 	IconButton,
 	Select,
 	MenuItem,
-	SelectChangeEvent
+	SelectChangeEvent,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
@@ -40,7 +40,9 @@ function Tickets() {
 		if (type === null) {
 			setDisplayList(source);
 		} else {
-			const filterList = source.filter((ticketItem:TicketState) => ticketItem.status === type);
+			const filterList = source.filter(
+				(ticketItem: TicketState) => ticketItem.status === type,
+			);
 			setDisplayList(filterList);
 		}
 	};
@@ -52,24 +54,26 @@ function Tickets() {
 	const handleSort = (event: SyntheticEvent) => {
 		event.preventDefault();
 		setAscValue(!ascValue);
-		let filterList = []
-		if(sortValue === "activityStartTime" || sortValue === "activityEndTime"){
-			filterList = sortTimeData(source, sortValue, ascValue)
-		}else{
-			filterList = source.sort((a:any, b:any) => {
-				return ascValue? (a[sortValue]- b[sortValue]): (b[sortValue] - a[sortValue])
+		let filterList = [];
+		if (sortValue === "activityStartTime" || sortValue === "activityEndTime") {
+			filterList = sortTimeData(source, sortValue, ascValue);
+		} else {
+			filterList = source.sort((a: any, b: any) => {
+				return ascValue
+					? a[sortValue] - b[sortValue]
+					: b[sortValue] - a[sortValue];
 			});
 		}
 		setDisplayList(filterList);
 	};
 
-	const handleSearchChange = (searchInput: string) => {		
+	const handleSearchChange = (searchInput: string) => {
 		setSearchValue(searchInput);
-		if(searchInput === ""){
+		if (searchInput === "") {
 			setDisplayList(source);
-		}else{
-			const filterList = source.filter((ticketItem:TicketState) => {
-				return ticketItem.title.includes(searchInput)
+		} else {
+			const filterList = source.filter((ticketItem: TicketState) => {
+				return ticketItem.title.includes(searchInput);
 			});
 			setDisplayList(filterList);
 		}
@@ -81,14 +85,17 @@ function Tickets() {
 			try {
 				const responseBody = await ticket.getTicketList();
 				if (responseBody && responseBody.data) {
-					const parseData = responseBody.data.map((ticketItem:TicketState)=>{
+					const parseData = responseBody.data.map((ticketItem: TicketState) => {
 						return {
 							...ticketItem,
-							status: parstTicketStatus(ticketItem.activityStartTime, ticketItem.activityEndTime)
-						}
-					})
+							status: parstTicketStatus(
+								ticketItem.activityStartTime,
+								ticketItem.activityEndTime,
+							),
+						};
+					});
 					setSource(parseData);
-					setDisplayList(parseData)
+					setDisplayList(parseData);
 				}
 			} catch (error: any) {
 				if (error?.status == 404) {
@@ -106,7 +113,7 @@ function Tickets() {
 
 	return (
 		<PageLayout>
-			<Grid container sx={{width:"100%",m:"auto", gap:5}}>
+			<Grid container sx={{ width: "100%", m: "auto", gap: 5 }}>
 				<Grid
 					sx={{
 						display: { xs: "none", lg: "block" },
@@ -172,7 +179,7 @@ function Tickets() {
 				</Grid>
 
 				<Grid xs sx={{ maxWidth: "1440px" }}>
-					<ListSearchHeader 
+					<ListSearchHeader
 						title={"票卷列表"}
 						subTitle={"你的票卷清單已準備好囉！"}
 						search={searchValue}
@@ -187,7 +194,7 @@ function Tickets() {
 					>
 						<Box>
 							排序方法：
-							<Select 
+							<Select
 								defaultValue={"activityStartTime"}
 								onChange={handleSelectChange}
 							>

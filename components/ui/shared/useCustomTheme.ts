@@ -17,9 +17,9 @@ export default function useCustomTheme() {
 		},
 		descStyle: {
 			color: "#74777D",
-			my: 0.5
+			my: 0.5,
 		},
-		paperStyle:{
+		paperStyle: {
 			width: "100%",
 			backgroundColor: "#EDF1F9",
 			p: 5,
@@ -31,6 +31,6 @@ export default function useCustomTheme() {
 			borderRadius: 5,
 			width: "100%",
 			maxWidth: "1016px",
-		}
+		},
 	};
 }

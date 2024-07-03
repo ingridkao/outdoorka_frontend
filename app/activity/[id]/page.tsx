@@ -225,7 +225,6 @@ function Activity() {
 							backgroundImage: 'url("/images/sample_one.png")',
 							mr: 3,
 							borderRadius: "12px",
-							maxWidth: "800px"
 						}}
 					/>
 					<Box sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
@@ -246,8 +245,8 @@ function Activity() {
 						/>
 					</Box>
 				</Box>
-				<Box display="flex">
-					<Box maxWidth={800}>
+				<Box display="flex" justifyContent="space-between">
+					<Box flex={2}>
 						<Paper
 							elevation={0}
 							sx={{

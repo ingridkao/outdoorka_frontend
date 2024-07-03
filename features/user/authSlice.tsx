@@ -31,7 +31,7 @@ const authSlice: any = createSlice({
 			removeCookie(profileName);
 			removeCookie(tokenName);
 		},
-		setProfile: (state : AuthState, action: PayloadAction<ProfileItem>) => {
+		setProfile: (state: AuthState, action: PayloadAction<ProfileItem>) => {
 			state.profile = action.payload;
 		},
 	},

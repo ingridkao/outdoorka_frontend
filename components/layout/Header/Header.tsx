@@ -72,7 +72,7 @@ function Header() {
 			</List>
 		</Box>
 	);
-	
+
 	useEffect(() => {
 		setContainer(
 			typeof window !== "undefined" ? window.document.body : undefined,

@@ -24,9 +24,9 @@ const linkTitles = [
 
 function LeftMenu() {
 	const pathname = usePathname() || "";
-	const searchParams = useSearchParams()
-	const type = searchParams?.get("type")
-	
+	const searchParams = useSearchParams();
+	const type = searchParams?.get("type");
+
 	return (
 		<Box>
 			<nav aria-label="main mailbox folders">
@@ -90,7 +90,7 @@ function LeftMenu() {
 
 function WrappedLeftMenu() {
 	return (
-		<Suspense fallback={<Loading/>}>
+		<Suspense fallback={<Loading />}>
 			<LeftMenu />
 		</Suspense>
 	);

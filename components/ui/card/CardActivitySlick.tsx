@@ -2,9 +2,17 @@
 
 import { ActivityProp } from "@/types/ActivitiesType";
 
-import { Box, Typography, Avatar, Grid, Paper, CardMedia, Chip } from "@mui/material";
+import {
+	Box,
+	Typography,
+	Avatar,
+	Grid,
+	Paper,
+	CardMedia,
+	Chip,
+} from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import RatingStar from "@/components/ui/shared/RatingStar"
+import RatingStar from "@/components/ui/shared/RatingStar";
 import CardBottomInfo from "@/components/ui/card/CardBottomInfo";
 import useCardTheme from "@/components/ui/card/useCardTheme";
 
@@ -12,11 +20,7 @@ import useCardTheme from "@/components/ui/card/useCardTheme";
  * 活動卡片for 首頁最新輪播活動
  * @param activity 單一活動資料
  */
-function CardActivity({ 
-	activity
-}: {
-	activity: ActivityProp;
-}) {
+function CardActivity({ activity }: { activity: ActivityProp }) {
 	const cardStyle = useCardTheme();
 	return (
 		<Paper
@@ -26,7 +30,7 @@ function CardActivity({
 			}}
 		>
 			{/* 上方 區塊 */}
-			<Box sx={cardStyle.topInfoWrapper }>
+			<Box sx={cardStyle.topInfoWrapper}>
 				{/* 底圖 */}
 				<Box sx={cardStyle.topBg}>
 					<CardMedia
@@ -37,10 +41,13 @@ function CardActivity({
 					/>
 				</Box>
 
-				<Grid container sx={{
-					...cardStyle.topInfoTopRow,
-					...cardStyle.topInfoTopMainRow
-				}}>
+				<Grid
+					container
+					sx={{
+						...cardStyle.topInfoTopRow,
+						...cardStyle.topInfoTopMainRow,
+					}}
+				>
 					{/* 主揪資訊 */}
 					<Grid item>
 						<Box
@@ -63,7 +70,7 @@ function CardActivity({
 							/>
 							<Box
 								sx={{
-									width: 103
+									width: 103,
 								}}
 							>
 								{/* 星星評分 */}

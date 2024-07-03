@@ -2,7 +2,7 @@
 
 import { useState, useEffect, ChangeEvent } from "react";
 import { useParams } from "next/navigation";
-import { Html5QrcodeScanner} from "html5-qrcode";
+import { Html5QrcodeScanner } from "html5-qrcode";
 
 import axios from "@/plugins/api/axios";
 
@@ -20,38 +20,34 @@ export default function Scan() {
 	const [resSucesee, setResSucesee] = useState(null);
 	const [dialogOpen, setDialogOpen] = useState(false);
 
-	let isRes = false
-	useEffect(()=>{
-		const scanner = new Html5QrcodeScanner(
-			"reader",
-			{ fps: 10 },
-			false
-		);
-		const onScanSuccess = (result:any) => {
+	let isRes = false;
+	useEffect(() => {
+		const scanner = new Html5QrcodeScanner("reader", { fps: 10 }, false);
+		const onScanSuccess = (result: any) => {
 			setScanResult(result);
 			// 阻止scanner一直讀取進入無限循環
-			if(isRes) return
-			fetchTicket(result)
+			if (isRes) return;
+			fetchTicket(result);
 		};
 		scanner.render(onScanSuccess);
-	},[]);
+	}, []);
 
 	const fetchTicket = async (id: string) => {
-		if(resSucesee) return
+		if (resSucesee) return;
 		if (id === "") {
 			setErrorMsg("請填寫票卷編號");
 		} else {
 			setErrorMsg("");
 			try {
 				const responseBody = await organizerTicket.getTicketInfo(id);
-				if(responseBody.data && responseBody.data){
-					setResSucesee(responseBody.data)
-					setDialogOpen(true)
-					isRes = true
+				if (responseBody.data && responseBody.data) {
+					setResSucesee(responseBody.data);
+					setDialogOpen(true);
+					isRes = true;
 				}
 			} catch (error: any) {
-				setResSucesee(null)
-				setDialogOpen(false)
+				setResSucesee(null);
+				setDialogOpen(false);
 				if (error?.status == 400) {
 					setErrorMsg("輸入的票卷編號錯誤");
 				} else {
@@ -97,17 +93,24 @@ export default function Scan() {
 					<Typography variant="body2">請掃描跟團仔出示的 QR code</Typography>
 				</Grid>
 				<Grid item>
-					<Box sx={{
-						display: "flex",
-						alignItems:"center",
-						justifyContent:"center",
-						width: 250,
-						height: 250,
-						backgroundColor: "#fff"
-					}}>
-						{scanResult
-							? <>{scanResult}</>
-							: <div id="reader" style={{width: "250px",height: "250px"}}></div>}
+					<Box
+						sx={{
+							display: "flex",
+							alignItems: "center",
+							justifyContent: "center",
+							width: 250,
+							height: 250,
+							backgroundColor: "#fff",
+						}}
+					>
+						{scanResult ? (
+							<>{scanResult}</>
+						) : (
+							<div
+								id="reader"
+								style={{ width: "250px", height: "250px" }}
+							></div>
+						)}
 					</Box>
 				</Grid>
 				<Grid item>

@@ -79,12 +79,12 @@ function Activities() {
 
 	return (
 		<PageLayout>
-			<Grid container sx={{width:"100%",m:"auto", gap:5}}>
-				<Grid 
+			<Grid container sx={{ width: "100%", m: "auto", gap: 5 }}>
+				<Grid
 					sx={{
 						display: { xs: "none", lg: "block" },
 						minWidth: "320px",
-					}} 
+					}}
 					columnSpacing={2}
 				>
 					<Typography
@@ -211,11 +211,11 @@ function Activities() {
 					</Stack>
 				</Grid>
 
-				<Grid 
-					xs 
-					sx={{ 
-						maxWidth: "1440px"
-					}} 
+				<Grid
+					xs
+					sx={{
+						maxWidth: "1440px",
+					}}
 					columnSpacing={2}
 				>
 					<Paper

@@ -91,7 +91,7 @@ function NewActivities() {
 						key={value._id}
 						sx={{
 							px: 1.5,
-							py: 0.5
+							py: 0.5,
 						}}
 					>
 						<CardActivitySlick
@@ -105,7 +105,7 @@ function NewActivities() {
 								name: value.organizer.name,
 								rating: value.organizer.rating,
 								capacity: value.bookedCapacity,
-								likers: value.likers
+								likers: value.likers,
 							}}
 						/>
 					</Box>

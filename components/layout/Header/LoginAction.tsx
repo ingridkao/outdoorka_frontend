@@ -83,11 +83,13 @@ function LoginAction() {
 				backgroundColor: "#fff",
 			}}
 		>
-			<Box sx={{ 
-				display: "inline-flex", 
-				alignItems: "center",
-				marginBottom: 1
-			}}>
+			<Box
+				sx={{
+					display: "inline-flex",
+					alignItems: "center",
+					marginBottom: 1,
+				}}
+			>
 				<Avatar sx={{ width: 40, height: 40, marginRight: 1 }}>
 					{profile?.name.charAt(0).toUpperCase()}
 				</Avatar>
@@ -133,24 +135,20 @@ function LoginAction() {
 								label={
 									<Typography
 										color="#22252A"
-										sx={{ 
-											display: { xs: "none", md: "block" }, 
-											pr: { xs: 0, md: 1 }
+										sx={{
+											display: { xs: "none", md: "block" },
+											pr: { xs: 0, md: 1 },
 										}}
 									>
 										CIAO! <b>{profile.name}</b>
 									</Typography>
 								}
-								sx={{ 
-									width: { xs: "48px", md: "auto" }, 
-									pl: { xs: 1.5, md: 0 }, 
+								sx={{
+									width: { xs: "48px", md: "auto" },
+									pl: { xs: 1.5, md: 0 },
 								}}
 							/>
-							<Button
-								component={NextLink}
-								href="/ticket"
-								color="inherit"
-							>
+							<Button component={NextLink} href="/ticket" color="inherit">
 								<Badge badgeContent={4} color="secondary">
 									<Image src={TicketSvg} width={24} height={24} alt="ticket" />
 								</Badge>
@@ -163,10 +161,14 @@ function LoginAction() {
 								sx={{ display: { xs: "none", md: "inline-flex" } }}
 							>
 								<Badge badgeContent={4} color="secondary">
-									<Image src={LikedSvg} width={24} height={24} alt="favorites" />
+									<Image
+										src={LikedSvg}
+										width={24}
+										height={24}
+										alt="favorites"
+									/>
 								</Badge>
 							</Button>
-
 						</Box>
 						<ClickAwayListener onClickAway={handleProfileMenuClose}>
 							<Menu

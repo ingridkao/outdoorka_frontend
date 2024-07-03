@@ -34,9 +34,9 @@ export const setProfileCookie = (name: string, value: any, days: number) => {
  */
 export const getProfileCookieObj = (name: string) => {
 	const value = Cookies.get(name);
-	if(typeof value === "string" ){
-		return JSON.parse(value)
-	}else{
-		return null
+	if (typeof value === "string") {
+		return JSON.parse(value);
+	} else {
+		return null;
 	}
 };

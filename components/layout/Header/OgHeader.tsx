@@ -25,7 +25,7 @@ function OgHeader() {
 	const router = useRouter();
 	const dispatch = useDispatch();
 	// Get ogAuth from redux
-	const {profile} = useSelector((state: RootState) => state.ogAuth);
+	const { profile } = useSelector((state: RootState) => state.ogAuth);
 	// const [profile, setProfile] = useState<ProfileOgItem | null>(null);
 
 	useEffect(() => {
@@ -38,7 +38,7 @@ function OgHeader() {
 					router.push("/organizer/login");
 				}
 			});
-		}else{
+		} else {
 			router.push("/organizer/login");
 		}
 	}, []);
