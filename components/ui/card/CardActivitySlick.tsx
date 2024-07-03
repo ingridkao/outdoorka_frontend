@@ -1,7 +1,7 @@
 "use client";
 
+import { useSelector } from "react-redux";
 import { ActivityState } from "@/types/ActivitiesType";
-
 import {
 	Box,
 	Typography,
@@ -12,6 +12,7 @@ import {
 	Chip,
 } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import RatingStar from "@/components/ui/shared/RatingStar";
 import CardBottomInfo from "@/components/ui/card/CardBottomInfo";
 import useCardTheme from "@/components/ui/card/useCardTheme";
@@ -22,9 +23,9 @@ import useCardTheme from "@/components/ui/card/useCardTheme";
  */
 function CardActivity({ activity }: { activity: ActivityState }) {
 	const cardStyle = useCardTheme();
-	const activityImageUrl = activity.activityImageUrls
-		? activity.activityImageUrls[0]
-		: "";
+	const activityImageUrl = activity.activityImageUrls? activity.activityImageUrls[0]: ""	
+	const { likesList } = useSelector((state:any) => state.likes);
+	const isLike = likesList.some((likeId:string) => likeId == activity._id)
 
 	return (
 		<Paper
@@ -95,14 +96,17 @@ function CardActivity({ activity }: { activity: ActivityState }) {
 							sx={cardStyle.chip}
 							label={
 								<Box display="inline-flex" alignItems="center">
-									<FavoriteIcon sx={cardStyle.chipIcon} />
+									{isLike
+										?<FavoriteIcon sx={cardStyle.chipIcon} />
+										:<FavoriteBorderIcon sx={cardStyle.chipIcon} />
+									}
 									<Typography
 										sx={{
 											...cardStyle.chipText,
 											width: 30,
 										}}
 									>
-										{activity.likers || 0}
+										{activity.likeCount || activity.likers || 0}
 									</Typography>
 								</Box>
 							}

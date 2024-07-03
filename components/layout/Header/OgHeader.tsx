@@ -30,6 +30,8 @@ import {
 } from "@mui/material";
 import LogoHeader1 from "@/public/images/logoHeader_1.svg";
 import LogoutIcon from "@/components/icon/LogoutIcon";
+import ProfileIcon from "@/components/icon/ProfileIcon";
+import TicketIcon from "@/components/icon/TicketIcon";
 
 function OgHeader() {
 	const router = useRouter();
@@ -64,12 +66,24 @@ function OgHeader() {
 		if (anchorEl && anchorEl.contains(event.target as HTMLElement)) return;
 		setAnchorEl(null);
 	};
+	const goToProfile = () => {
+		handleProfileMenuClose(new Event("navigate"));
+		router.push("/organizer/profile");
+	};
+	const goToActivity = () => {
+		handleProfileMenuClose(new Event("activity"));
+		router.push("/organizer/activity/");
+	};
 	const handleLogout = () => {
 		handleProfileMenuClose(new Event("logout"));
 		dispatch(logoutOrganizer());
 		router.push("/organizer/login");
 	};
-
+	const MenuIconStyle = {
+		mr: 1,
+		width: 24,
+		height: 24,
+	};
 	return (
 		<Box sx={{ display: "flex" }}>
 			<AppBar
@@ -165,12 +179,16 @@ function OgHeader() {
 												/>
 												<Typography>{profile.name}</Typography>
 											</Box>
-											{/* <MenuItem onClick={handleProfile}>管理帳號</MenuItem> */}
+											<MenuItem onClick={goToProfile}>
+												<ProfileIcon sx={MenuIconStyle} fillcolor="#B1AAA5" />
+												<Typography>管理帳號</Typography>
+											</MenuItem>
+											<MenuItem onClick={goToActivity}>
+												<TicketIcon sx={MenuIconStyle} fillcolor="#B1AAA5" />
+												<Typography>活動列表</Typography>
+											</MenuItem>
 											<MenuItem onClick={handleLogout}>
-												<LogoutIcon
-													sx={{ mr: 1, width: 24, height: 24 }}
-													fillcolor="#B1AAA5"
-												/>
+												<LogoutIcon sx={MenuIconStyle} fillcolor="#B1AAA5"/>
 												<Typography>登出</Typography>
 											</MenuItem>
 										</Box>
