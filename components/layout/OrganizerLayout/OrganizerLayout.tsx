@@ -23,7 +23,7 @@ function OrganizerLayout({ children }: MainLayoutProps) {
 					<Grid item xs={12} md={2}>
 						<LeftMenu />
 					</Grid>
-					<Grid item xs={12} md={10} sx={{mb:18}}>
+					<Grid item xs={12} md={10} sx={{ mb: 18 }}>
 						{children}
 					</Grid>
 				</Grid>

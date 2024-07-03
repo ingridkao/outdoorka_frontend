@@ -51,7 +51,7 @@ export default function RootLayout({
 
 		const token = getCookie(USER_T0KEN_COOKIE);
 		const getOgToken = getCookie(OG_TOK0N_COOKIE);
-		if (!token && !getOgToken) {
+		if (!(token || getOgToken)) {
 			router.push("/");
 		}
 	}, [pathname, router]);

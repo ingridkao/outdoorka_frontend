@@ -1,5 +1,10 @@
 import axios from "axios";
-import { USER_T0KEN_COOKIE, OG_TOK0N_COOKIE, getCookie, removeUserCookie } from "@/utils/cookieHandler";
+import {
+	USER_T0KEN_COOKIE,
+	OG_TOK0N_COOKIE,
+	getCookie,
+	removeUserCookie,
+} from "@/utils/cookieHandler";
 
 const onRequest = (tokenCookie: string) => (config: any) => {
 	const token = getCookie(tokenCookie);
@@ -24,10 +29,10 @@ const onResponse = (response: any) => {
 	return response;
 };
 
-const onError = (tokenCookie: string) => (error: any) => {	
+const onError = (tokenCookie: string) => (error: any) => {
 	const { response } = error;
-	if(response?.status === 401){
-		if( tokenCookie === USER_T0KEN_COOKIE) removeUserCookie()
+	if (response?.status === 401) {
+		if (tokenCookie === USER_T0KEN_COOKIE) removeUserCookie();
 	}
 
 	return Promise.reject({
@@ -50,12 +55,12 @@ const createInstance = (baseURL: string, tokenCookie: string) => {
 
 const instance = createInstance(
 	process.env.NEXT_PUBLIC_BASE_URL_USER || "http://localhost:3006",
-	USER_T0KEN_COOKIE
+	USER_T0KEN_COOKIE,
 );
 
 const ogInstance = createInstance(
 	process.env.NEXT_PUBLIC_BASE_URL_USER || "http://localhost:3006",
-	OG_TOK0N_COOKIE
+	OG_TOK0N_COOKIE,
 );
 
 export { instance as default, ogInstance };

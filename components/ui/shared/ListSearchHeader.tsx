@@ -1,20 +1,15 @@
 /* eslint-disable no-unused-vars */
 "use client";
 
-import {
-	Box,
-	Button,
-	Typography,
-	Input
-} from "@mui/material";
+import { Box, Button, Typography, Input } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
 
-function ListSearchHeader(props: { 
-	title: string; 
-	subTitle: string; 
-	search: string; 
-  onSearch: (value: string) => void;
+function ListSearchHeader(props: {
+	title: string;
+	subTitle: string;
+	search: string;
+	onSearch: (value: string) => void;
 }) {
 	const theme = useTheme();
 	const { title, subTitle, search, onSearch } = props;

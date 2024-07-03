@@ -52,48 +52,64 @@ function TicketAction({
 		setTarget(null);
 		reload(res);
 	};
-	
-	const handleAction = (type:string) => {
-		if (!type )return;
-		if ( type === "evaluate" && info.rating === 1 ) return;
+
+	const handleAction = (type: string) => {
+		if (!type) return;
+		if (type === "evaluate" && info.rating === 1) return;
 		if (!(tickets && tickets[active])) return;
 		setModifyType(type);
 		setTarget(tickets[active]);
 		setDialogOpen(true);
 	};
 
-	if(!tickets)return <Box />;
+	if (!tickets) return <Box />;
 
-	const targetTicket:TicketsState | null = tickets[active];
-	if(!targetTicket)return <Box />;
+	const targetTicket: TicketsState | null = tickets[active];
+	if (!targetTicket) return <Box />;
 
-	const checkEvaluate = info.ratingList && info.ratingList.find((item:any) => item.ticketId === targetTicket.ticketId)
-	
+	const checkEvaluate =
+		info.ratingList &&
+		info.ratingList.find(
+			(item: any) => item.ticketId === targetTicket.ticketId,
+		);
+
 	return (
 		<>
 			<Box>
 				{/* 超過一張票卷，未使用及未分票的票卷 */}
-				{tickets.length > 1 && targetTicket.ticketStatus == TicketStatus.Unused &&
-					<Button variant="contained" size="large" sx={{wordBreak: "keep-all" }} onClick={() => handleAction("email")}>
-						進行分票
-					</Button>
-				}
-				{tickets.length === 1 && targetTicket.ticketStatus == TicketStatus.Unused  && 
-					<Button variant="contained" size="large" sx={{wordBreak: "keep-all" }} onClick={() => handleAction("note")}>
-						填寫備註
-					</Button>
-				}
-				{targetTicket.ticketStatus == TicketStatus.Used  && 
-					<Button 
-						variant="contained" 
-						size="large" 
-						sx={{wordBreak: "keep-all" }} 
+				{tickets.length > 1 &&
+					targetTicket.ticketStatus == TicketStatus.Unused && (
+						<Button
+							variant="contained"
+							size="large"
+							sx={{ wordBreak: "keep-all" }}
+							onClick={() => handleAction("email")}
+						>
+							進行分票
+						</Button>
+					)}
+				{tickets.length === 1 &&
+					targetTicket.ticketStatus == TicketStatus.Unused && (
+						<Button
+							variant="contained"
+							size="large"
+							sx={{ wordBreak: "keep-all" }}
+							onClick={() => handleAction("note")}
+						>
+							填寫備註
+						</Button>
+					)}
+				{targetTicket.ticketStatus == TicketStatus.Used && (
+					<Button
+						variant="contained"
+						size="large"
+						sx={{ wordBreak: "keep-all" }}
 						disabled={checkEvaluate}
 						onClick={() => handleAction("evaluate")}
 					>
-						{checkEvaluate? "已評價": "填寫評價"}
-					</Button>					
-				}
+						{checkEvaluate ? "已評價" : "填寫評價"}
+					</Button>
+				)}
 			</Box>
 			<TicketModifyDialog
 				payment={info}
@@ -187,7 +203,6 @@ function TicketInfo() {
 				}}
 			>
 				<BackBtn href="/ticket" name="票卷清單" />
-
 				<Box
 					sx={{
 						...customStyle.paperStyle,
@@ -263,12 +278,17 @@ function TicketInfo() {
 								}}
 							>
 								{ticketsData[assignActive].ticketStatus ? (
-									<Box sx={{
-										width:{ xs: 0, sm: 270 },
-										height:{ xs: 0, sm: 270 },
-									}} />
+									<Box
+										sx={{
+											width: { xs: 0, sm: 270 },
+											height: { xs: 0, sm: 270 },
+										}}
+									/>
 								) : (
-									<QRCodeSVG size={270} value={ticketsData[assignActive].ticketId} />
+									<QRCodeSVG
+										size={270}
+										value={ticketsData[assignActive].ticketId}
+									/>
 								)}
 							</Box>
 							<Box
@@ -282,17 +302,14 @@ function TicketInfo() {
 								}}
 							>
 								<Box sx={customStyle.labelStyle}>
-									{ticketsData[assignActive].ticketStatus
-										? "已使用"
-										: "已報名"
-									}
+									{ticketsData[assignActive].ticketStatus ? "已使用" : "已報名"}
 								</Box>
 								<Box sx={rowContainer}>
 									<Typography sx={columnDesc}>
-										{ticketsData.length === 0 || ticketsData[assignActive].ticketStatus
+										{ticketsData.length === 0 ||
+										ticketsData[assignActive].ticketStatus
 											? "參加人"
-											: "購買人"
-										}
+											: "購買人"}
 									</Typography>
 									<Typography sx={{ fontSize: "28px", fontWeight: 700 }}>
 										{ticketsData[assignActive].ownerName || ""}
@@ -316,7 +333,7 @@ function TicketInfo() {
 						</Box>
 					</>
 				)}
-				{ticketTotal > 1 &&
+				{ticketTotal > 1 && (
 					<Box
 						width={"100%"}
 						display="flex"
@@ -333,10 +350,14 @@ function TicketInfo() {
 							<KeyboardArrowRightIcon />
 						</IconButton>
 					</Box>
-				}
+				)}
 
-				{paymentData && <>
-					<Accordion className="customAccordion" sx={{...customStyle.paperStyle, my: 3}}>
+				{paymentData && (
+					<>
+						<Accordion
+							className="customAccordion"
+							sx={{ ...customStyle.paperStyle, my: 3 }}
+						>
 							<AccordionSummary
 								expandIcon={<ExpandMoreIcon />}
 								aria-controls="注意事項"
@@ -374,7 +395,8 @@ function TicketInfo() {
 								</Typography>
 							</AccordionDetails>
 						</Accordion>
-					</>}
+					</>
+				)}
 			</Box>
 		</PageLayout>
 	);

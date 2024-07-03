@@ -1,5 +1,5 @@
 const ticket = (axios: any, event: any) => ({
-	getTicketList() {
+	getPaymentList() {
 		return axios.get(`${event}`);
 	},
 	getPaymentInfo(id: string) {
@@ -11,11 +11,14 @@ const ticket = (axios: any, event: any) => ({
 		if (note) post.ticketNote = note;
 		return axios.patch(`${event}/${id}`, post);
 	},
+	getSuspenseTicketInfo() {
+		return axios.get(`${event}/suspense`);
+	},
 	userReview(id: string, rating: number = 5, comment: string = "") {
-		if (!(rating && comment)) return
+		if (!(rating && comment)) return;
 		return axios.post(`${event}/${id}/rating`, {
 			rating,
-			comment
+			comment,
 		});
 	},
 });

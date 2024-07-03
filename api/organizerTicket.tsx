@@ -4,7 +4,7 @@ const organizerTicket = (axios: any, event: any) => ({
 	},
 	patchTicketInfo(id: string) {
 		return axios.patch(`${event}/${id}/confirm`);
-	}
+	},
 });
 
 export default organizerTicket;

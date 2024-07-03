@@ -74,17 +74,17 @@ function Activities() {
 	useEffect(() => {
 		loadData();
 	}, []);
-	const reload = (res:boolean) => {
-		if(res) loadData();
-	}
+	const reload = (res: boolean) => {
+		if (res) loadData();
+	};
 	return (
 		<PageLayout>
-			<Grid container sx={{width:"100%",m:"auto", gap:5}}>
-				<Grid 
+			<Grid container sx={{ width: "100%", m: "auto", gap: 5 }}>
+				<Grid
 					sx={{
 						display: { xs: "none", lg: "block" },
 						minWidth: "320px",
-					}} 
+					}}
 					columnSpacing={2}
 				>
 					<Typography
@@ -211,11 +211,11 @@ function Activities() {
 					</Stack>
 				</Grid>
 
-				<Grid 
-					xs 
-					sx={{ 
-						maxWidth: "1440px"
-					}} 
+				<Grid
+					xs
+					sx={{
+						maxWidth: "1440px",
+					}}
 					columnSpacing={2}
 				>
 					<Paper
@@ -324,15 +324,12 @@ function Activities() {
 					<Grid container spacing={3} sx={{ mt: 3, width: "100%" }}>
 						{activityList.length === 0 && <Loading />}
 						{error && <div>Failed to load</div>}
-						{activityList && activityList.map((value:ActivityState) => (
-							<Grid item xs={12} sm={6} lg={4} key={value._id}>
-								<CardActivity
-									home={false}
-									activity={value}
-									onLoad={reload}
-								/>
-							</Grid>
-						))}
+						{activityList &&
+							activityList.map((value: ActivityState) => (
+								<Grid item xs={12} sm={6} lg={4} key={value._id}>
+									<CardActivity home={false} activity={value} onLoad={reload} />
+								</Grid>
+							))}
 					</Grid>
 				</Grid>
 			</Grid>

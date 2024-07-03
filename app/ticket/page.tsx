@@ -83,7 +83,7 @@ function Tickets() {
 		async function loadData() {
 			setLoad(true);
 			try {
-				const responseBody = await ticket.getTicketList();
+				const responseBody = await ticket.getPaymentList();
 				setLoad(false);
 				if (responseBody && responseBody.data) {
 					const parseData = responseBody.data.map(

@@ -1,6 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "@/plugins/api/axios";
-import { OG_TOK0N_COOKIE, removeOgCookie, setCookie } from "@/utils/cookieHandler";
+import {
+	OG_TOK0N_COOKIE,
+	removeOgCookie,
+	setCookie,
+} from "@/utils/cookieHandler";
 
 import {
 	AuthItem,
@@ -40,30 +44,30 @@ const ogAuthSlice: any = createSlice({
 			state.token = null;
 			state.profile = null;
 		});
-		builder.addCase(
-			fulfilled,
-			(state: OgAuthState, action: any) => {
-				// loading end
-				if (action.payload.error) {
-					state.error = action.payload.error;
-					state.token = null;
-					state.profile = null;
-					removeOgCookie();
-				} else if (action.payload.data) {
-					const { organizer, token } = action.payload.data;
-					state.profile = organizer as ProfileOgItem;
-					state.token = token as AuthItem;
-					setCookie(OG_TOK0N_COOKIE, state.token.access_token, 3);
-				}
-			},
-		);
+		builder.addCase(fulfilled, (state: OgAuthState, action: any) => {
+			// loading end
+			if (action.payload.error) {
+				state.error = action.payload.error;
+				state.token = null;
+				state.profile = null;
+				removeOgCookie();
+			} else if (action.payload.data) {
+				const { organizer, token } = action.payload.data;
+				state.profile = organizer as ProfileOgItem;
+				state.token = token as AuthItem;
+				setCookie(OG_TOK0N_COOKIE, state.token.access_token, 3);
+			}
+		});
 
 		// getOrganizer
-		builder.addCase(getOrganizer.rejected, (state: OgAuthState, action: any) => {
-			state.error = action.error;
-			state.token = null;
-			state.profile = null;
-		});
+		builder.addCase(
+			getOrganizer.rejected,
+			(state: OgAuthState, action: any) => {
+				state.error = action.error;
+				state.token = null;
+				state.profile = null;
+			},
+		);
 		builder.addCase(
 			getOrganizer.fulfilled,
 			(state: OgAuthState, action: any) => {

@@ -3,6 +3,8 @@ import { configureStore } from "@reduxjs/toolkit";
 import activityReducer from "./activity/activitySlice";
 import authReducer from "./user/authSlice";
 import ogAuthReducer from "./organizer/ogAuthSlice";
+import likeReducer from "./user/likeSlice";
+import paymentsReducer from "./payments/paymentsSlice";
 
 import { RootState } from "@/types";
 
@@ -13,6 +15,8 @@ function initializeStore(initialState?: Partial<RootState>) {
 			activities: activityReducer,
 			auth: authReducer,
 			ogAuth: ogAuthReducer,
+			likes: likeReducer,
+			payment: paymentsReducer,
 		},
 		preloadedState: initialState,
 	});

@@ -26,12 +26,12 @@ export interface AuthItem {
 	refresh_token: string;
 }
 
-export interface ProfileItem {
-	email: string;
-	name: string;
-}
 export interface AuthState {
-	profile: ProfileItem | null;
+	error: string | null;
+}
+export interface LikeState {
+	likesList: {_id:string}[];
+	likesCount: number;
 	error: string | null;
 }
 

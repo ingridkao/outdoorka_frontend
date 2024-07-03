@@ -126,6 +126,7 @@ function ParticipantDialog(props: SimpleDialogProps) {
 							))}
 					</Grid>
 				</Box>
+				<Box>{tagValue}</Box>
 			</DialogContent>
 		</Dialog>
 	);

@@ -8,6 +8,9 @@ const favorite = (axios: any, event: any) => ({
 	removeFavorite(id: any) {
 		return axios.delete(`${event}/${id}`);
 	},
+	getFavorites() {
+		return axios.get(`${event}/showID`);
+	},
 });
 
 export default favorite;
