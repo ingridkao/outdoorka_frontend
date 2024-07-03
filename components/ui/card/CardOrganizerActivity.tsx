@@ -105,24 +105,17 @@ function CardOrganizerActivity({
 							>
 								<Typography sx={cardStyle.chipText}>報名清單</Typography>
 							</Button>
-							<ParticipantDialog
-								open={dialogOpen}
-								onClose={() => setDialogOpen(false)}
-							/>
+							{dialogOpen && (
+								<ParticipantDialog
+									data={activity}
+									open={dialogOpen}
+									onClose={() => setDialogOpen(false)}
+								/>
+							)}
 						</Grid>
 					)}
 				</Grid>
 			</Box>
-
-			<CardBottomInfo
-				info={{
-					location: `${activity?.region} ${activity?.city} ${activity?.address}`,
-					title: activity.title,
-					startTime: activity.activityStartTime,
-					endTime: activity.activityEndTime,
-				}}
-			/>
-
 			{!isFinish && (
 				<Grid container spacing={1.5} sx={{ pl: 2, pr: 4, pb: 3 }}>
 					<Grid item xs={6}>
@@ -157,7 +150,7 @@ function CardOrganizerActivity({
 							sx={{ width: "100%" }}
 							disabled={isPublish === 0}
 							component={NextLink}
-							href={`/organizer/scan/${activity._id}`}
+							href="/organizer/scan"
 						>
 							驗票
 						</Button>

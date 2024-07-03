@@ -5,11 +5,10 @@ import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import axios from "@/plugins/api/axios";
 import DOMPurify from "dompurify";
-import he from "he";
 import OrganizerLayout from "@/components/layout/OrganizerLayout/OrganizerLayout";
 import { NUMBER_ONLY_REGEX, URL_REGEX } from "@/utils/regexHandler";
 import * as dayjs from "dayjs";
-import { getFirebaseFileName } from "@/utils/common";
+import { escapeContent, getFirebaseFileName } from "@/utils/common";
 
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
@@ -32,13 +31,14 @@ import {
 	SelectChangeEvent,
 	Box,
 	Alert,
+	Tabs,
+	Tab,
 } from "@mui/material";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import LocalActivityIcon from "@mui/icons-material/LocalActivity";
 
 import { ICreateActivity, RootState } from "@/types";
 import { OgAuthState } from "@/types/AuthType";
@@ -322,7 +322,7 @@ function ActivityCreate() {
 		const getCleanContent = DOMPurify.sanitize(
 			quillRef.current?.getEditor().root.innerHTML,
 		);
-		activityData.activityDetail = he.encode(getCleanContent);
+		activityData.activityDetail = escapeContent(getCleanContent);
 
 		let errorMessages = "未正確填寫內容，請確認以上欄位內容";
 		if (isValid) {
@@ -397,18 +397,13 @@ function ActivityCreate() {
 	};
 	return (
 		<OrganizerLayout>
-			<Typography
-				variant="h5"
-				sx={{
-					fontSize: "2.5rem",
-					fontWeight: 500,
-					margin: "0 0 18px 0",
-					lineHeight: "1.6",
-				}}
+			<Box
+				sx={{ borderBottom: 1, borderColor: "divider", marginBottom: "36px" }}
 			>
-				<LocalActivityIcon sx={{ marginRight: "8px" }} />
-				建立活動
-			</Typography>
+				<Tabs value={0}>
+					<Tab label="建立活動" value={0} />
+				</Tabs>
+			</Box>
 
 			<FormControl>
 				<Grid container spacing={3}>

@@ -1,5 +1,4 @@
 "use client";
-import React from "react";
 
 import { Box, Unstable_Grid2 as Grid, Link } from "@mui/material";
 import HomeOrganizerCarousel from "@/components/ui/carousel/homeOrganizerCarousel";
@@ -20,14 +19,6 @@ function Home() {
 				<Grid xs={12}>
 					<HomeBannerCarouselfrom />
 				</Grid>
-				<Grid xs={12}>
-					<Box sx={{ height: "100vh", backgroundColor: "#F8F9FF" }}>
-						熱門活動
-					</Box>
-				</Grid>
-				<Grid xs={12}>
-					<Box sx={{ height: "1010px" }}></Box>
-				</Grid>
 				<Grid sx={{ maxWidth: { sm: "850px", md: "1280px", lg: "1536px" } }}>
 					<HotActivities />
 				</Grid>
@@ -35,7 +26,7 @@ function Home() {
 					<NewActivities />
 				</Grid>
 				<Grid xs={10}>
-					<Box py={10}>
+					<Box sx={{ paddingBottom: "10px" }}>
 						<TitleSection title="活動探索" />
 						<Box
 							my={6}

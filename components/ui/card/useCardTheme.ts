@@ -11,9 +11,9 @@ export default function useCardTheme() {
 			borderRadius: "1.5rem",
 			backgroundColor: theme.palette.background.default,
 		},
-		topInfoWrapper: {
+		topInfoWrapperSmall: {
 			position: "relative",
-			Height: 244,
+			height: 181,
 		},
 		topBg: {
 			position: "relative",
@@ -43,13 +43,13 @@ export default function useCardTheme() {
 		topInfoTopMainRow: {
 			bottom: 0,
 			columnGap: 1,
-			alignItems: "center",
+			alignItems: "flex-end",
 		},
 		chip: {
 			display: "inline-flex",
 			alignItems: "center",
-			height: 36,
-			borderRadius: 36,
+			height: "2.25rem",
+			borderRadius: "2.25rem",
 			px: 0.25,
 			py: 0,
 			fontSize: "1rem",
@@ -75,7 +75,7 @@ export default function useCardTheme() {
 			overflow: "hidden",
 			textOverflow: "ellipsis",
 			whiteSpace: "nowrap",
-			maxWidth: "7.5em",
+			maxWidth: "6rem",
 			fontSize: "0.875rem",
 			fontWeight: "400",
 			lineHeight: 1,
@@ -89,9 +89,10 @@ export default function useCardTheme() {
 			color: theme.palette.text.secondary,
 		},
 		infoTitle: {
-			marginTop: "1rem",
+			mt: 1,
 			fontWeight: "700",
-			lineHeight: "2.25rem",
+			lineHeight: 1.5,
+			fontSize: "1.25rem",
 		},
 	};
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { ActivityProp } from "@/types/ActivitiesType";
+import { ActivityState } from "@/types/ActivitiesType";
 
 import {
 	Box,
@@ -20,24 +20,28 @@ import useCardTheme from "@/components/ui/card/useCardTheme";
  * 活動卡片for 首頁最新輪播活動
  * @param activity 單一活動資料
  */
-function CardActivity({ activity }: { activity: ActivityProp }) {
+function CardActivity({ activity }: { activity: ActivityState }) {
 	const cardStyle = useCardTheme();
+	const activityImageUrl = activity.activityImageUrls
+		? activity.activityImageUrls[0]
+		: "";
+
 	return (
 		<Paper
 			sx={{
 				...cardStyle.container,
-				width: 296,
+				width: 272,
 			}}
 		>
 			{/* 上方 區塊 */}
-			<Box sx={cardStyle.topInfoWrapper}>
+			<Box sx={cardStyle.topInfoWrapperSmall}>
 				{/* 底圖 */}
 				<Box sx={cardStyle.topBg}>
 					<CardMedia
 						component="img"
-						alt={activity.title}
-						height={197}
-						image={activity.photo}
+						alt={activity.subtitle}
+						height={181}
+						image={activityImageUrl}
 					/>
 				</Box>
 
@@ -55,13 +59,14 @@ function CardActivity({ activity }: { activity: ActivityProp }) {
 							alignItems="center"
 							sx={{
 								...cardStyle.chip,
-								width: 155,
+								height: "2.5rem",
+								width: { xs: 155, xl: 150 },
 								py: 0.5,
 							}}
 						>
 							<Avatar
-								alt={activity.name}
-								src={activity.avatar}
+								alt={activity.organizer?.name || ""}
+								src={activity.organizer?.photo || ""}
 								sx={{
 									width: 32,
 									height: 32,
@@ -74,11 +79,11 @@ function CardActivity({ activity }: { activity: ActivityProp }) {
 								}}
 							>
 								{/* 星星評分 */}
-								<RatingStar rating={activity.rating} />
+								<RatingStar rating={activity.organizer?.rating || 0} />
 
 								{/* 主揪名稱 */}
 								<Typography sx={cardStyle.chipOrganizerName}>
-									{activity.name}
+									{activity.organizer?.name}
 								</Typography>
 							</Box>
 						</Box>
@@ -91,7 +96,12 @@ function CardActivity({ activity }: { activity: ActivityProp }) {
 							label={
 								<Box display="inline-flex" alignItems="center">
 									<FavoriteIcon sx={cardStyle.chipIcon} />
-									<Typography sx={cardStyle.chipText}>
+									<Typography
+										sx={{
+											...cardStyle.chipText,
+											width: 30,
+										}}
+									>
 										{activity.likers || 0}
 									</Typography>
 								</Box>
@@ -101,7 +111,7 @@ function CardActivity({ activity }: { activity: ActivityProp }) {
 				</Grid>
 			</Box>
 
-			<CardBottomInfo info={activity} />
+			<CardBottomInfo row={3} info={activity} />
 		</Paper>
 	);
 }

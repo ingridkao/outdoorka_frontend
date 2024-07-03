@@ -1,45 +1,34 @@
-import { ActivityState } from "@/types";
+import { Activity, ActivityState } from "@/types";
 
+export enum TicketStatus {
+	Unused = 0,
+	Used = 1,
+}
 export interface OrganizerState {
 	_id: string;
 	name: string;
 	photo: string;
 	rating: number;
+	mobile?: string;
+	email?: string;
 }
 
 export interface TicketsState {
 	ticketId: string;
 	ticketStatus: number;
-	ticketOwnerId?: string;
+	ticketNote: string;
+	ownerId: string;
+	ownerName: string;
+	assignedAt: string | null;
 }
-export interface TicketState {
-	_id: string;
-	title: string;
-	status: number;
-	region: string;
-	city: string;
-	activityImageUrl: string;
-	activityStartTime: string;
-	activityEndTime: string;
-	likers: number;
-	ticketCount: number;
-	tickets: TicketsState[];
-	bookedCapacity: number;
-	totalCapacity?: number;
-	organizer?: OrganizerState;
+export interface PaymentState extends Activity {
+	paymentId: string;
+	status?: number;
+	ticketStatu?: number;
+	ticketTotal: number;
+	ticketAssign: number;
+	ticketUse: number;
 }
-
-export type TicketProp = {
-	title: string;
-	location: string;
-	startTime: string;
-	endTime: string;
-	photo: string;
-	capacity: number;
-	status: number;
-	ticketCount: number;
-	tickets: TicketsState[];
-};
 
 export type CheckinTicketInfoProp = {
 	_id: string;
@@ -48,3 +37,12 @@ export type CheckinTicketInfoProp = {
 	payment: string;
 	activity: ActivityState;
 };
+
+export interface TicketInfoState extends Activity {
+	_id: string;
+	organizer: OrganizerState;
+	ticketStatus: number;
+	ticketNote: string;
+	tickets: TicketsState[];
+	ratingList?: { ticketId: string }[];
+}

@@ -18,10 +18,6 @@ const lightTheme = createTheme({
 			light: "#E9E1DC",
 			dark: "#3C3834",
 		},
-		text: {
-			primary: "#22262C",
-			secondary: "#B1AAA5",
-		},
 		error: {
 			main: "#BE565B",
 			light: "#FFDAD9",
@@ -35,6 +31,10 @@ const lightTheme = createTheme({
 		background: {
 			default: "#f8f9ff",
 			paper: "#FFFFFF",
+		},
+		text: {
+			primary: "#22262C",
+			secondary: "#B1AAA5",
 		},
 	},
 	breakpoints: {

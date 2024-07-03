@@ -248,6 +248,7 @@ export default function UserProfile({ userData }: Props) {
 							<LocalizationProvider dateAdapter={AdapterDayjs}>
 								<DemoContainer components={["DatePicker"]}>
 									<DatePicker
+										sx={{ width: "100%" }}
 										name="birthday"
 										label="生日"
 										format="YYYY/MM/DD"

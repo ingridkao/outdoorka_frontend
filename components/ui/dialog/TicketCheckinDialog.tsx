@@ -1,12 +1,12 @@
 "use client";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { CheckinTicketInfoProp } from "@/types/TicketType";
-import useCustomTheme from "@/components/ui/shared/useCustomTheme";
+import axios from "@/plugins/api/axios";
 import { parseDetailDate } from "@/utils/dateHandler";
-import NextLink from "next/link";
-
-import { useState, SyntheticEvent } from "react";
-
+import useCustomTheme from "@/components/ui/shared/useCustomTheme";
+import { TicketStatus } from "@/types/TicketType";
 import {
 	Box,
 	Typography,
@@ -15,17 +15,42 @@ import {
 	DialogContent,
 	DialogActions,
 	Button,
+	Alert,
 } from "@mui/material";
 
 function TicketCheckinDialog(props: {
-	info: CheckinTicketInfoProp;
+	info: CheckinTicketInfoProp | null;
 	open: boolean;
 	onClose: () => void;
 }) {
 	const customStyle = useCustomTheme();
+	const router = useRouter();
+
 	const { onClose, open, info } = props;
-	const checkinCommit = () => {
-		// setOpen(true);
+	const { organizerTicket } = axios;
+	const [errorMsg, setErrorMsg] = useState("");
+	const [successMsg, setSuccessMsg] = useState("");
+
+	const checkinCommit = async () => {
+		if (!(info && info._id)) return;
+
+		try {
+			const responseBody = await organizerTicket.patchTicketInfo(info._id);
+			if (
+				responseBody.data &&
+				responseBody.data &&
+				responseBody.data.ticketStatus == TicketStatus.Used
+			) {
+				setErrorMsg("");
+				setSuccessMsg("驗票成功");
+				setTimeout(() => {
+					router.push("/organizer/activity");
+				}, 1000); // 1秒後跳轉
+			}
+		} catch (error: any) {
+			setErrorMsg(String(error?.message));
+			setSuccessMsg("");
+		}
 	};
 
 	return (
@@ -33,16 +58,12 @@ function TicketCheckinDialog(props: {
 			<DialogTitle>活動驗票</DialogTitle>
 			{info?.activity && (
 				<DialogContent>
-					<Box
-						sx={{
-							p: 5,
-						}}
-					>
-						<Typography variant="h3" sx={customStyle.h3Style}>
-							{info.activity.subtitle}
+					<Box sx={{ px: 5, py: 3 }}>
+						<Typography variant="h3" sx={customStyle.h3TitleStyle}>
+							{info.activity.title}
 						</Typography>
 						<Typography variant="h2" sx={customStyle.h2Style}>
-							{info.activity.title}
+							{info.activity.subtitle}
 						</Typography>
 						<Typography sx={customStyle.descStyle}>
 							{parseDetailDate(
@@ -77,6 +98,12 @@ function TicketCheckinDialog(props: {
 							</Typography>
 						</Box>
 					</Box>
+					<Box sx={{ px: 5, mb: 0.5 }}>
+						{errorMsg !== "" && <Alert severity="warning">{errorMsg}</Alert>}
+						{successMsg !== "" && (
+							<Alert severity="success">{successMsg}</Alert>
+						)}
+					</Box>
 				</DialogContent>
 			)}
 			<DialogActions
@@ -85,13 +112,8 @@ function TicketCheckinDialog(props: {
 					gap: 2,
 				}}
 			>
-				<Button
-					component={NextLink}
-					href="/organizer/activity"
-					variant="contained"
-					color="primary"
-				>
-					返回活動管理
+				<Button variant="contained" color="tertiary" onClick={onClose}>
+					返回
 				</Button>
 				<Button variant="contained" color="secondary" onClick={checkinCommit}>
 					確認報到

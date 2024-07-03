@@ -7,7 +7,7 @@ import StarEmptyIcon from "@/components/icon/starEmptyIcon";
 
 function RatingStars({ rating = 0 }: { rating: number }) {
 	const RatingStarsStyle = {
-		marginRight: "3px",
+		mr: "2px",
 		width: "12px",
 		height: "12px",
 	};

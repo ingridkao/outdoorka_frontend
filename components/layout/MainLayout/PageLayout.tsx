@@ -1,11 +1,11 @@
 "use client";
 
-import React from "react";
+import { MainLayoutProps } from "@/types/index";
+
 import { Box, Container } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import PageHeader from "@/components/layout/Header/PageHeader";
 import Footer from "@/components/layout/Footer/Footer";
-import { MainLayoutProps } from "@/types/index";
 
 function PageLayout({ children }: MainLayoutProps) {
 	const theme = useTheme();

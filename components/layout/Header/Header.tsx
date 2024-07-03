@@ -107,11 +107,12 @@ function Header() {
 						sx={{
 							display: { md: "none" },
 							justifyContent: "flex-start",
-							flex: "0 1 96px",
+							flex: "0 1 112px",
 						}}
 					>
 						<MenuIcon />
 					</IconButton>
+
 					{/* Desktop: Menu*/}
 					<Box
 						sx={{
