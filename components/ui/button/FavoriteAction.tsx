@@ -19,7 +19,7 @@ import { getCookie, USER_T0KEN_COOKIE } from "@/utils/cookieHandler";
 function FavoriteAction(props: {
 	home: boolean;
 	activity: ActivityState;
-	onLoad: (res: boolean) => void;
+	onLoad: () => void;
 }) {
 	const { home, activity, onLoad } = props;
 	const { favorite } = axios;
@@ -49,7 +49,7 @@ function FavoriteAction(props: {
 			}
 			// 觸發資料更新
 			dispatch(showLikes());
-			onLoad(true)
+			onLoad()
 			setModify(true)
 			const interval = setInterval(() => {
 				setModify(false)

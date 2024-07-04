@@ -24,7 +24,7 @@ import useCardTheme from "@/components/ui/card/useCardTheme";
 function CardActivity(props: {
 	home: boolean;
 	activity: ActivityState;
-	onLoad: (res: boolean) => void;
+	onLoad: () => void;
 }) {
 	const cardStyle = useCardTheme();
 	const router = useRouter();

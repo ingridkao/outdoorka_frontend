@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import NextLink from "next/link";
 import Slider from "react-slick";
 import { Box } from "@mui/material";
 import TitleSection from "@/components/layout/home/TitleSection";
@@ -45,16 +44,16 @@ function NewActivities() {
 	const [activityList, setActivityList] = useState<ActivityState[]>([]);
 	const [error, setError] = useState("");
 
-	useEffect(() => {
-		async function loadData() {
-			try {
-				const responseBody = await activity.getNewActivityList();
-				if (!responseBody || !responseBody.data) return;
-				setActivityList(responseBody.data);
-			} catch (error) {
-				setError("Failed to fetch data: " + String(error));
-			}
+	async function loadData() {
+		try {
+			const responseBody = await activity.getNewActivityList();
+			if (!responseBody || !responseBody.data) return;
+			setActivityList(responseBody.data);
+		} catch (error) {
+			setError("Failed to fetch data: " + String(error));
 		}
+	}
+	useEffect(() => {
 		loadData();
 	}, []);
 
@@ -90,14 +89,15 @@ function NewActivities() {
 				{activityList.map((value: ActivityState) => (
 					<Box
 						key={value._id}
-						component={NextLink}
-						href={`/activity/${value._id}`}
 						sx={{
 							px: 1.5,
 							py: 0.5,
 						}}
 					>
-						<CardActivitySlick activity={value} />
+						<CardActivitySlick 
+							activity={value}
+							onLoad={loadData}
+						/>
 					</Box>
 				))}
 			</Slider>

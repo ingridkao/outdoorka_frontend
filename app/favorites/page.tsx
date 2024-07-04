@@ -44,22 +44,19 @@ function Favorites() {
 	};
 	const updateDisplayTag = (tag: string = "") => {
 		if (tag) {
-			// TODO API需要tag資料
-			// const filterList = source.filter((ticketItem:any) => ticketItem.region === tag);
-			// setDisplayList(filterList);
+			const filterList = source.filter((ticketItem:ActivityState) => ticketItem.activityTags && ticketItem.activityTags.includes(tag));
+			setDisplayList(filterList);
 		} else {
-			setDisplayList(source);
+			clear()
 		}
 	};
 
 	const updateDisplayRegion = (region: string = "") => {
 		if (region) {
-			const filterList = source.filter(
-				(ticketItem: any) => ticketItem.region === region,
-			);
+			const filterList = source.filter((ticketItem: ActivityState) => ticketItem.region === region);
 			setDisplayList(filterList);
 		} else {
-			setDisplayList(source);
+			clear()
 		}
 	};
 
