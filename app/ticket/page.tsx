@@ -214,7 +214,7 @@ function Tickets() {
 					</Box>
 
 					<Box sx={{ mt: 2 }}>
-						{displayList.length === 0 && <NoData target="票卷" />}
+						{displayList.length === 0 && <NoData target="票卷" sub={true}/>}
 
 						<Grid
 							container

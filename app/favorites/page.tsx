@@ -260,7 +260,7 @@ function Favorites() {
 					</Box>
 
 					<Box sx={{ mt: 2 }}>
-						{displayList.length === 0 && <NoData target="活動" />}
+						{displayList.length === 0 && <NoData target="活動" sub={true} />}
 
 						<Grid
 							container

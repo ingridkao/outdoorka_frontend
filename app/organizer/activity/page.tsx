@@ -81,7 +81,7 @@ function OrganizerActivityList() {
 			{dataLoad ? (
 				<ListLoading />
 			) : activityList.length === 0 ? (
-				<NoData target="活動" />
+				<NoData target="活動" sub={true} />
 			) : (
 				<Grid container spacing={2}>
 					<Grid item xs={11}></Grid>

@@ -13,6 +13,13 @@ export interface OrganizerState {
 	email?: string;
 }
 
+export interface OwnerState {
+	_id: string;
+	name: string;
+	photo: string;
+	mobile?: string;
+}
+
 export interface TicketsState {
 	ticketId: string;
 	ticketStatus: number;

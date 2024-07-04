@@ -3,8 +3,6 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import NextLink from "next/link";
-import LoginAction from "./LoginAction";
-
 import {
 	AppBar,
 	Box,
@@ -17,12 +15,12 @@ import {
 	Toolbar,
 	useScrollTrigger,
 } from "@mui/material";
-
 import MenuIcon from "@mui/icons-material/Menu";
 import LogoHeader1 from "@/public/images/logoHeader_1.svg";
 import LogoHeader2 from "@/public/images/logoHeader_2.svg";
-
-const linkTitles = [
+import LoginAction from "./LoginAction";
+export const drawerWidth = 240;
+export const linkTitles = [
 	{ title: "關於我們", link: "#" },
 	{ title: "活動", link: "/activities" },
 	{ title: "優良主揪", link: "#" },
@@ -30,24 +28,13 @@ const linkTitles = [
 	{ title: "短影音", link: "#" },
 ];
 
-function Header() {
-	const [container, setContainer] = useState<HTMLElement | undefined>(
-		undefined,
-	);
-	const [mobileOpen, setMobileOpen] = useState(false);
-	const scrollDownFlag = useScrollTrigger();
-	const drawerWidth = 240;
-
-	const handleDrawerToggle = () => {
-		setMobileOpen((prevState) => !prevState);
-	};
-
-	// mobile: 側拉
-	const asideDrawer = (
+export function AsideDrawer(props: {
+	drawerToggle: () => void;
+}) {
+	const { drawerToggle } = props;
+	return (
 		<Box>
-			<IconButton onClick={handleDrawerToggle}>
-				<MenuIcon />
-			</IconButton>
+			<IconButton onClick={drawerToggle}><MenuIcon /></IconButton>
 			<List sx={{ px: 2, py: 5 }}>
 				{linkTitles.map((item) => (
 					<ListItem
@@ -71,8 +58,18 @@ function Header() {
 				))}
 			</List>
 		</Box>
-	);
+	)
+}
 
+function Header() {
+	const [container, setContainer] = useState<HTMLElement | undefined>(
+		undefined,
+	);
+	const [mobileOpen, setMobileOpen] = useState(false);
+	const scrollDownFlag = useScrollTrigger();
+	const handleDrawerToggle = () => {
+		setMobileOpen((prevState) => !prevState);
+	};
 	useEffect(() => {
 		setContainer(
 			typeof window !== "undefined" ? window.document.body : undefined,
@@ -178,7 +175,7 @@ function Header() {
 						},
 					}}
 				>
-					{asideDrawer}
+					<AsideDrawer drawerToggle={handleDrawerToggle} />
 				</Drawer>
 			</nav>
 		</Box>

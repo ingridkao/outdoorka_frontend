@@ -14,7 +14,6 @@ import RatingStar from "@/components/ui/shared/RatingStar";
 import CardBottomInfo from "@/components/ui/card/CardBottomInfo";
 import FavoriteAction from "@/components/ui/button/FavoriteAction";
 import useCardTheme from "@/components/ui/card/useCardTheme";
-
 /**
  * 活動卡片for 首頁最新輪播活動
  * @param activity 單一活動資料
@@ -111,7 +110,7 @@ function CardActivitySlick(props: {
 				</Grid>
 			</Box>
 
-			<CardBottomInfo row={3} info={activity} />
+			<CardBottomInfo row={1} info={activity} />
 		</Paper>
 	);
 }

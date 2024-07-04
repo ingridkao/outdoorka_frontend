@@ -79,26 +79,26 @@ function TicketAction({
 				{/* 超過一張票卷，未使用及未分票的票卷 */}
 				{tickets.length > 1 &&
 					targetTicket.ticketStatus == TicketStatus.Unused && (
-						<Button
-							variant="contained"
-							size="large"
-							sx={{ wordBreak: "keep-all" }}
-							onClick={() => handleAction("email")}
-						>
-							進行分票
-						</Button>
-					)}
+					<Button
+						variant="contained"
+						size="large"
+						sx={{ wordBreak: "keep-all" }}
+						onClick={() => handleAction("email")}
+					>
+						進行分票
+					</Button>
+				)}
 				{tickets.length === 1 &&
 					targetTicket.ticketStatus == TicketStatus.Unused && (
-						<Button
-							variant="contained"
-							size="large"
-							sx={{ wordBreak: "keep-all" }}
-							onClick={() => handleAction("note")}
-						>
-							填寫備註
-						</Button>
-					)}
+					<Button
+						variant="contained"
+						size="large"
+						sx={{ wordBreak: "keep-all" }}
+						onClick={() => handleAction("note")}
+					>
+						填寫備註
+					</Button>
+				)}
 				{targetTicket.ticketStatus == TicketStatus.Used && (
 					<Button
 						variant="contained"
