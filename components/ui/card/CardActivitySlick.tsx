@@ -1,14 +1,14 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { ActivityState } from "@/types/ActivitiesType";
+import { HomeActivityState } from "@/types/ActivitiesType";
 import {
 	Box,
 	Typography,
 	Avatar,
 	Grid,
 	Paper,
-	CardMedia,
+	CardMedia
 } from "@mui/material";
 import RatingStar from "@/components/ui/shared/RatingStar";
 import CardBottomInfo from "@/components/ui/card/CardBottomInfo";
@@ -19,7 +19,7 @@ import useCardTheme from "@/components/ui/card/useCardTheme";
  * @param activity 單一活動資料
  */
 function CardActivitySlick(props: {
-	activity: ActivityState;
+	activity: HomeActivityState;
 	onLoad: () => void;
 }) {
 	const cardStyle = useCardTheme();
@@ -49,7 +49,7 @@ function CardActivitySlick(props: {
 				<Box sx={cardStyle.topBg}>
 					<CardMedia
 						component="img"
-						alt={activity.subtitle}
+						alt={activity.title || activity.subtitle}
 						height={181}
 						image={activityImageUrl}
 					/>

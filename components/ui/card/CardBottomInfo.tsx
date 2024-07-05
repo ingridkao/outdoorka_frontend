@@ -5,7 +5,7 @@ import { Box, Typography } from "@mui/material";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import LocationIcon from "@/components/icon/locationIcon";
 import useCardTheme from "./useCardTheme";
-import { ActivityState } from "@/types/ActivitiesType";
+import { ActivityState, HomeActivityState } from "@/types/ActivitiesType";
 import { PaymentState } from "@/types/TicketType";
 
 /**
@@ -17,7 +17,7 @@ function CardBottomInfo({
 	info,
 }: {
 	row: number;
-	info: ActivityState | PaymentState;
+	info: HomeActivityState |ActivityState | PaymentState;
 }) {
 	const cardStyle = useCardTheme();
 	return (
@@ -47,7 +47,7 @@ function CardBottomInfo({
 							: "singleline-ellipsis"
 				}
 			>
-				{info.subtitle || info.title}
+				{info.title || info.subtitle}
 			</Typography>
 		</Box>
 	);

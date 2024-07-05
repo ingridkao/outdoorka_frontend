@@ -48,7 +48,7 @@ function CardOrganizerActivity({
 				<Box sx={cardStyle.topBg}>
 					<CardMedia
 						component="img"
-						height={244}
+						height={310}
 						alt={activity.title}
 						image={activity.activityImageUrls[0]}
 					/>

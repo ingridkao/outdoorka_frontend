@@ -1,10 +1,11 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import PageLayout from "@/components/layout/MainLayout/PageLayout";
-import Loading from "@/components/ui/loading/loading";
 import CardActivity from "@/components/ui/card/CardActivity";
 import axios from "@/plugins/api/axios";
 import { ActivityState } from "@/types";
+import { activityTags } from "@/types/enum/activity";
 import {
 	faMagnifyingGlass,
 	faStar,
@@ -25,14 +26,16 @@ import {
 	MenuItem,
 	Paper,
 	Select,
+	SelectChangeEvent,
 	Stack,
 	Typography,
 	styled,
-	useTheme,
+	useTheme
 } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { useEffect, useState } from "react";
+import { ActivitiesListLoading } from "@/components/ui/loading/ListLoading";
+import NoData from "@/components/ui/shared/NoData";
 
 const FilteredBox = styled(Paper)(({ theme }) => ({
 	backgroundColor: theme.palette.background.paper,
@@ -59,11 +62,22 @@ function Activities() {
 	const { activity } = axios;
 
 	const [activityList, setActivityList] = useState<ActivityState[]>([]);
+	const [load, setLoad] = useState(true);
 	const [error, setError] = useState("");
+	const [rating, setRating] = useState("");
+	const handleRatingChange = (event: SelectChangeEvent) => {
+		setRating(event.target.value as string);
+	};
+	const [capacity, setCapacity] = useState("");
+	const handleCapacityChange = (event: SelectChangeEvent) => {
+		setCapacity(event.target.value as string);
+	};
 
 	async function loadData() {
 		try {
+			setLoad(true)
 			const responseBody = await activity.getActivitiesList();
+			setLoad(false)
 			if (responseBody && responseBody.data) {
 				setActivityList(responseBody.data);
 			}
@@ -74,9 +88,7 @@ function Activities() {
 	useEffect(() => {
 		loadData();
 	}, []);
-	const reload = (res: boolean) => {
-		if (res) loadData();
-	};
+
 	return (
 		<PageLayout>
 			<Grid container sx={{ width: "100%", m: "auto", gap: 5 }}>
@@ -85,7 +97,6 @@ function Activities() {
 						display: { xs: "none", lg: "block" },
 						minWidth: "320px",
 					}}
-					columnSpacing={2}
 				>
 					<Typography
 						variant="h6"
@@ -149,9 +160,8 @@ function Activities() {
 										labelId="rating-select-label"
 										id="rating-select"
 										label="選擇星等"
-										// value={age}
-										name="rating"
-										// onChange={handleChange}
+										value={rating}
+										onChange={handleRatingChange}
 										MenuProps={{
 											PaperProps: {
 												sx: {
@@ -188,9 +198,9 @@ function Activities() {
 										labelId="capacity-select-label"
 										id="capacity-select"
 										name="capacity"
-										// value={age}
+										value={capacity}
 										label="選擇人數"
-										// onChange={handleChange}
+										onChange={handleCapacityChange}
 										MenuProps={{
 											PaperProps: {
 												sx: {
@@ -211,13 +221,7 @@ function Activities() {
 					</Stack>
 				</Grid>
 
-				<Grid
-					xs
-					sx={{
-						maxWidth: "1440px",
-					}}
-					columnSpacing={2}
-				>
+				<Grid xs sx={{ width: 1480}}>
 					<Paper
 						sx={{
 							borderRadius: "44px",
@@ -322,14 +326,24 @@ function Activities() {
 					</Box> */}
 
 					<Grid container spacing={3} sx={{ mt: 3, width: "100%" }}>
-						{activityList.length === 0 && <Loading />}
-						{error && <div>Failed to load</div>}
-						{activityList &&
-							activityList.map((value: ActivityState) => (
-								<Grid item xs={12} sm={6} lg={4} key={value._id}>
-									<CardActivity home={false} activity={value} onLoad={reload} />
-								</Grid>
-							))}
+						{!load && activityList.length === 0 && <Grid xs={12}>
+							<NoData target="活動" sub={true} />
+						</Grid>}
+						{load || error 
+							?<ActivitiesListLoading />
+							:<>
+								{activityList &&
+								activityList.map((value: ActivityState) => (
+									<Grid item xs={12} sm={6} md={4} key={value._id}>
+										<CardActivity 
+											home={false} 
+											activity={value} 
+											onLoad={()=>loadData()}
+										/>
+									</Grid>
+								))}
+							</>
+						}
 					</Grid>
 				</Grid>
 			</Grid>
@@ -399,9 +413,9 @@ const Tag = () => {
 					}}
 					multiple
 				>
-					{tagOptions.map((value, i) => (
-						<MenuItem key={i} value={value} sx={{ fontSize: 16 }}>
-							{value}
+					{Object.keys(activityTags).map((value) => (
+						<MenuItem key={value} value={value} sx={{ fontSize: 16 }}>
+							{activityTags[value]}
 						</MenuItem>
 					))}
 				</CustomSelect>
@@ -447,6 +461,5 @@ const sortOptions = [
 		label: "人數",
 	},
 ];
-const tagOptions = ["登山", "路跑", "夏令營", "自由浮淺"];
 
 export default Activities;

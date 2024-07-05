@@ -2,9 +2,7 @@
 
 import { useState, useEffect, SyntheticEvent, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-
 import OrganizerLayout from "@/components/layout/OrganizerLayout/OrganizerLayout";
-
 import axios from "@/plugins/api/axios";
 import { OrganizerActivityState } from "@/types/ActivitiesType";
 import { Box, Tab, Tabs, Grid, Alert, IconButton } from "@mui/material";

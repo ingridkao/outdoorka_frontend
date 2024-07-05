@@ -42,7 +42,7 @@ const lightTheme = createTheme({
 			xs: 0,
 			sm: 768,
 			md: 1280,
-			lg: 1600,
+			lg: 1848,
 			xl: 1920,
 		},
 	},
