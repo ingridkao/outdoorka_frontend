@@ -13,7 +13,7 @@ import {
 	ListItemText,
 } from "@mui/material";
 import InboxIcon from "@mui/icons-material/Inbox";
-import Loading from "@/components/ui/loading/loading";
+import CircularLoading from "@/components/ui/loading/CircularLoading";
 
 const linkTitles = [
 	{ title: "建立活動", link: "/organizer/activity-create/" },
@@ -90,7 +90,7 @@ function LeftMenu() {
 
 function WrappedLeftMenu() {
 	return (
-		<Suspense fallback={<Loading />}>
+		<Suspense fallback={<CircularLoading />}>
 			<LeftMenu />
 		</Suspense>
 	);

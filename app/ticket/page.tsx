@@ -21,7 +21,7 @@ import { useTheme } from "@mui/material/styles";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import PageLayout from "@/components/layout/MainLayout/PageLayout";
 import CardTicket from "@/components/ui/card/CardTicket";
-import Loading from "@/components/ui/loading/loading";
+import CircularLoading from "@/components/ui/loading/CircularLoading";
 import NoData from "@/components/ui/shared/NoData";
 import SortIcon from "@/components/icon/SortIcon";
 import ListSearchHeader from "@/components/ui/shared/ListSearchHeader";
@@ -81,10 +81,9 @@ function Tickets() {
 
 	useEffect(() => {
 		async function loadData() {
-			setLoad(true);
 			try {
 				const responseBody = await ticket.getPaymentList();
-				setLoad(false);
+				setLoad(true);
 				if (responseBody && responseBody.data) {
 					const parseData = responseBody.data.map(
 						(ticketItem: PaymentState) => {
@@ -101,8 +100,8 @@ function Tickets() {
 					setSource(parseData);
 					setDisplayList(parseData);
 				}
-			} catch (error: any) {
 				setLoad(false);
+			} catch (error: any) {
 				if (error?.status == 404) {
 					setSource([]);
 				} else {
@@ -113,7 +112,7 @@ function Tickets() {
 		loadData();
 	}, []);
 
-	if (load) return <Loading />;
+	if (load) return <CircularLoading />;
 
 	return (
 		<PageLayout>

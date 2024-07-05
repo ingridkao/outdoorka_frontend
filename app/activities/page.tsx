@@ -73,20 +73,20 @@ function Activities() {
 		setCapacity(event.target.value as string);
 	};
 
-	async function loadData() {
+	async function loadData(init:boolean) {
 		try {
-			setLoad(true)
+			if(init) setLoad(true)
 			const responseBody = await activity.getActivitiesList();
-			setLoad(false)
 			if (responseBody && responseBody.data) {
 				setActivityList(responseBody.data);
 			}
+			setLoad(false)
 		} catch (error) {
 			setError("Failed to fetch data: " + String(error));
 		}
 	}
 	useEffect(() => {
-		loadData();
+		loadData(true);
 	}, []);
 
 	return (
@@ -338,7 +338,7 @@ function Activities() {
 										<CardActivity 
 											home={false} 
 											activity={value} 
-											onLoad={()=>loadData()}
+											onLoad={()=>loadData(false)}
 										/>
 									</Grid>
 								))}

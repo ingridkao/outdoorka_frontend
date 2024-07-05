@@ -49,12 +49,11 @@ function FavoriteAction(props: {
 			}
 			// 觸發資料更新
 			dispatch(showLikes());
-			onLoad()
 			setModify(true)
-			const interval = setInterval(() => {
+			setTimeout(() => {
 				setModify(false)
+				onLoad()
 			}, 500);
-			return () => clearInterval(interval);
 		} catch (error: any) {
 			console.error(String(error?.message));
 			// TODO 顯示錯誤提示

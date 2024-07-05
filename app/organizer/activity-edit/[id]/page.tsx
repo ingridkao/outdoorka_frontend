@@ -13,7 +13,7 @@ import {
 	escapeContent,
 	getFirebaseFileName,
 } from "@/utils/common";
-import Loading from "@/components/ui/loading/loading";
+import CircularLoading from "@/components/ui/loading/CircularLoading";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -466,7 +466,7 @@ function ActivityCreate({ params }: { params: { id: string } }) {
 	if (initLoading) {
 		return (
 			<OrganizerLayout>
-				<Loading />
+				<CircularLoading />
 			</OrganizerLayout>
 		);
 	}

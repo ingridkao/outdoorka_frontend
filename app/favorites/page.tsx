@@ -13,7 +13,7 @@ import {
 	IconButton,
 	Select,
 	MenuItem,
-	SelectChangeEvent,
+	SelectChangeEvent
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
@@ -95,11 +95,10 @@ function Favorites() {
 		}
 	};
 
-	async function loadData(init:boolean) {
+	async function loadData(init:boolean) {		
 		try {
-			setLoad(true);
+			if(init) setLoad(true)
 			const responseBody = await favorite.getFavoritesList();
-
 			if (responseBody && responseBody.data) {
 				const parseData = responseBody.data.likedList.map(
 					(favoriteItem: FavoritesActivityState) => {
@@ -118,15 +117,7 @@ function Favorites() {
 				const parseRegion = responseBody.data.region;
 				setDisplayRegion(parseRegion);
 
-				if(init){
-					setLoad(false);
-				}else{
-					// 避免會閃一下
-					const interval = setInterval(() => {
-						setLoad(false);
-					}, 1000);
-					return () => clearInterval(interval);
-				}
+				setLoad(false);
 			}
 		} catch (error: any) {
 			if (error?.status == 404) {
@@ -263,12 +254,13 @@ function Favorites() {
 							<SortIcon />
 						</IconButton>
 					</Box>
-
+					
+					
 					{load ? 
 						<ListLoading />:
 						displayList.length === 0
 							? <NoData target="活動" sub={true} />
-							:<Box sx={{ mt: 2 }}>
+							:	<Box sx={{ mt: 2 }}>
 								<Grid container
 									spacing={3}
 									columnSpacing={{ xs: 0, sm: 3 }}
@@ -286,7 +278,8 @@ function Favorites() {
 									))}
 								</Grid>
 							</Box>
-					}
+						}
+					
 				</Grid>
 			</Grid>
 		</PageLayout>
