@@ -18,7 +18,7 @@ function PageLayout({ children }: MainLayoutProps) {
 			<PageHeader />
 			<Container
 				component="main"
-				maxWidth="xl"
+				maxWidth="lg"
 				sx={{
 					px: 0,
 					py: { xs: 12, sm: 15 },

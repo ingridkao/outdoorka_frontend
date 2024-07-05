@@ -17,6 +17,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import LogoHorizontal from "@/components/icon/LogoHorizontal";
 import LoginAction from "./LoginAction";
+import { drawerWidth, AsideDrawer } from "./Header";
 
 function PageHeader() {
 	const [container, setContainer] = useState<HTMLElement | undefined>(
@@ -24,20 +25,10 @@ function PageHeader() {
 	);
 	const [mobileOpen, setMobileOpen] = useState(false);
 	const scrollDownFlag = useScrollTrigger();
-	const drawerWidth = 240;
 
 	const handleDrawerToggle = () => {
 		setMobileOpen((prevState) => !prevState);
 	};
-
-	// mobile: 側拉
-	const asideDrawer = (
-		<Box>
-			<IconButton onClick={handleDrawerToggle}>
-				<MenuIcon />
-			</IconButton>
-		</Box>
-	);
 
 	useEffect(() => {
 		setContainer(
@@ -131,7 +122,7 @@ function PageHeader() {
 						},
 					}}
 				>
-					{asideDrawer}
+					<AsideDrawer drawerToggle={handleDrawerToggle} />
 				</Drawer>
 			</nav>
 		</Box>

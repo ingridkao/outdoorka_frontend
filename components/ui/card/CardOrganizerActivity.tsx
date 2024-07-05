@@ -16,6 +16,7 @@ import {
 import ClearIcon from "@mui/icons-material/Clear";
 import PeopleIcon from "@/components/icon/peopleIcon";
 import ParticipantDialog from "@/components/ui/dialog/ParticipantDialog";
+import ParticipantReviewDialog from "@/components/ui/dialog/ParticipantReviewDialog";
 import { OrganizerActivityState } from "@/types/ActivitiesType";
 import CardBottomInfo from "@/components/ui/card/CardBottomInfo";
 import useCardTheme from "@/components/ui/card/useCardTheme";
@@ -37,6 +38,7 @@ function CardOrganizerActivity({
 }) {
 	const cardStyle = useCardTheme();
 	const [dialogOpen, setDialogOpen] = useState(false);
+	const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
 	const canceActivity = () => {};
 
 	return (
@@ -46,7 +48,7 @@ function CardOrganizerActivity({
 				<Box sx={cardStyle.topBg}>
 					<CardMedia
 						component="img"
-						height={244}
+						height={310}
 						alt={activity.title}
 						image={activity.activityImageUrls[0]}
 					/>
@@ -120,7 +122,7 @@ function CardOrganizerActivity({
 			<CardBottomInfo row={1} info={activity} />
 
 			{!isFinish && (
-				<Grid container spacing={1.5} sx={{ p: 2 }}>
+				<Grid container spacing={1.5} sx={{ px: 2, pb: 2 }}>
 					<Grid item xs={6}>
 						<Button
 							variant="contained"
@@ -160,6 +162,28 @@ function CardOrganizerActivity({
 					</Grid>
 				</Grid>
 			)}
+
+			{isFinish && 
+				<Grid container spacing={1.5} sx={{ px: 2, pb: 2 }}>
+					<Grid item xs={12}>
+						<Button
+							variant="contained"
+							size="small"
+							sx={{ width: "100%" }}
+							onClick={() => setReviewDialogOpen(true)}
+						>
+							評價會員
+						</Button>
+						{reviewDialogOpen && (
+							<ParticipantReviewDialog
+								data={activity}
+								open={reviewDialogOpen}
+								onClose={() => setReviewDialogOpen(false)}
+							/>
+						)}
+					</Grid>
+				</Grid>
+			}
 		</Paper>
 	);
 }

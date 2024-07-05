@@ -44,3 +44,13 @@ export enum ActivityTag {
 	Excursion = "郊遊",
 	Trip = "旅行",
 }
+
+export const activityTags: Record<string, string> = {
+	"Camping": "露營",
+	"Climbing": "攀岩",
+	"Hiking": "登山",
+	"Sports": "球類",
+	"Surfing": "衝浪",
+	"Excursion": "郊遊",
+	"Trip": "旅行"
+}

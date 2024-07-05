@@ -4,6 +4,8 @@ import { ChangeEvent, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import NextLink from "next/link";
+import BackBtn from "@/components/ui/shared/BackBtn";
+
 import { RootState, LoginForm } from "@/types";
 import { loginUser } from "@/features/user/authSlice";
 import { EMAIL_REGEX, PWD_REGEX } from "@/utils/regexHandler";
@@ -26,6 +28,7 @@ import {
 	Button,
 	Link as MuiLink,
 	Alert,
+	Fade
 } from "@mui/material";
 
 const baseUrl =
@@ -136,151 +139,140 @@ export default function Login() {
 			container
 			direction="row"
 			justifyContent="space-between"
-			alignItems="center"
 			spacing={2}
 		>
-			<Grid
-				xs={12}
-				md={6}
-				sx={{
-					overflow: "hidden",
-				}}
-			>
+			<Grid xs={12} sm={6} sx={{ overflow: "hidden" }}>
 				<Box
 					component="img"
 					sx={{
 						objectFit: "cover",
 						height: "100dvh",
 					}}
-					display={{ xs: "none", md: "block" }}
+					display={{ xs: "none", sm: "block" }}
 					alt="cover"
 					src="https://i.imgur.com/UTYmBjM.jpg"
 				/>
 			</Grid>
 
-			<Grid
-				xs={12}
-				md={6}
-				sx={{
-					textAlign: "center",
-				}}
-			>
-				<Box
-					sx={{
-						width: "75%",
-						margin: "auto",
-					}}
-				>
-					<Box component="form" noValidate autoComplete="off">
-						<Box
-							component="img"
-							sx={{
-								objectFit: "cover",
-								marginBottom: 3,
-							}}
-							alt="login"
-							src="https://i.imgur.com/qokckjQ.png"
-						/>
-						{errorMsg && <Alert severity="error">{errorMsg}</Alert>}
-						{successMsg && <Alert severity="success">{successMsg}</Alert>}
-						<FormGroup>
-							<TextField
-								required
-								name="account"
-								type="email"
-								value={loginField.account}
-								label={loginLabel.account}
-								margin="normal"
-								error={loginValid.account !== ""}
-								helperText={loginValid.account}
-								InputLabelProps={{ shrink: true }}
-								onChange={(
-									event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-								) => handleInputChange(event)}
-							/>
-							<TextField
-								required
-								name="password"
-								value={loginField.password}
-								label={loginLabel.password}
-								margin="normal"
-								type="password"
-								error={loginValid.password !== ""}
-								helperText={loginValid.password}
-								InputLabelProps={{ shrink: true }}
-								onChange={(
-									event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-								) => handleInputChange(event)}
-							/>
-							<Button
-								variant="contained"
-								size="large"
-								sx={{
-									marginTop: 1,
-									marginBottom: 1,
-								}}
-								onClick={handleSubmit}
-								disabled={
-									loginValid.account !== "" || loginValid.password !== ""
-								}
-							>
-								登入
-							</Button>
+			<Grid xs={12} sm={6}>
+				<Box sx={{ml: 2,mt:2, mb:12}}>
+					<BackBtn href="/" name="返回" />
+				</Box>
+				<Fade in={true}>
+					<Box sx={{ textAlign: "center"}}>
+						<Box sx={{ width: "75%", maxWidth: 380, margin: "auto"}}>
+							<Box component="form" noValidate autoComplete="off">
+								<Box
+									component="img"
+									sx={{
+										objectFit: "cover",
+										marginBottom: 3,
+									}}
+									alt="login"
+									src="https://i.imgur.com/qokckjQ.png"
+								/>
+								{errorMsg && <Alert severity="error">{errorMsg}</Alert>}
+								{successMsg && <Alert severity="success">{successMsg}</Alert>}
+								<FormGroup>
+									<TextField
+										required
+										name="account"
+										type="email"
+										value={loginField.account}
+										label={loginLabel.account}
+										margin="normal"
+										error={loginValid.account !== ""}
+										helperText={loginValid.account}
+										InputLabelProps={{ shrink: true }}
+										onChange={(
+											event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+										) => handleInputChange(event)}
+									/>
+									<TextField
+										required
+										name="password"
+										value={loginField.password}
+										label={loginLabel.password}
+										margin="normal"
+										type="password"
+										error={loginValid.password !== ""}
+										helperText={loginValid.password}
+										InputLabelProps={{ shrink: true }}
+										onChange={(
+											event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+										) => handleInputChange(event)}
+									/>
+									<Button
+										variant="contained"
+										size="large"
+										sx={{
+											marginTop: 1,
+											marginBottom: 1,
+										}}
+										onClick={handleSubmit}
+										disabled={
+											loginValid.account !== "" || loginValid.password !== ""
+										}
+									>
+										登入
+									</Button>
+									<Box
+										sx={{
+											display: "flex",
+											justifyContent: "space-between",
+											alignItems: "center",
+											my: 2,
+										}}
+									>
+										<FormControlLabel
+											label="記住我"
+											control={
+												<Checkbox
+													name="remember"
+													checked={loginField.remember}
+													onChange={handleChecked}
+												/>
+											}
+										/>
+										<MuiLink component={NextLink} href="/forget" underline="always">
+											忘記密碼
+										</MuiLink>
+									</Box>
+								</FormGroup>
+							</Box>
+							<Typography variant="body1" sx={{ fontSize: 20 }}>
+								或
+							</Typography>
 							<Box
 								sx={{
 									display: "flex",
-									justifyContent: "space-between",
-									alignItems: "center",
+									flexDirection: "column",
+									gap: 1,
 									my: 2,
 								}}
 							>
-								<FormControlLabel
-									label="記住我"
-									control={
-										<Checkbox
-											name="remember"
-											checked={loginField.remember}
-											onChange={handleChecked}
-										/>
-									}
-								/>
-								<MuiLink component={NextLink} href="/forget" underline="always">
-									忘記密碼
-								</MuiLink>
+								<Button
+									variant="outlined"
+									size="large"
+									component={NextLink}
+									href={`${baseUrl}/api/v1/auth/google`}
+								>
+									使用 Google 帳號登入
+								</Button>
+								{/* <Button variant="outlined" size="large">
+									使用 LINE 帳號登入
+								</Button> */}
 							</Box>
-						</FormGroup>
-					</Box>
-					<Typography variant="body1" sx={{ fontSize: 20 }}>
-						或
-					</Typography>
-					<Box
-						sx={{
-							display: "flex",
-							flexDirection: "column",
-							gap: 1,
-							my: 2,
-						}}
-					>
-						<Button
-							variant="outlined"
-							size="large"
-							component={NextLink}
-							href={`${baseUrl}/api/v1/auth/google`}
-						>
-							使用 Google 帳號登入
-						</Button>
-						<Button variant="outlined" size="large">
-							使用 LINE 帳號登入
-						</Button>
-					</Box>
 
-					<Typography variant="body1">
-						尚未註冊帳號？
-						<MuiLink component={NextLink} href="/register" underline="always">
-							立即註冊
-						</MuiLink>
-					</Typography>
-				</Box>
+							<Typography variant="body1">
+								尚未註冊帳號？
+								<MuiLink component={NextLink} href="/register" underline="always">
+									立即註冊
+								</MuiLink>
+							</Typography>
+						</Box>
+					</Box>
+				</Fade>
 			</Grid>
 		</Grid>
 	);

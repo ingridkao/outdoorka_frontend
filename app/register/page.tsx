@@ -169,9 +169,9 @@ export default function Register() {
 				<Button variant="outlined" size="large">
 					使用 Google 帳號登入
 				</Button>
-				<Button variant="outlined" size="large">
+				{/* <Button variant="outlined" size="large">
 					使用 LINE 帳號登入
-				</Button>
+				</Button> */}
 			</Box>
 			<Typography variant="body1">
 				已經有揪好咖帳號？
