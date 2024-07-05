@@ -32,6 +32,13 @@ const organizerApi = (axios: any, event: any) => ({
 	getActivityParticipant(activityId: string) {
 		return axios.get(`${event}/activity/${activityId}/participants`);
 	},
+	userReview(ticketId: string, rating: number = 5, comment: string = "") {
+		if (!ticketId || !(rating && comment)) return;
+		return axios.post(`${event}/tickets/${ticketId}/rating`, {
+			rating,
+			comment,
+		});
+	},
 });
 
 export default organizerApi;

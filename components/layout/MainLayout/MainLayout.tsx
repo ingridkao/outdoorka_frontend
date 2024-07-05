@@ -17,7 +17,7 @@ function MainLayout({ children }: MainLayoutProps) {
 			<Header />
 			<Container
 				component="main"
-				maxWidth="xl"
+				maxWidth="lg"
 				sx={{
 					px: { sm: 0, lg: 0 },
 					pt: 12,

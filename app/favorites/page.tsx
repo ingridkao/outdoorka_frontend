@@ -13,18 +13,18 @@ import {
 	IconButton,
 	Select,
 	MenuItem,
-	SelectChangeEvent,
+	SelectChangeEvent
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import PageLayout from "@/components/layout/MainLayout/PageLayout";
 import CardActivity from "@/components/ui/card/CardActivity";
-import Loading from "@/components/ui/loading/loading";
+import ListLoading from "@/components/ui/loading/ListLoading";
 import NoData from "@/components/ui/shared/NoData";
 import SortIcon from "@/components/icon/SortIcon";
 import ListSearchHeader from "@/components/ui/shared/ListSearchHeader";
 
-import { ActivityState } from "@/types/ActivitiesType";
+import { FavoritesActivityState } from "@/types/ActivitiesType";
 
 function Favorites() {
 	const { favorite } = axios;
@@ -44,22 +44,19 @@ function Favorites() {
 	};
 	const updateDisplayTag = (tag: string = "") => {
 		if (tag) {
-			// TODO API需要tag資料
-			// const filterList = source.filter((ticketItem:any) => ticketItem.region === tag);
-			// setDisplayList(filterList);
+			const filterList = source.filter((ticketItem:FavoritesActivityState) => ticketItem.activityTags && ticketItem.activityTags.includes(tag));
+			setDisplayList(filterList);
 		} else {
-			setDisplayList(source);
+			clear()
 		}
 	};
 
 	const updateDisplayRegion = (region: string = "") => {
 		if (region) {
-			const filterList = source.filter(
-				(ticketItem: any) => ticketItem.region === region,
-			);
+			const filterList = source.filter((ticketItem: FavoritesActivityState) => ticketItem.region === region);
 			setDisplayList(filterList);
 		} else {
-			setDisplayList(source);
+			clear()
 		}
 	};
 
@@ -88,22 +85,23 @@ function Favorites() {
 		if (searchInput === "") {
 			setDisplayList(source);
 		} else {
-			const filterList = source.filter((favoriteItem: ActivityState) => {
+			const filterList = source.filter((favoriteItem: FavoritesActivityState) => {
 				return (
-					favoriteItem.subtitle && favoriteItem.subtitle.includes(searchInput)
+					favoriteItem.subtitle && favoriteItem.subtitle.includes(searchInput) ||
+					favoriteItem.title && favoriteItem.title.includes(searchInput)
 				);
 			});
 			setDisplayList(filterList);
 		}
 	};
 
-	async function loadData() {
-		setLoad(true);
+	async function loadData(init:boolean) {		
 		try {
+			if(init) setLoad(true)
 			const responseBody = await favorite.getFavoritesList();
 			if (responseBody && responseBody.data) {
 				const parseData = responseBody.data.likedList.map(
-					(favoriteItem: ActivityState) => {
+					(favoriteItem: FavoritesActivityState) => {
 						return {
 							...favoriteItem,
 							isLike: true,
@@ -118,6 +116,8 @@ function Favorites() {
 
 				const parseRegion = responseBody.data.region;
 				setDisplayRegion(parseRegion);
+
+				setLoad(false);
 			}
 		} catch (error: any) {
 			if (error?.status == 404) {
@@ -126,17 +126,10 @@ function Favorites() {
 				console.error(String(error?.message));
 			}
 		}
-		setLoad(false);
 	}
 	useEffect(() => {
-		loadData();
+		loadData(true);
 	}, []);
-
-	const reload = (res: boolean) => {
-		if (res) loadData();
-	};
-	// TODO loading要有動畫不然會閃一下
-	// if (load) return <Loading />;
 
 	return (
 		<PageLayout>
@@ -232,7 +225,7 @@ function Favorites() {
 					</Paper>
 				</Grid>
 
-				<Grid xs sx={{ maxWidth: "1440px" }}>
+				<Grid xs>
 					<ListSearchHeader
 						title={"追蹤活動清單"}
 						subTitle={"來看看你的活動清單！"}
@@ -261,30 +254,32 @@ function Favorites() {
 							<SortIcon />
 						</IconButton>
 					</Box>
-
-					<Box sx={{ mt: 2 }}>
-						{displayList.length === 0 && <NoData target="活動" />}
-
-						<Grid
-							container
-							rowSpacing={4}
-							columnSpacing={{ xs: 0, sm: 1, md: 5 }}
-							justifyContent="flex-start"
-						>
-							{displayList.map((value: ActivityState) => (
-								<Grid key={value._id} xs={12} sm={6} md={4}>
-									<CardActivity
-										home={false}
-										activity={{
-											...value,
-											isLike: value.isLike,
-										}}
-										onLoad={reload}
-									/>
+					
+					
+					{load ? 
+						<ListLoading />:
+						displayList.length === 0
+							? <NoData target="活動" sub={true} />
+							:	<Box sx={{ mt: 2 }}>
+								<Grid container
+									spacing={3}
+									columnSpacing={{ xs: 0, sm: 3 }}
+									justifyContent="flex-start"
+									sx={{ width: "100%" }}
+								>
+									{displayList.map((value: FavoritesActivityState) => (
+										<Grid key={value._id} xs={12} sm={6} md={4}>
+											<CardActivity
+												home={false}
+												activity={value}
+												onLoad={()=>loadData(false)}
+											/>
+										</Grid>
+									))}
 								</Grid>
-							))}
-						</Grid>
-					</Box>
+							</Box>
+						}
+					
 				</Grid>
 			</Grid>
 		</PageLayout>

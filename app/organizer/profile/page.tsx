@@ -25,7 +25,6 @@ import {
 	FormControlLabel,
 	Checkbox,
 } from "@mui/material";
-import Loading from "@/components/ui/loading/loading";
 import { NAME_REGEX, TW_PHONE_REGEX } from "@/utils/regexHandler";
 import { ActivityTag } from "@/types/enum/activity";
 import CircularLoading from "@/components/ui/loading/CircularLoading";
@@ -435,7 +434,7 @@ function OrganizerProfile() {
 
 function WrappedOrganizerProfilePage() {
 	return (
-		<Suspense fallback={<Loading />}>
+		<Suspense fallback={<CircularLoading />}>
 			<OrganizerProfile />
 		</Suspense>
 	);
