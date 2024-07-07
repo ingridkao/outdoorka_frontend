@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useStatem, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import {
@@ -79,6 +79,8 @@ function Details() {
 		name: "",
 		email: "",
 		mobile: "",
+		totalAmount: 99,
+		ticketCount: 1,
 	});
 
 	const handleChange = (event) => {
@@ -125,7 +127,7 @@ function Details() {
 	};
 
 	const goPayment = () => {
-		const { name, email, mobile } = formValue;
+		const { name, email, mobile, totalAmount, ticketCount } = formValue;
 		const paymentForm = {
 			activityId: mockData.data._id,
 			name,
@@ -133,9 +135,17 @@ function Details() {
 			mobile,
 			title: mockData.data.title,
 			subtitle: mockData.data.subtitle,
+			ticketCount,
+			totalAmount,
 		};
 		dispatch(paymentRegistration(paymentForm));
 	};
+
+	useEffect(() => {
+		if (router.query) {
+			console.log("Query Params:", router.query);
+		}
+	}, [router.query]);
 
 	return (
 		<StepperLayout>
