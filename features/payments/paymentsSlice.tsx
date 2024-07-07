@@ -9,27 +9,15 @@ export const paymentRegistration = createAsyncThunk(
 	"payments/registration",
 	async (paymentForm, { rejectWithValue }) => {
 		try {
-			// 設置支付請求的參數
 			const paymentData = {
-				MerchantID: uuidv4(),
-				MerchantTradeNo: `${Date.now()}`,
-				MerchantTradeDate: new Date()
-					.toISOString()
-					.replace("T", " ")
-					.split(".")[0],
-				TotalAmount: paymentForm.totalAmount * paymentForm.ticketCount,
-				PaymentType: "aio",
-				TradeDesc: paymentForm.subtitle,
-				ItemName: paymentForm.title,
-				ReturnURL: "http://localhost:3000/",
-				ChoosePayment: "Credit",
-				EncryptType: 1,
-				Email: paymentForm.email,
-			};
+				"activityId": paymentForm.activityId,
+				"ticketCount": "1",
+				"buyerName": paymentForm.name,
+				"buyerMobile": paymentForm.mobile,
+				"buyerEmail": paymentForm.email
+			}
 
 			const { data } = await payments.registration(paymentData);
-
-      console.log(data)
 
 			return data;
 		} catch (error) {
