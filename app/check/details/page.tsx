@@ -1,5 +1,5 @@
 "use client";
-import React, { useStatem, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import {
@@ -140,12 +140,6 @@ function Details() {
 		};
 		dispatch(paymentRegistration(paymentForm));
 	};
-
-	useEffect(() => {
-		if (router.query) {
-			console.log("Query Params:", router.query);
-		}
-	}, [router.query]);
 
 	return (
 		<StepperLayout>

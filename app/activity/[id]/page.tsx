@@ -667,7 +667,7 @@ function Activity({ params }: { params: { id: string } }) {
 										</ListItem>
 									</List>
 									<Button
-										href={`/check/amount?id=${activityData._id}`}
+										href={`/check/amount`}
 										fullWidth
 										sx={{ backgroundColor: "#22252A", color: "#FFFFFF" }}
 									>
