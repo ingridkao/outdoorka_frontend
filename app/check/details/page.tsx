@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
 	Box,
 	Divider,
@@ -16,6 +16,7 @@ import {
 import { format, parseISO } from "date-fns";
 import StepperLayout from "@/components/layout/PaymentLayout/StepperLayout";
 import { paymentRegistration } from "@/features/payments/paymentsSlice";
+import { USER_T0KEN_COOKIE, getCookie } from "@/utils/cookieHandler";
 
 const mockData = {
 	data: {
@@ -79,9 +80,9 @@ function Details() {
 		name: "",
 		email: "",
 		mobile: "",
-		totalAmount: 99,
-		ticketCount: 1,
 	});
+	const searchParams = useSearchParams();
+  const id = searchParams?.get('id');
 
 	const handleChange = (event) => {
 		const { name, value } = event.target;
@@ -127,16 +128,12 @@ function Details() {
 	};
 
 	const goPayment = () => {
-		const { name, email, mobile, totalAmount, ticketCount } = formValue;
+		const { name, email, mobile } = formValue;
 		const paymentForm = {
-			activityId: mockData.data._id,
+			activityId: id,
 			name,
 			email,
 			mobile,
-			title: mockData.data.title,
-			subtitle: mockData.data.subtitle,
-			ticketCount,
-			totalAmount,
 		};
 		dispatch(paymentRegistration(paymentForm));
 	};
