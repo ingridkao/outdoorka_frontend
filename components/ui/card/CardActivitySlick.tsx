@@ -1,30 +1,39 @@
 "use client";
 
-import { ActivityState } from "@/types/ActivitiesType";
-
+import { useRouter } from "next/navigation";
+import { HomeActivityState } from "@/types/ActivitiesType";
 import {
 	Box,
 	Typography,
 	Avatar,
 	Grid,
 	Paper,
-	CardMedia,
-	Chip,
+	CardMedia
 } from "@mui/material";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import RatingStar from "@/components/ui/shared/RatingStar";
 import CardBottomInfo from "@/components/ui/card/CardBottomInfo";
+import FavoriteAction from "@/components/ui/button/FavoriteAction";
 import useCardTheme from "@/components/ui/card/useCardTheme";
-
 /**
  * 活動卡片for 首頁最新輪播活動
  * @param activity 單一活動資料
  */
-function CardActivity({ activity }: { activity: ActivityState }) {
+function CardActivitySlick(props: {
+	activity: HomeActivityState;
+	onLoad: () => void;
+}) {
 	const cardStyle = useCardTheme();
-	const activityImageUrl = activity.activityImageUrls
-		? activity.activityImageUrls[0]
-		: "";
+	const router = useRouter();
+
+	const { activity, onLoad } = props;
+	const activityImageUrl = activity.activityImageUrls? activity.activityImageUrls[0]: ""	
+	const linkToInfo = (e: { preventDefault: () => void }) => {
+		e.preventDefault();
+		router.push(`/activity/${activity._id}`);
+	};
+	const reload = () => {
+		onLoad();
+	};
 
 	return (
 		<Paper
@@ -32,6 +41,7 @@ function CardActivity({ activity }: { activity: ActivityState }) {
 				...cardStyle.container,
 				width: 272,
 			}}
+			onClick={linkToInfo}
 		>
 			{/* 上方 區塊 */}
 			<Box sx={cardStyle.topInfoWrapperSmall}>
@@ -39,7 +49,7 @@ function CardActivity({ activity }: { activity: ActivityState }) {
 				<Box sx={cardStyle.topBg}>
 					<CardMedia
 						component="img"
-						alt={activity.subtitle}
+						alt={activity.title || activity.subtitle}
 						height={181}
 						image={activityImageUrl}
 					/>
@@ -91,29 +101,18 @@ function CardActivity({ activity }: { activity: ActivityState }) {
 
 					{/* 愛心數 */}
 					<Grid item>
-						<Chip
-							sx={cardStyle.chip}
-							label={
-								<Box display="inline-flex" alignItems="center">
-									<FavoriteIcon sx={cardStyle.chipIcon} />
-									<Typography
-										sx={{
-											...cardStyle.chipText,
-											width: 30,
-										}}
-									>
-										{activity.likers || 0}
-									</Typography>
-								</Box>
-							}
+						<FavoriteAction 
+							home={false} 
+							activity={activity}
+							onLoad={reload}
 						/>
 					</Grid>
 				</Grid>
 			</Box>
 
-			<CardBottomInfo row={3} info={activity} />
+			<CardBottomInfo row={1} info={activity} />
 		</Paper>
 	);
 }
 
-export default CardActivity;
+export default CardActivitySlick;

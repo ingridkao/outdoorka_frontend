@@ -59,6 +59,8 @@ function TicketModifyDialog(props: {
 	const [load, setLoad] = useState(false);
 
 	useEffect(() => {
+		setErrorMsg("");
+		setSuccessMsg("");
 		if (type === "note") {
 			setTicketNote(target?.ticketNote || "");
 		}

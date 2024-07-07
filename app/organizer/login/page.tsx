@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import NextLink from "next/link";
 import { LoginOrganizerForm } from "@/types";
+import LogoHorizontal from "@/components/icon/LogoHorizontal";
 
 import { loginOrganizer } from "@/features/organizer/ogAuthSlice";
 import { EMAIL_REGEX, PWD_REGEX } from "@/utils/regexHandler";
@@ -146,7 +147,7 @@ export default function Login() {
 			<Grid
 				item
 				xs={12}
-				md={6}
+				sm={6}
 				sx={{
 					overflow: "hidden",
 				}}
@@ -159,33 +160,24 @@ export default function Login() {
 					style={{
 						height: "100dvh",
 					}}
-					display={{ xs: "none", md: "block" }}
+					display={{ xs: "none", sm: "block" }}
 					alt="cover"
 					src="https://fastly.picsum.photos/id/572/1000/700.jpg?hmac=4wtTOriqhtIkQQpz6N9PLCmvzXwMvkGpSE235Mu_P9Q"
 				/>
 			</Grid>
 
-			<Grid
-				item
-				xs={12}
-				md={6}
-				sx={{
-					textAlign: "center",
-				}}
-			>
+			<Grid xs={12} sm={6} sx={{ textAlign: "center"}}>
 				<Fade in={true}>
-					<Box
-						sx={{
-							width: "75%",
-							margin: "auto",
-						}}
-					>
+					<Box sx={{ width: "75%", maxWidth: 380, margin: "auto"}}>
 						<Box component="form" noValidate autoComplete="off">
-							{/* {token} */}
 
-							<Typography variant="h3" sx={{ marginBottom: "26px" }}>
-								揪好咖
-							</Typography>
+							<Button
+								component={NextLink}
+								href="/"
+								sx={{ height: 60, my: 5 }}
+							>
+								<LogoHorizontal color="#4A4642" />
+							</Button>
 
 							{errorMsg && <Alert severity="error">{errorMsg}</Alert>}
 							{successMsg && <Alert severity="success">{successMsg}</Alert>}

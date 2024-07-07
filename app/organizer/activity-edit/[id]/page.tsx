@@ -13,7 +13,7 @@ import {
 	escapeContent,
 	getFirebaseFileName,
 } from "@/utils/common";
-import Loading from "@/components/ui/loading/loading";
+import CircularLoading from "@/components/ui/loading/CircularLoading";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -376,12 +376,12 @@ function ActivityCreate({ params }: { params: { id: string } }) {
 
 		if (
 			quillRef.current?.getEditor().getLength() < 5 ||
-			quillRef.current?.getEditor().getLength() > 600
+			quillRef.current?.getEditor().getLength() > 1500
 		) {
 			isValid = true;
 			setFormValid((prev) => ({
 				...prev,
-				activityDetail: "請填寫完整活動內容，最多 600 字",
+				activityDetail: "請填寫完整活動內容，最多 1500 字",
 			}));
 		}
 
@@ -466,7 +466,7 @@ function ActivityCreate({ params }: { params: { id: string } }) {
 	if (initLoading) {
 		return (
 			<OrganizerLayout>
-				<Loading />
+				<CircularLoading />
 			</OrganizerLayout>
 		);
 	}

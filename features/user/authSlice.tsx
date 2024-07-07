@@ -21,12 +21,10 @@ export const loginUser = createAsyncThunk(
 const authSlice: any = createSlice({
 	name: "auth",
 	initialState: {
-		// profile: null,
 		error: null,
 	} as AuthState,
 	reducers: {
 		logoutUser: (state: AuthState) => {
-			// state.profile = null;
 			state.error = null;
 			removeUserCookie();
 		},
@@ -42,11 +40,9 @@ const authSlice: any = createSlice({
 		builder.addCase(fulfilled, (state: AuthState, action: any) => {
 			if (action.payload.error) {
 				state.error = action.payload.error;
-				// state.profile = null;
 				removeUserCookie();
 			} else if (action.payload.data) {
 				const { user, token } = action.payload.data;
-				// state.profile = user as ProfileItem;
 				setProfileCookie(USER_PROFILE_COOKIE, user, 1);
 				setCookie(USER_T0KEN_COOKIE, token.access_token, 1);
 			}

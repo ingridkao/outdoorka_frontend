@@ -309,12 +309,12 @@ function ActivityCreate() {
 
 		if (
 			quillRef.current?.getEditor().getLength() < 5 ||
-			quillRef.current?.getEditor().getLength() > 600
+			quillRef.current?.getEditor().getLength() > 1500
 		) {
 			isValid = true;
 			setFormValid((prev) => ({
 				...prev,
-				activityDetail: "請填寫完整活動內容，最多 600 字",
+				activityDetail: "請填寫完整活動內容，最多 1500 字",
 			}));
 		}
 

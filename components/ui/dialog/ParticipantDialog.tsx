@@ -3,6 +3,7 @@ import NextLink from "next/link";
 import axios from "@/plugins/api/axios";
 import { useState, SyntheticEvent, useEffect } from "react";
 import { SimpleDialogProps } from "@/types";
+import { OwnerState } from "@/types/TicketType";
 import { parseStartTime } from "@/utils/dateHandler";
 import {
 	Box,
@@ -18,6 +19,33 @@ import {
 	CardContent,
 	CardMedia,
 } from "@mui/material";
+
+export function ParticipantInfo (props:{
+	ticketCreatedAt: string,
+	owner: OwnerState
+}){
+	const { name, mobile } = props.owner
+	const RowStyle = { 
+		display: "flex",
+		flexDirection: {xs: "column", sm: "row"},
+		my: 1.5,
+		alignItems: "flex-start"
+	}
+	return (<>
+		<Box sx={RowStyle}>
+			<span style={{display: "inline-block", width: 80, textAlign:"left"}}>姓名：</span>
+			<span className="singleline-ellipsis">{name || ""}</span>
+		</Box>
+		<Box sx={RowStyle}>
+			<span style={{ display: "inline-block", width: 80, textAlign:"left" }}>電話：</span>
+			<span className="singleline-ellipsis">{mobile || ""}</span>
+		</Box>
+		<Box sx={RowStyle}>
+			<span style={{ display: "inline-block", width: 80, textAlign:"left" }}>報名日期：</span>
+			<span className="singleline-ellipsis">{parseStartTime(props.ticketCreatedAt)}</span>
+		</Box>
+	</>)
+}
 
 function ParticipantDialog(props: SimpleDialogProps) {
 	const { organizer } = axios;
@@ -61,64 +89,30 @@ function ParticipantDialog(props: SimpleDialogProps) {
 						{participantList
 							.filter((item: any) => item.ticketStatus === tagValue)
 							.map((item: any) => (
-								<Grid key={item._id} item xs={6}>
+								<Grid key={item._id} item xs={12} sm={6}>
 									<Card sx={{ display: "flex" }}>
-										<Box
-											sx={{
-												display: "flex",
-											}}
-										>
+										<Box display="flex">
 											<CardMedia
 												component="img"
-												sx={{ width: 105 }}
-												image={item.owner.photo}
-												alt="user photo"
+												sx={{ width: 110, objectFit: item.owner.photo? "cover": "contain" }}
+												image={item.owner.photo ? item.owner.photo: "https://i.imgur.com/qokckjQ.png"}
+												alt={item.owner.name}
 											/>
 											<CardContent sx={{ flex: "1 0 auto", pb: 1 }}>
-												<Box
-													className="singleline-ellipsis"
-													sx={{ textAlign: "left", margin: "12px 0" }}
-												>
-													<span
-														style={{ display: "inline-block", width: "86px" }}
+												<ParticipantInfo owner={item.owner} ticketCreatedAt={item.ticketCreatedAt}/>
+												<Box sx={{ display: "flex", alignItems: "flex-end"}}>
+													<Button
+														component={NextLink}
+														variant="contained"
+														size="small"
+														sx={{ mt: 2, marginBottom: "-8px" }}
+														href={`/organizer/scan/?id=${item._id}`}
+														target="_blank"
 													>
-														姓名：
-													</span>
-													<span>{item.owner.name}</span>
-												</Box>
-												<Box
-													className="singleline-ellipsis"
-													sx={{ textAlign: "left", margin: "12px 0" }}
-												>
-													<span
-														style={{ display: "inline-block", width: "86px" }}
-													>
-														電話：
-													</span>
-													<span>{item.owner.mobile}</span>
-												</Box>
-												<Box
-													className="singleline-ellipsis"
-													sx={{ textAlign: "left", margin: "12px 0" }}
-												>
-													<span
-														style={{ display: "inline-block", width: "86px" }}
-													>
-														報名日期：
-													</span>
-													<span>{parseStartTime(item.ticketCreatedAt)}</span>
-												</Box>
+														查看/驗票
+													</Button>
 
-												<Button
-													component={NextLink}
-													variant="contained"
-													size="small"
-													sx={{ mt: 2, float: "right", marginBottom: "-8px" }}
-													href={`/organizer/scan/?id=${item._id}`}
-													target="_blank"
-												>
-													查看/驗票
-												</Button>
+												</Box>
 											</CardContent>
 										</Box>
 									</Card>
@@ -126,7 +120,6 @@ function ParticipantDialog(props: SimpleDialogProps) {
 							))}
 					</Grid>
 				</Box>
-				<Box>{tagValue}</Box>
 			</DialogContent>
 		</Dialog>
 	);

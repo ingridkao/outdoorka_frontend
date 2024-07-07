@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { ActivityState } from "@/types/ActivitiesType";
+import { ActivityState, HomeActivityState, FavoritesActivityState } from "@/types/ActivitiesType";
 import {
 	Box,
 	Typography,
@@ -18,13 +18,13 @@ import useCardTheme from "@/components/ui/card/useCardTheme";
 
 /**
  * 活動卡片
- * @param home     呈現於首頁
+ * @param home     Y呈現於首頁, N呈現於活動列表、追蹤清單
  * @param activity 單一活動資料
  */
 function CardActivity(props: {
 	home: boolean;
-	activity: ActivityState;
-	onLoad: (res: boolean) => void;
+	activity: ActivityState | HomeActivityState | FavoritesActivityState;
+	onLoad: () => void;
 }) {
 	const cardStyle = useCardTheme();
 	const router = useRouter();
@@ -38,15 +38,12 @@ function CardActivity(props: {
 		e.preventDefault();
 		router.push(`/activity/${activity._id}`);
 	};
-	const reload = (res: boolean) => {
-		onLoad(res);
-	};
 
 	return (
 		<Paper
 			sx={{
 				...cardStyle.container,
-				maxWidth: home ? 380 : 464,
+				maxWidth: home ? 364 : 464,
 				cursor: "pointer",
 			}}
 			onClick={linkToInfo}
@@ -62,7 +59,7 @@ function CardActivity(props: {
 				<Box sx={cardStyle.topBg}>
 					<CardMedia
 						component="img"
-						alt={activity.subtitle}
+						alt={activity.title || activity.subtitle}
 						sx={{
 							height: home ? 244 : 310,
 						}}
@@ -85,9 +82,9 @@ function CardActivity(props: {
 							flex: home
 								? {}
 								: {
-										xs: "0 1 calc(100% - 11rem)",
-										sm: "0 1 calc(100% - 12rem)",
-									},
+									xs: "0 1 calc(100% - 11rem)",
+									sm: "0 1 calc(100% - 12rem)",
+								}
 						}}
 					>
 						<Box
@@ -149,16 +146,11 @@ function CardActivity(props: {
 					</Grid>
 
 					{/* 愛心數 */}
-					<Grid item>
-						<Chip
-							sx={cardStyle.chip}
-							label={
-								<FavoriteAction
-									home={home}
-									activity={activity}
-									onLoad={reload}
-								/>
-							}
+					<Grid item >
+						<FavoriteAction 
+							home={home} 
+							activity={activity}
+							onLoad={()=>onLoad()}
 						/>
 					</Grid>
 				</Grid>

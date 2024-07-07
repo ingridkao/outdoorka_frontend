@@ -23,7 +23,7 @@ import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import TicketModifyDialog from "@/components/ui/dialog/TicketModifyDialog";
 
-import Loading from "@/components/ui/loading/loading";
+import CircularLoading from "@/components/ui/loading/CircularLoading";
 
 import { parseDetailDate } from "@/utils/dateHandler";
 import ExpandMoreIcon from "@/components/icon/ExpandMoreIcon";
@@ -79,26 +79,26 @@ function TicketAction({
 				{/* 超過一張票卷，未使用及未分票的票卷 */}
 				{tickets.length > 1 &&
 					targetTicket.ticketStatus == TicketStatus.Unused && (
-						<Button
-							variant="contained"
-							size="large"
-							sx={{ wordBreak: "keep-all" }}
-							onClick={() => handleAction("email")}
-						>
-							進行分票
-						</Button>
-					)}
+					<Button
+						variant="contained"
+						size="large"
+						sx={{ wordBreak: "keep-all" }}
+						onClick={() => handleAction("email")}
+					>
+						進行分票
+					</Button>
+				)}
 				{tickets.length === 1 &&
 					targetTicket.ticketStatus == TicketStatus.Unused && (
-						<Button
-							variant="contained"
-							size="large"
-							sx={{ wordBreak: "keep-all" }}
-							onClick={() => handleAction("note")}
-						>
-							填寫備註
-						</Button>
-					)}
+					<Button
+						variant="contained"
+						size="large"
+						sx={{ wordBreak: "keep-all" }}
+						onClick={() => handleAction("note")}
+					>
+						填寫備註
+					</Button>
+				)}
 				{targetTicket.ticketStatus == TicketStatus.Used && (
 					<Button
 						variant="contained"
@@ -127,7 +127,7 @@ function TicketInfo() {
 	const router = useRouter();
 	if (!params.id) {
 		router.push("/ticket");
-		return <Loading />;
+		return <CircularLoading />;
 	}
 
 	const { ticket } = axios;
@@ -159,11 +159,11 @@ function TicketInfo() {
 		}
 	};
 
-	if (load) return <Loading />;
+	if (load) return <CircularLoading />;
 
 	if (paymentData === null) {
 		router.push("/ticket");
-		return <Loading />;
+		return <CircularLoading />;
 	}
 
 	const ticketTotal = paymentData.tickets.length;

@@ -26,6 +26,9 @@
 	border-radius: 48px;
 	background-color: #eff0f7;
 }
+.chipAvatar.og {
+	background-color: #22252A;
+}
 .chipAvatar .MuiChip-avatar {
 	width: 40px;
 	height: 40px;
@@ -50,6 +53,7 @@
 	-webkit-line-clamp: 2;
 	overflow: hidden;
 	min-height: 4rem;
+	max-height: 4rem;
 }
 
 .singleline-ellipsis {
@@ -57,8 +61,8 @@
 	-webkit-box-orient: vertical;
 	-webkit-line-clamp: 1;
 	overflow: hidden;
-	height: 1.75rem;
-	min-height: 1.75rem;
+	min-height: 1.25rem;
+	max-height: 1.75rem;
 }
 
 .triplex-ellipsis {
@@ -66,5 +70,5 @@
 	-webkit-box-orient: vertical;
 	-webkit-line-clamp: 3;
 	overflow: hidden;
-	min-height: 5.75rem;
+	max-height: 5.75rem;
 }

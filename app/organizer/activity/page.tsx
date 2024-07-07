@@ -2,13 +2,11 @@
 
 import { useState, useEffect, SyntheticEvent, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-
 import OrganizerLayout from "@/components/layout/OrganizerLayout/OrganizerLayout";
-
 import axios from "@/plugins/api/axios";
 import { OrganizerActivityState } from "@/types/ActivitiesType";
 import { Box, Tab, Tabs, Grid, Alert, IconButton } from "@mui/material";
-import Loading from "@/components/ui/loading/loading";
+import CircularLoading from "@/components/ui/loading/CircularLoading";
 import ListLoading from "@/components/ui/loading/ListLoading";
 import NoData from "@/components/ui/shared/NoData";
 import CardOrganizerActivity from "@/components/ui/card/CardOrganizerActivity";
@@ -81,7 +79,7 @@ function OrganizerActivityList() {
 			{dataLoad ? (
 				<ListLoading />
 			) : activityList.length === 0 ? (
-				<NoData target="活動" />
+				<NoData target="活動" sub={true} />
 			) : (
 				<Grid container spacing={2}>
 					<Grid item xs={11}></Grid>
@@ -107,7 +105,7 @@ function OrganizerActivityList() {
 
 function WrappedOrganizerActivityPage() {
 	return (
-		<Suspense fallback={<Loading />}>
+		<Suspense fallback={<CircularLoading />}>
 			<OrganizerActivityList />
 		</Suspense>
 	);
