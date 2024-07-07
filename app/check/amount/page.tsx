@@ -1,6 +1,6 @@
 "use client";
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import React, { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
 	Accordion,
 	AccordionSummary,
@@ -116,7 +116,8 @@ function Amount() {
 	const router = useRouter();
 	const unitPrice = 500;
 	const totalPrice = unitPrice * quantity;
-	const { id } = router.query;
+	const searchParams = useSearchParams();
+  const id = searchParams.get('id');
 
 	// 增加商品数量
 	const handleIncrease = () => {
@@ -175,7 +176,7 @@ function Amount() {
 	};
 
 	const nextPage = () => {
-		router.push("/check/details?id=${id}");
+		router.push(`/check/details?id=${id}`);
 	};
 
 	return (
