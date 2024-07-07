@@ -29,6 +29,8 @@ export const paymentRegistration = createAsyncThunk(
 
 			const { data } = await payments.registration(JSON.stringify(paymentData));
 
+      console.log(data)
+
 			return data;
 		} catch (error) {
 			return rejectWithValue(
