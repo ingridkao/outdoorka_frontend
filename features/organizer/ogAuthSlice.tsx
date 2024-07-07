@@ -34,7 +34,6 @@ const ogAuthSlice: any = createSlice({
 	extraReducers: (builder: any) => {
 		const { pending, fulfilled, rejected } = loginOrganizer;
 		builder.addCase(pending, (state: OgAuthState) => {
-			// loading start
 			state.error = null;
 			state.token = null;
 			state.profile = null;
@@ -45,7 +44,6 @@ const ogAuthSlice: any = createSlice({
 			state.profile = null;
 		});
 		builder.addCase(fulfilled, (state: OgAuthState, action: any) => {
-			// loading end
 			if (action.payload.error) {
 				state.error = action.payload.error;
 				state.token = null;

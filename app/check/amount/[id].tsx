@@ -116,6 +116,7 @@ function Amount() {
 	const router = useRouter();
 	const unitPrice = 500;
 	const totalPrice = unitPrice * quantity;
+	const { id } = router.query;
 
 	// 增加商品数量
 	const handleIncrease = () => {
@@ -174,7 +175,7 @@ function Amount() {
 	};
 
 	const nextPage = () => {
-		router.push("/check/details/");
+		router.push("/check/details?id=${id}");
 	};
 
 	return (
