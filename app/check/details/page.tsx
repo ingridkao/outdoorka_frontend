@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { useDispatch } from "react-redux";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
@@ -16,7 +16,7 @@ import {
 import { format, parseISO } from "date-fns";
 import StepperLayout from "@/components/layout/PaymentLayout/StepperLayout";
 import { paymentRegistration } from "@/features/payments/paymentsSlice";
-import { USER_T0KEN_COOKIE, getCookie } from "@/utils/cookieHandler";
+import CircularLoading from "@/components/ui/loading/CircularLoading";
 
 const mockData = {
 	data: {
@@ -336,4 +336,13 @@ function Details() {
 	);
 }
 
-export default Details;
+function WrappedDetailsPage() {
+	return (
+		<Suspense fallback={<CircularLoading />}>
+			<Details />
+		</Suspense>
+	);
+}
+
+export default WrappedDetailsPage;
+
