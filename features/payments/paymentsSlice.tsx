@@ -27,7 +27,7 @@ export const paymentRegistration = createAsyncThunk(
 				Email: paymentForm.email,
 			};
 
-			const { data } = await payments.registration(JSON.stringify(paymentData));
+			const { data } = await payments.registration(paymentData);
 
       console.log(data)
 
