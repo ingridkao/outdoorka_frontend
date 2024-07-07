@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
 	Accordion,
@@ -23,6 +23,7 @@ import HikingIcon from "@/components/icon/hikingIcon";
 import PlusIcon from "@/components/icon/plusIcon";
 import MinusIcon from "@/components/icon/minusIcon";
 import StepperLayout from "@/components/layout/PaymentLayout/StepperLayout";
+import CircularLoading from "@/components/ui/loading/CircularLoading";
 
 const mockData = {
 	data: {
@@ -117,7 +118,7 @@ function Amount() {
 	const unitPrice = 500;
 	const totalPrice = unitPrice * quantity;
 	const searchParams = useSearchParams();
-  const id = searchParams.get('id');
+  const id = searchParams?.get('id');
 
 	// 增加商品数量
 	const handleIncrease = () => {
@@ -421,4 +422,12 @@ function Amount() {
 	);
 }
 
-export default Amount;
+function WrappedAmountPage() {
+	return (
+		<Suspense fallback={<CircularLoading />}>
+			<Amount />
+		</Suspense>
+	);
+}
+
+export default WrappedAmountPage;
