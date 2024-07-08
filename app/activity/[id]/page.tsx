@@ -588,7 +588,7 @@ function Activity({ params }: { params: { id: string } }) {
 										variant="body2"
 										sx={{ fontSize: 18, color: "#70AFF5", fontWeight: 700 }}
 									>
-										({activityData.likeCount})
+										(0)
 									</Typography>
 								</Box>
 								<Paper
