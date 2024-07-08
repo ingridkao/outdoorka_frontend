@@ -1,7 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "@/plugins/api/axios";
-import { removeCookie, setCookie } from "@/utils/cookieHandler";
-import { v4 as uuidv4 } from "uuid";
 
 const { payments } = axios;
 
@@ -11,7 +9,7 @@ export const paymentRegistration = createAsyncThunk(
 		try {
 			const paymentData = {
 				activityId: paymentForm.activityId,
-				ticketCount: paymentForm.ticketCount,
+				ticketCount: Number(paymentForm.count),
 				buyerName: paymentForm.name,
 				buyerMobile: paymentForm.mobile,
 				buyerEmail: paymentForm.email,
