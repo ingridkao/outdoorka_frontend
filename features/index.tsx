@@ -16,7 +16,7 @@ function initializeStore(initialState?: Partial<RootState>) {
 			auth: authReducer,
 			ogAuth: ogAuthReducer,
 			likes: likeReducer,
-			payment: paymentsReducer,
+			payments: paymentsReducer,
 		},
 		preloadedState: initialState,
 	});
