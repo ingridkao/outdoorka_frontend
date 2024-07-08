@@ -189,7 +189,7 @@ function Details() {
 								<Typography
 									sx={{ fontSize: 24, color: "#24282D", fontWeight: 700 }}
 								>
-									跑山幫越野跑訓練營
+									{activityData.title}
 								</Typography>
 								<Box sx={{ my: 3 }}>
 									{listItemData.map((item, index) => (
