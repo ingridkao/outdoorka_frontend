@@ -1,6 +1,10 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { ActivityState, HomeActivityState, FavoritesActivityState } from "@/types/ActivitiesType";
+import {
+	ActivityState,
+	HomeActivityState,
+	FavoritesActivityState,
+} from "@/types/ActivitiesType";
 import {
 	Box,
 	Typography,
@@ -79,12 +83,13 @@ function CardActivity(props: {
 					<Grid
 						item
 						sx={{
+							mb: 1,
 							flex: home
 								? {}
 								: {
-									xs: "0 1 calc(100% - 11rem)",
-									sm: "0 1 calc(100% - 12rem)",
-								}
+										xs: "0 1 calc(100% - 11rem)",
+										sm: "0 1 calc(100% - 12rem)",
+									},
 						}}
 					>
 						<Box
@@ -124,7 +129,7 @@ function CardActivity(props: {
 					</Grid>
 
 					{/* 參加人數 */}
-					<Grid item>
+					<Grid item sx={{ mb: 1 }}>
 						<Chip
 							sx={cardStyle.chip}
 							label={
@@ -146,11 +151,11 @@ function CardActivity(props: {
 					</Grid>
 
 					{/* 愛心數 */}
-					<Grid item >
-						<FavoriteAction 
-							home={home} 
+					<Grid item sx={{ mb: 1 }}>
+						<FavoriteAction
+							home={home}
 							activity={activity}
-							onLoad={()=>onLoad()}
+							onLoad={() => onLoad()}
 						/>
 					</Grid>
 				</Grid>

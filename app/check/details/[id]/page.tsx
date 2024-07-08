@@ -14,17 +14,17 @@ import {
 	Typography,
 } from "@mui/material";
 import axios from "@/plugins/api/axios";
-import { formatTime } from '@/utils/formatTime';
+import { formatTime } from "@/utils/formatTime";
 import StepperLayout from "@/components/layout/PaymentLayout/StepperLayout";
 import { paymentRegistration } from "@/features/payments/paymentsSlice";
 import CircularLoading from "@/components/ui/loading/CircularLoading";
-
+import { EMAIL_REGEX, NAME_REGEX, TW_PHONE_REGEX } from "@/utils/regexHandler";
 
 function Details() {
 	const router = useRouter();
 	const params = useParams();
 	const searchParams = useSearchParams();
-	const quantity = searchParams.get('quantity');
+	const quantity = searchParams.get("quantity");
 	const dispatch = useDispatch();
 	const { data, success } = useSelector((state) => state.payments);
 	const [formValue, setFormValue] = useState({
@@ -32,16 +32,53 @@ function Details() {
 		email: "",
 		mobile: "",
 	});
+	const [errors, setErrors] = useState({
+		name: "",
+		email: "",
+		mobile: "",
+	});
+
+	const [isDisabled, setIsDisabled] = useState(true);
 	const [activityData, setActivityData] = useState({});
 	const [mounted, setMounted] = useState(false);
 	const id = params?.id;
 	const { activity } = axios;
 
+	const validateField = (name: string, value: string) => {
+		let error = "";
+		switch (name) {
+			case "name":
+				if (!NAME_REGEX.test(value)) {
+					error = "姓名格式錯誤。";
+				}
+				break;
+			case "email":
+				if (!EMAIL_REGEX.test(value)) {
+					error = "電子郵件格式錯誤。";
+				}
+				break;
+			case "mobile":
+				if (!TW_PHONE_REGEX.test(value)) {
+					error = "行動電話格式錯誤。";
+				}
+				break;
+			default:
+				break;
+		}
+		return error;
+	};
+
 	const handleChange = (event) => {
 		const { name, value } = event.target;
+		const error = validateField(name, value);
+
 		setFormValue({
 			...formValue,
 			[name]: value,
+		});
+		setErrors({
+			...errors,
+			[name]: error,
 		});
 	};
 
@@ -73,6 +110,13 @@ function Details() {
 		};
 		dispatch(paymentRegistration(paymentForm));
 	};
+
+	useEffect(() => {
+		const { name, email, mobile } = formValue;
+		const allFieldsFilled = name && email && mobile;
+		const noErrors = !errors.name && !errors.email && !errors.mobile;
+		setIsDisabled(!(allFieldsFilled && noErrors));
+	}, [formValue, errors]);
 
 	useEffect(() => {
 		if (id) {
@@ -133,6 +177,8 @@ function Details() {
 											},
 										}}
 										onChange={handleChange}
+										error={!!errors.name}
+										helperText={errors.name}
 									/>
 								</Box>
 								<Box mb={5}>
@@ -150,6 +196,8 @@ function Details() {
 											},
 										}}
 										onChange={handleChange}
+										error={!!errors.email}
+										helperText={errors.email}
 									/>
 								</Box>
 								<Box mb={5}>
@@ -167,6 +215,8 @@ function Details() {
 											},
 										}}
 										onChange={handleChange}
+										error={!!errors.mobile}
+										helperText={errors.mobile}
 									/>
 								</Box>
 							</Box>
@@ -298,6 +348,7 @@ function Details() {
 								color="primary"
 								sx={{ boxShadow: "none", py: 0.6 }}
 								onClick={goPayment}
+								disabled={isDisabled}
 							>
 								確定付款
 							</Button>
