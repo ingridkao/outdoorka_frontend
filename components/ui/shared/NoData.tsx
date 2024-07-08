@@ -7,7 +7,7 @@ const StyledGridOverlay = styled("div")(({ theme }) => ({
 	alignItems: "center",
 	justifyContent: "center",
 	height: "100%",
-	minHeight: "280px",
+	minHeight: "500px",
 	"& .ant-empty-img-1": {
 		fill: theme.palette.mode === "light" ? "#aeb8c2" : "#262626",
 	},
@@ -26,7 +26,7 @@ const StyledGridOverlay = styled("div")(({ theme }) => ({
 	},
 }));
 
-function NoData(props: { target: string, sub: boolean }) {
+function NoData(props: { target: string; sub: boolean }) {
 	return (
 		<StyledGridOverlay>
 			<svg
@@ -71,9 +71,9 @@ function NoData(props: { target: string, sub: boolean }) {
 			<Typography variant="h6" sx={{ mt: 1 }}>
 				沒有相符的{props.target || "資料"}
 			</Typography>
-			{props.sub && 
+			{props.sub && (
 				<Typography>嘗試刪除其中一些篩選條件以獲得更好的結果。</Typography>
-			}
+			)}
 		</StyledGridOverlay>
 	);
 }
