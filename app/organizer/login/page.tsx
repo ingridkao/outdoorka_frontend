@@ -4,11 +4,12 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import NextLink from "next/link";
-import { LoginOrganizerForm } from "@/types";
+import BackBtn from "@/components/ui/shared/BackBtn";
 import LogoHorizontal from "@/components/icon/LogoHorizontal";
 
 import { loginOrganizer } from "@/features/organizer/ogAuthSlice";
 import { EMAIL_REGEX, PWD_REGEX } from "@/utils/regexHandler";
+import { LoginOrganizerForm } from "@/types";
 import {
 	OG_TOK0N_COOKIE,
 	OG_ACCOUNT_COOKIE,
@@ -39,26 +40,11 @@ export default function Login() {
 		password: "",
 		remember: true,
 	});
-
-	useEffect(() => {
-		const getOgToken = getCookie(OG_TOK0N_COOKIE);
-		const getAcc = getCookie(OG_ACCOUNT_COOKIE);
-
-		if (getOgToken) {
-			router.push("/organizer/activity");
-		} else if (getAcc) {
-			setLoginForm({
-				email: getAcc,
-				password: "",
-				remember: true,
-			});
-		}
-	}, []);
-
 	const [validAccount, setValidAccount] = useState("");
 	const [validPwd, setValidPwd] = useState("");
 	const [errorMsg, setErrorMsg] = useState("");
 	const [successMsg, setSuccessMsg] = useState("");
+
 	const handleValidate = (name: string, value: string) => {
 		if (name === "email") {
 			if (value === "") {
@@ -136,6 +122,21 @@ export default function Login() {
 		});
 	};
 
+	useEffect(() => {
+		const getOgToken = getCookie(OG_TOK0N_COOKIE);
+		const getAcc = getCookie(OG_ACCOUNT_COOKIE);
+
+		if (getOgToken) {
+			router.push("/organizer/activity");
+		} else if (getAcc) {
+			setLoginForm({
+				email: getAcc,
+				password: "",
+				remember: true,
+			});
+		}
+	}, []);
+
 	return (
 		<Grid
 			container
@@ -166,16 +167,14 @@ export default function Login() {
 				/>
 			</Grid>
 
-			<Grid xs={12} sm={6} sx={{ textAlign: "center"}}>
+			<Grid xs={12} sm={6} sx={{ textAlign: "center" }}>
+				<Box sx={{ ml: 2, mt: 2, mb: 12, textAlign: "left" }}>
+					<BackBtn href="/" name="返回" />
+				</Box>
 				<Fade in={true}>
-					<Box sx={{ width: "75%", maxWidth: 380, margin: "auto"}}>
+					<Box sx={{ width: "75%", maxWidth: 380, margin: "auto" }}>
 						<Box component="form" noValidate autoComplete="off">
-
-							<Button
-								component={NextLink}
-								href="/"
-								sx={{ height: 60, my: 5 }}
-							>
+							<Button component={NextLink} href="/" sx={{ height: 60, my: 5 }}>
 								<LogoHorizontal color="#4A4642" />
 							</Button>
 
