@@ -26,8 +26,8 @@ const nextConfig = {
 		ignoreBuildErrors: true,
 	},
 	experimental: {
-    appDir: true,
-  },
+		appDir: true,
+	},
 	// onlyBrowser: true,
 	// reportDir: ".next/analyze",
 };

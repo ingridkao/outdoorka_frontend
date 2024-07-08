@@ -1,6 +1,6 @@
 "use client";
-
 import React, { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { styled } from "@mui/material/styles";
 import {
 	Avatar,
@@ -85,6 +85,7 @@ let leftTimer: any = null;
 
 function Activity({ params }: { params: { id: string } }) {
 	const { activity, favorite } = axios;
+	const router = useRouter();
 	const [timeLeft, setTimeLeft] = React.useState({
 		days: 0,
 		hours: 0,
@@ -121,11 +122,6 @@ function Activity({ params }: { params: { id: string } }) {
 						label: "集合點：",
 						value: res.data.location,
 					},
-					// {
-					// 	icon: <LinkIcon />,
-					// 	label: "相關連結：",
-					// 	value: <a href="/">粉絲團</a>,
-					// },
 				];
 				if (res.data.activityLinks?.length) {
 					res.data.activityLinks.forEach((link: any) => {
@@ -233,6 +229,11 @@ function Activity({ params }: { params: { id: string } }) {
 		} catch (error: any) {
 			console.error(String(error?.message));
 		}
+	};
+
+	const linkToInfo = (e: { preventDefault: () => void }) => {
+		e.preventDefault();
+		router.push(`/check/amount/${activityData._id}`);
 	};
 
 	return (
@@ -667,7 +668,7 @@ function Activity({ params }: { params: { id: string } }) {
 										</ListItem>
 									</List>
 									<Button
-										href={`/check/amount`}
+										onClick={linkToInfo}
 										fullWidth
 										sx={{ backgroundColor: "#22252A", color: "#FFFFFF" }}
 									>
