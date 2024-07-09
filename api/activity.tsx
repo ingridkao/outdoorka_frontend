@@ -1,3 +1,9 @@
+import {
+	getCookie,
+	OG_TOK0N_COOKIE,
+	USER_T0KEN_COOKIE,
+} from "@/utils/cookieHandler";
+
 const activity = (axios: any, event: any) => ({
 	getActivityList() {
 		return axios.get(`${event}/homelist`);
@@ -12,7 +18,16 @@ const activity = (axios: any, event: any) => ({
 		return axios.get(`${event}/list`);
 	},
 	getActivityDetail(id: string) {
-		return axios.get(`${event}/${id}`);
+		let token = getCookie(USER_T0KEN_COOKIE) ?? "";
+		if (!token && getCookie(OG_TOK0N_COOKIE)) {
+			token = getCookie(OG_TOK0N_COOKIE) ?? "";
+		}
+
+		return axios.get(`${event}/${id}`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
 	},
 });
 
