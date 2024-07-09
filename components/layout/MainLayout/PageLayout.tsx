@@ -20,8 +20,8 @@ function PageLayout({ children }: MainLayoutProps) {
 				component="main"
 				maxWidth="lg"
 				sx={{
-					px: 0,
 					py: { xs: 12, sm: 15 },
+					px: { xs: 1.5, sm: 0 },
 					wordWrap: "break-word",
 				}}
 			>

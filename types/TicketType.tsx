@@ -27,14 +27,13 @@ export interface TicketsState {
 	ownerId: string;
 	ownerName: string;
 	assignedAt: string | null;
+
 }
 export interface PaymentState extends Activity {
 	paymentId: string;
 	status?: number;
 	ticketStatu?: number;
 	ticketTotal: number;
-	ticketAssign: number;
-	ticketUse: number;
 }
 
 export type CheckinTicketInfoProp = {

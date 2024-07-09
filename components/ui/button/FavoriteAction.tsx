@@ -80,7 +80,7 @@ function FavoriteAction(props: {
 						sx={{
 							...cardStyle.chipText,
 							minWidth: home
-								? "2rem"
+								? { xs: "1rem", sm: "2rem" }
 								: { xs: "1rem", sm: "0.75rem", md: "1.5rem" },
 						}}
 					>

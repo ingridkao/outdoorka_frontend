@@ -20,7 +20,7 @@ import {
 import { useTheme } from "@mui/material/styles";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import PageLayout from "@/components/layout/MainLayout/PageLayout";
-import CardTicket from "@/components/ui/card/CardTicket";
+import CardTicket, { ticketStatuList } from "@/components/ui/card/CardTicket";
 import CircularLoading from "@/components/ui/loading/CircularLoading";
 import NoData from "@/components/ui/shared/NoData";
 import SortIcon from "@/components/icon/SortIcon";
@@ -35,8 +35,10 @@ function Tickets() {
 	const [sortValue, setSortValue] = useState("");
 	const [ascValue, setAscValue] = useState(true);
 	const [searchValue, setSearchValue] = useState("");
+	const [filterStatus, setFilterStatus] = useState<number | null>(null);
 
 	const updateDisplayStatus = (type: number | null = null) => {
+		setFilterStatus(type)
 		if (type === null) {
 			setDisplayList(source);
 		} else {
@@ -89,10 +91,9 @@ function Tickets() {
 						(ticketItem: PaymentState) => {
 							return {
 								...ticketItem,
-								ticketStatus: parstTicketStatus(
+								ticketStatu: parstTicketStatus(
 									ticketItem.activityStartTime,
 									ticketItem.activityEndTime,
-									ticketItem.tickets,
 								),
 							};
 						},
@@ -137,15 +138,18 @@ function Tickets() {
 						>
 							篩選條件
 						</Typography>
-						<Button
-							variant="contained"
-							color="tertiary"
-							size="small"
-							onClick={() => updateDisplayStatus()}
-						>
-							<DeleteOutlineIcon />
-							<span>清除篩選</span>
-						</Button>
+						{filterStatus !== null &&
+							<Button
+								variant="contained"
+								color="tertiary"
+								size="small"
+								sx={{ borderRadius: 4 }}
+								onClick={() => updateDisplayStatus(null)}
+							>
+								<DeleteOutlineIcon />
+								<span>清除篩選</span>
+							</Button>
+						}
 					</Box>
 					<Paper
 						variant="elevation"
@@ -164,21 +168,18 @@ function Tickets() {
 						>
 							票卷類型
 						</Typography>
-						<Button
-							variant="outlined"
-							size="small"
-							sx={{ mr: 1 }}
-							onClick={() => updateDisplayStatus(0)}
-						>
-							已報名
-						</Button>
-						<Button
-							variant="outlined"
-							size="small"
-							onClick={() => updateDisplayStatus(1)}
-						>
-							已使用
-						</Button>
+						
+						{ ticketStatuList.map((statuItem, statuIndex) => (
+							<Button
+								variant="outlined"
+								size="small"
+								color={filterStatus===0?"secondary":"primary"}
+								sx={{ mr: 1, borderRadius: 6 }}
+								onClick={() => updateDisplayStatus(statuIndex)}
+							>
+								{statuItem}
+							</Button>
+						))}
 					</Paper>
 				</Grid>
 
@@ -201,6 +202,7 @@ function Tickets() {
 							<Select
 								defaultValue={"activityStartTime"}
 								onChange={handleSelectChange}
+								sx={{borderRadius: 8}}
 							>
 								<MenuItem value={"activityStartTime"}>活動開始日期</MenuItem>
 								<MenuItem value={"activityEndTime"}>活動結束日期</MenuItem>

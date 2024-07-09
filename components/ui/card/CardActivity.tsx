@@ -97,7 +97,7 @@ function CardActivity(props: {
 							alignItems="center"
 							sx={{
 								...cardStyle.chip,
-								width: home ? { xs: 158, sm: 144, xl: 140 } : "100%",
+								width: home ? { xs: 136, sm: 144, xl: 140 } : "100%",
 								height: 40,
 								py: 0.5,
 							}}
@@ -119,7 +119,7 @@ function CardActivity(props: {
 								<Typography
 									sx={{
 										...cardStyle.chipOrganizerName,
-										maxWidth: home ? "6rem" : { sm: "10rem" },
+										maxWidth: home ? {  xs: "5.25rem" , sm: "6rem" } : { sm: "10rem" },
 									}}
 								>
 									{activity.organizer?.name}
@@ -139,7 +139,7 @@ function CardActivity(props: {
 										sx={{
 											...cardStyle.chipText,
 											minWidth: home
-												? "2rem"
+												? { xs: "1rem", sm: "2rem" }
 												: { xs: "1rem", sm: "0.75rem", md: "1.5rem" },
 										}}
 									>

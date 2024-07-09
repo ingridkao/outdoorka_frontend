@@ -19,13 +19,20 @@ import MenuIcon from "@mui/icons-material/Menu";
 import LogoHeader1 from "@/public/images/logoHeader_1.svg";
 import LogoHeader2 from "@/public/images/logoHeader_2.svg";
 import LoginAction from "./LoginAction";
-export const drawerWidth = 240;
+export const drawerPaperStyle = {
+	boxSizing: "border-box",
+	width: 280,
+	height: 587,
+	mt: 2,
+	ml: 2
+};
+
 export const linkTitles = [
-	{ title: "關於我們", link: "#" },
-	{ title: "活動", link: "/activities" },
-	{ title: "優良主揪", link: "#" },
-	{ title: "Blog", link: "#" },
-	{ title: "短影音", link: "#" },
+	{ title: "關於我們", link: "/about", disabled: false },
+	{ title: "活動", link: "/activities", disabled: false },
+	{ title: "優良主揪", link: "#", disabled: true },
+	{ title: "Blog", link: "#", disabled: true },
+	{ title: "短影音", link: "#", disabled: true },
 ];
 
 export function AsideDrawer(props: { drawerToggle: () => void }) {
@@ -49,8 +56,9 @@ export function AsideDrawer(props: { drawerToggle: () => void }) {
 						<Link
 							key={item.title}
 							href={item.link}
-							underline="hover"
 							sx={{ fontSize: "18px" }}
+							underline={item.disabled? "none": "hover"}
+							className={item.disabled? "disabled-link": ""}
 						>
 							{item.title}
 						</Link>
@@ -120,10 +128,11 @@ function Header() {
 							<Link
 								color="inherit"
 								fontSize="inherit"
-								underline="hover"
 								noWrap
 								key={item.title}
 								href={item.link}
+								underline={item.disabled? "none": "hover"}
+								className={item.disabled? "disabled-link": ""}
 								sx={{
 									py: 1,
 									px: 3,
@@ -173,10 +182,7 @@ function Header() {
 					}}
 					sx={{
 						display: { xs: "block", md: "none" },
-						"& .MuiDrawer-paper": {
-							boxSizing: "border-box",
-							width: drawerWidth,
-						},
+						"& .MuiDrawer-paper": drawerPaperStyle,
 					}}
 				>
 					<AsideDrawer drawerToggle={handleDrawerToggle} />

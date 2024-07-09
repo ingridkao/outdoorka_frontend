@@ -20,7 +20,7 @@ function MainLayout({ children }: MainLayoutProps) {
 				maxWidth="lg"
 				sx={{
 					px: { sm: 0, lg: 0 },
-					pt: 12,
+					pt: 15,
 					pb: 1.5,
 					wordWrap: "break-word",
 					backgroundColor: "#F8F9FF",

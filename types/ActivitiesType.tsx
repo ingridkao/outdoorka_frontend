@@ -35,7 +35,7 @@ export interface Activity {
 	activityImageUrl?: string;
 	activityImageUrls?: string[];
 	activityTags: ActivityTag[];
-	activityExpired?: boolean;
+
 	likeCount?: number;
 	likers?: number; // TODO 待後端移除
 	organizerId?: string;
@@ -124,8 +124,6 @@ export interface ICreateActivity extends Activity {
 	activitySignupStartTime: any;
 	activitySignupEndTime: any;
 }
-
-
 
 export interface OrganizerActivityState extends Activity {
 	_id: string;

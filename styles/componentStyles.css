@@ -1,9 +1,4 @@
 /* Search */
-.search {
-	position: relative;
-	max-width: 800px;
-	width: 60%;
-}
 .search .MuiInput-root {
 	width: 100%;
 	border-radius: 48px;
