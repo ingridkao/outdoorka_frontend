@@ -158,6 +158,7 @@ function Favorites() {
 							variant="contained"
 							color="tertiary"
 							size="small"
+							sx={{ borderRadius: 4 }}
 							onClick={() => clear()}
 						>
 							<DeleteOutlineIcon />

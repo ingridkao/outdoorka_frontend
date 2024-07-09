@@ -255,7 +255,15 @@ function Activities() {
 							</Typography>
 						</Box>
 
-						<Box className="search">
+						<Box 
+							className="search" 
+							sx={{ 
+								position: "relative",
+								maxWidth: 800,
+								width: {xs:"100%",sm:"60%"},
+								mt: 3
+							}}
+						>
 							<Input
 								disableUnderline={true}
 								placeholder="縱走、浮潛、奇美博物館、陽明山"

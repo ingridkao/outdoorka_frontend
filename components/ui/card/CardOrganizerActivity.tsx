@@ -98,7 +98,6 @@ function CardOrganizerActivity({
 						/>
 					</Grid>
 
-					{/* 分票狀態 */}
 					{!isFinish && isPublish === 1 && (
 						<Grid item>
 							<Button

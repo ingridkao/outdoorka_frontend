@@ -14,7 +14,7 @@ const lightTheme = createTheme({
 			dark: "#001D36",
 		},
 		tertiary: {
-			main: "#B1AAA5",
+			main: "#E1E2E9",
 			light: "#E9E1DC",
 			dark: "#3C3834",
 		},
@@ -53,9 +53,38 @@ const lightTheme = createTheme({
 		fontWeightMedium: 500,
 		fontWeightBold: 700,
 	},
-	shape: {
-		borderRadius: 32,
-	},
+	components: {
+		MuiMenu: {
+      styleOverrides: {
+        paper: {
+					px: 2,
+					pt: 1,
+					pb: 4,
+					borderRadius: 0.75,
+          backdropFilter: "invert(5%)",
+					backgroundColor: "rgba(255, 255, 255, .8)",
+        }
+      },
+    },
+		MuiDrawer: {
+      styleOverrides: {
+        paper: {
+					borderRadius: "0.5rem 1.5rem 1.5rem 0.5rem",
+					backgroundColor: "rgba(255, 255, 255, .9)",
+        }
+      },
+    },
+		MuiBackdrop: {
+			styleOverrides: {
+				root: {
+					backgroundColor: "rgba(53, 122, 188, 0.6)",
+				}
+      },
+		}
+	}
+	// shape: {
+		// borderRadius: 32,
+	// },
 });
 
 const darkTheme = createTheme({

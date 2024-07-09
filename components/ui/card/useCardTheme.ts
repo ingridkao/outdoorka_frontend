@@ -94,5 +94,18 @@ export default function useCardTheme() {
 			lineHeight: 1.5,
 			fontSize: "1.25rem",
 		},
+		box: {
+			width: {xs: "98%", sm:"96%"},
+			maxWidth: 1200,
+			my: 0,
+			mx: "auto",
+			px: {xs: 2, sm:5},
+			py: 4,
+			borderRadius: "2.25rem",
+			border: "1px solid #fff",
+			backgroundColor: "rgba(255, 255, 255, .5)",
+			backdropFilter: "invert(-10%)",
+			color: theme.palette.background.default,
+		},
 	};
 }

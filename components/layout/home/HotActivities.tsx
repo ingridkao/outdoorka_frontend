@@ -26,7 +26,9 @@ function HotActivitiesLoading() {
 	);
 }
 
-function HotActivities() {
+function HotActivities(props: {count:number}) {
+	const { count } = props;
+
 	const { activity } = axios;
 	const theme = useTheme();
 	const [activityList, setActivityList] = useState<HomeActivityState[]>([]);
@@ -35,7 +37,7 @@ function HotActivities() {
 		try {
 			const responseBody = await activity.getHotActivityList();
 			if (responseBody && responseBody.data) {
-				const resArray = responseBody.data.slice(0, 8);
+				const resArray = responseBody.data.slice(0, count? count: 8);
 				setActivityList(resArray);
 			}
 		} catch (error) {
@@ -52,7 +54,7 @@ function HotActivities() {
 			{ error || activityList.length === 0
 				? <HotActivitiesLoading/>
 				: <>
-					<Grid container spacing={2}>
+					<Grid container rowSpacing={2} columnSpacing={{ xs: 0, sm: 2}}>
 						{activityList &&
 							activityList.map((value: HomeActivityState) => (
 								<Grid item xs={12} sm={6} md={4} lg={3} key={value._id}>
