@@ -55,7 +55,7 @@ function OgHeader() {
     } else {
       router.push("/organizer/login");
     }
-  }, []);
+  }, [dispatch, router]);
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -109,7 +109,7 @@ function OgHeader() {
                 transition: "0.3s",
                 flexGrow: 1,
               }}
-              priority={true}
+              priority={false}
             />
           </Button>
 

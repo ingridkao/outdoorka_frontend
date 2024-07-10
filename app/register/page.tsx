@@ -1,11 +1,9 @@
 "use client";
 
 import { useState, useEffect, ChangeEvent } from "react";
-import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import NextLink from "next/link";
 
-import { RootState } from "@/types";
 import { RegisterForm } from "@/types/AuthType";
 import axios from "@/plugins/api/axios";
 import {
@@ -14,7 +12,10 @@ import {
   NAME_REGEX,
   TW_PHONE_REGEX,
 } from "@/utils/regexHandler";
-
+import {
+  USER_T0KEN_COOKIE,
+  getCookie,
+} from "@/utils/cookieHandler";
 import {
   Unstable_Grid2 as Grid,
   Box,
@@ -30,13 +31,13 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 
 export default function Register() {
   const router = useRouter();
-  const { profile: authUser } = useSelector((state: RootState) => state.auth);
-  useEffect(() => {
-    if (authUser) {
-      // 已登入導轉到首頁
+  useEffect(() => {    
+    // 已登入導轉到首頁
+    const token = getCookie(USER_T0KEN_COOKIE);
+    if (token) {
       router.push("/");
     }
-  }, [authUser, router]);
+  }, [router]);
 
   const [checked, setChecked] = useState(true);
   const handleChange = () => {
@@ -136,7 +137,9 @@ export default function Register() {
     <Box
       sx={{
         width: "80%",
-        margin: "auto",
+        maxWidth: 380,
+        mx: "auto",
+        my: 5,
       }}
     >
       <Box

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Slider from "react-slick";
 import { Box, Skeleton } from "@mui/material";
 import TitleSection from "@/components/layout/home/TitleSection";
@@ -91,7 +91,8 @@ function NewActivities() {
   const { activity } = axios;
   const [activityList, setActivityList] = useState<HomeActivityState[]>([]);
   const [error, setError] = useState("");
-  async function loadData() {
+
+  const fetchActivityList = useCallback(async () => {
     try {
       const responseBody = await activity.getNewActivityList();
       if (responseBody && responseBody.data) {
@@ -100,10 +101,11 @@ function NewActivities() {
     } catch (error) {
       setError("Failed to fetch data: " + String(error));
     }
-  }
+  }, [activity]);
+
   useEffect(() => {
-    loadData();
-  }, []);
+    fetchActivityList();
+  }, [fetchActivityList]);
 
   return (
     <Box sx={bgStyle}>
@@ -117,7 +119,7 @@ function NewActivities() {
         <Slider {...SliderSettings}>
           {activityList.map((value: HomeActivityState) => (
             <Box key={value._id} sx={{ px: 1.5, py: 0.5 }}>
-              <CardActivitySlick activity={value} onLoad={loadData} />
+              <CardActivitySlick activity={value} onLoad={fetchActivityList} />
             </Box>
           ))}
         </Slider>

@@ -40,6 +40,7 @@ function ParticipantReviewDialog(props: SimpleDialogProps) {
   };
   useEffect(() => {
     fetchData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const closeDialog = (reload: boolean) => {

@@ -4,6 +4,7 @@ import banner01 from "@/public/images/banner01.jpeg";
 import banner02 from "@/public/images/banner02.jpeg";
 import banner04 from "@/public/images/banner04.jpeg";
 import banner05 from "@/public/images/banner05.jpeg";
+import BannerImage from "@/public/images/banner_logo.png";
 
 import { Box, Button } from "@mui/material";
 
@@ -62,7 +63,7 @@ function homeBannerCarousel() {
         justifyContent: "flex-start", // 確保子元素從左側開始排列
         alignItems: "center", // 垂直居中
         flexDirection: "column",
-        backgroundImage: `url('./images/banner_bg.png')`,
+        backgroundImage: "url(\"/images/banner_bg.png\")",
         backgroundSize: "100% 60%",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "bottom",
@@ -70,7 +71,7 @@ function homeBannerCarousel() {
       }}
     >
       <Box mb={6}>
-        <img src="./images/banner_logo.png" alt="" />
+        <Image src={BannerImage} alt="banner" />
       </Box>
       <Box>
         <Button

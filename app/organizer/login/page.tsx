@@ -105,7 +105,7 @@ export default function Login() {
 
     dispatch(loginOrganizer(loginForm) as any).then((res: any) => {
       if (res.payload?.data) {
-        setSuccessMsg('登入成功，即將跳轉至"活動管理"頁面');
+        setSuccessMsg("登入成功，即將跳轉至\"活動管理\"頁面");
 
         if (remember) {
           setCookie(OG_ACCOUNT_COOKIE, email, 30);
@@ -135,7 +135,7 @@ export default function Login() {
         remember: true,
       });
     }
-  }, []);
+  }, [router]);
 
   return (
     <Grid
@@ -143,7 +143,9 @@ export default function Login() {
       direction="row"
       justifyContent="space-between"
       alignItems="center"
-      spacing={2}
+      sx={{
+        height: "100vh",
+      }}
     >
       <Grid
         item
@@ -151,33 +153,41 @@ export default function Login() {
         sm={6}
         sx={{
           overflow: "hidden",
+          height:{ xs: "auto", sm: "100%" },
         }}
       >
         <Box
           component="img"
           sx={{
+            display:{ xs: "none", sm: "block" },
             objectFit: "cover",
+            height: "100%",
           }}
-          style={{
-            height: "100dvh",
-          }}
-          display={{ xs: "none", sm: "block" }}
           alt="cover"
           src="https://fastly.picsum.photos/id/572/1000/700.jpg?hmac=4wtTOriqhtIkQQpz6N9PLCmvzXwMvkGpSE235Mu_P9Q"
         />
       </Grid>
 
-      <Grid xs={12} sm={6} sx={{ textAlign: "center" }}>
-        <Box sx={{ ml: 2, mt: 2, mb: 12, textAlign: "left" }}>
+      <Grid 
+        xs={12} 
+        sm={6} 
+        sx={{
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          p: 2
+        }}
+      >
+        <Box>
           <BackBtn href="/" name="返回" />
         </Box>
         <Fade in={true}>
-          <Box sx={{ width: "75%", maxWidth: 380, margin: "auto" }}>
-            <Box component="form" noValidate autoComplete="off">
+          <Box sx={{ width: "75%", maxWidth: 380, margin: "auto", textAlign: "center" }}>
+            <Box>
               <Button component={NextLink} href="/" sx={{ height: 60, my: 5 }}>
                 <LogoHorizontal color="#4A4642" />
               </Button>
-
               {errorMsg && <Alert severity="error">{errorMsg}</Alert>}
               {successMsg && <Alert severity="success">{successMsg}</Alert>}
               <FormGroup>
@@ -185,6 +195,7 @@ export default function Login() {
                   required
                   name="email"
                   type="email"
+                  autoComplete="nope"
                   value={loginForm.email}
                   label="帳號"
                   margin="normal"
@@ -197,6 +208,7 @@ export default function Login() {
                   required
                   name="password"
                   type="password"
+                  autoComplete="new-password"
                   value={loginForm.password}
                   label="密碼"
                   margin="normal"
@@ -259,6 +271,7 @@ export default function Login() {
             </Typography>
           </Box>
         </Fade>
+        <Box sx={{height: 40}}></Box>
       </Grid>
     </Grid>
   );

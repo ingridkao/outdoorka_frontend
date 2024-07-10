@@ -35,20 +35,20 @@ export default function RootLayout({
   );
 
   useEffect(() => {
-    // 首頁不判斷權限
-    if (pathname === "/") return;
-    // 註冊登入不判斷權限
+    // 以下頁面不判斷權限
     if (
       pathname &&
       [
+        "/",
         "/login/",
         "/register/",
         "/organizer/login/",
         "/organizer/register/",
+        "/about/",
+        "/activities/"
       ].includes(pathname)
     )
       return;
-
     const token = getCookie(USER_T0KEN_COOKIE);
     const getOgToken = getCookie(OG_TOK0N_COOKIE);
     if (!(token || getOgToken)) {

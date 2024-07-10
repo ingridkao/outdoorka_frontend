@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import NextLink from "next/link";
 import { Box, Grid, Button, Skeleton } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
@@ -33,7 +33,7 @@ function HotActivities(props: { count: number }) {
   const theme = useTheme();
   const [activityList, setActivityList] = useState<HomeActivityState[]>([]);
   const [error, setError] = useState("");
-  async function loadData() {
+  const fetchActivityList = useCallback(async () => {
     try {
       const responseBody = await activity.getHotActivityList();
       if (responseBody && responseBody.data) {
@@ -43,10 +43,10 @@ function HotActivities(props: { count: number }) {
     } catch (error) {
       setError("Failed to fetch data: " + String(error));
     }
-  }
+  }, [activity, count]);
   useEffect(() => {
-    loadData();
-  }, []);
+    fetchActivityList();
+  }, [fetchActivityList]);
 
   return (
     <Box sx={{ position: "relative", mb: 25, px: 2 }}>
@@ -62,7 +62,7 @@ function HotActivities(props: { count: number }) {
                   <CardActivity
                     home={true}
                     activity={value}
-                    onLoad={() => loadData()}
+                    onLoad={() => fetchActivityList()}
                   />
                 </Grid>
               ))}

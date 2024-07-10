@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, ChangeEvent, Suspense } from "react";
+import { useState, useEffect, ChangeEvent, Suspense, useCallback } from "react";
 import { Html5QrcodeScanner } from "html5-qrcode";
 import { useSearchParams } from "next/navigation";
 
@@ -24,6 +24,32 @@ function ScanPageContent() {
   const [dialogOpen, setDialogOpen] = useState(false);
 
   let isRes = false;
+  const fetchTicket = useCallback(async (id: string) => {
+    if (resSucesee) {
+      setDialogOpen(true);
+    } else if (id === "") {
+      setErrorMsg("請填寫票卷編號");
+    } else {
+      setErrorMsg("");
+      try {
+        const responseBody = await organizerTicket.getTicketInfo(id);
+        if (responseBody.data && responseBody.data) {
+          setResSucesee(responseBody.data);
+          setDialogOpen(true);
+          // eslint-disable-next-line react-hooks/exhaustive-deps
+          isRes = true;
+        }
+      } catch (error: any) {
+        setResSucesee(null);
+        setDialogOpen(false);
+        if (error?.status == 400) {
+          setErrorMsg("輸入的票卷編號錯誤");
+        } else {
+          setErrorMsg(String(error?.message));
+        }
+      }
+    }
+  }, []);
   useEffect(() => {
     const scanner = new Html5QrcodeScanner("reader", { fps: 10 }, false);
     const onScanSuccess = (result: any) => {
@@ -53,33 +79,7 @@ function ScanPageContent() {
     if (getId) {
       setTicketId(getId);
     }
-  }, []);
-
-  const fetchTicket = async (id: string) => {
-    if (resSucesee) {
-      setDialogOpen(true);
-    } else if (id === "") {
-      setErrorMsg("請填寫票卷編號");
-    } else {
-      setErrorMsg("");
-      try {
-        const responseBody = await organizerTicket.getTicketInfo(id);
-        if (responseBody.data && responseBody.data) {
-          setResSucesee(responseBody.data);
-          setDialogOpen(true);
-          isRes = true;
-        }
-      } catch (error: any) {
-        setResSucesee(null);
-        setDialogOpen(false);
-        if (error?.status == 400) {
-          setErrorMsg("輸入的票卷編號錯誤");
-        } else {
-          setErrorMsg(String(error?.message));
-        }
-      }
-    }
-  };
+  }, [fetchTicket, getId, isRes]);
 
   const sendTicket = () => {
     if (ticketId === "") {

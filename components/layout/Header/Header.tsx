@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import NextLink from "next/link";
 import {
   AppBar,
   Box,
@@ -11,7 +10,6 @@ import {
   Drawer,
   Link,
   IconButton,
-  Button,
   Toolbar,
   useScrollTrigger,
 } from "@mui/material";
@@ -163,7 +161,7 @@ function Header() {
                 style={{
                   transition: scrollDownFlag ? "0.3s" : "0.5s",
                 }}
-                priority={true}
+                priority={false}
               />
             </Box>
           </Link>

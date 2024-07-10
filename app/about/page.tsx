@@ -1,9 +1,11 @@
 "use client";
 
 import { Unstable_Grid2 as Grid, Box, Typography } from "@mui/material";
+import Image from "next/image";
 import HotActivities from "@/components/layout/home/HotActivities";
 import PageLayout from "@/components/layout/MainLayout/PageLayout";
 import useCardTheme from "@/components/ui/card/useCardTheme";
+import BannerImage from "@/public/images/banner_logo.png";
 
 import "@fortawesome/fontawesome-svg-core/styles.css";
 
@@ -42,7 +44,7 @@ function About() {
             justifyContent: "center",
             alignItems: "center",
             flexDirection: "column",
-            backgroundImage: `url('/images/banner_bg.png')`,
+            backgroundImage: "url(\"/images/banner_bg.png\")",
             backgroundSize: "100% 60%",
             backgroundRepeat: "no-repeat",
             backgroundPosition: "bottom",
@@ -50,7 +52,7 @@ function About() {
           }}
         >
           <Box my={8}>
-            <img src="/images/banner_logo.png" alt="" />
+            <Image src={BannerImage} alt="banner" />
           </Box>
           <Box sx={cardStyle.box}>
             <Typography variant="h3" sx={h3Style}>

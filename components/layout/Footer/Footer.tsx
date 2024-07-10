@@ -1,7 +1,13 @@
 "use client";
-import React from "react";
+
+import { useState, useEffect } from "react";
 import Image from "next/image";
-import Link from "next/link";
+import NextLink from "next/link";
+import {
+  getCookie,
+  USER_T0KEN_COOKIE,
+  OG_TOK0N_COOKIE,
+} from "@/utils/cookieHandler";
 import {
   Box,
   List,
@@ -9,26 +15,14 @@ import {
   ListItemText,
   TextField,
   Button,
+  Link as MuiLink,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import useMediaQuery from "@mui/material/useMediaQuery";
 
 import Facebook from "@/components/layout/icons/facebook";
 import Instagram from "@/components/layout/icons/instagram";
 import Xtwitter from "@/components/layout/icons/xtwitter";
 import LogoImage from "@/public/images/logoFooter.png";
-
-const items = [
-  {
-    item: ["聯絡資訊", "關於我們", "聯絡我們", "常見問題", "使用者條款"],
-  },
-  {
-    item: ["更多探索", "活動介紹", "優良主揪", "短影音", "Blog"],
-  },
-  {
-    item: ["帳號資訊", "我的帳號", "我的訂單", "我的票券"],
-  },
-];
 
 const SendButton = () => (
   <Button href="#text-buttons" color="inherit">
@@ -38,7 +32,45 @@ const SendButton = () => (
 
 function Footer() {
   const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.up("sm"));
+  const titleItem = ["聯絡資訊", "更多探索", "帳號資訊"]
+  const [subItem, setSubItem] = useState<{
+    title: string;
+    link: string;
+    disabled: boolean;
+  }[][]>([]);
+
+  useEffect(() => {
+    const getUserT0ken = getCookie(USER_T0KEN_COOKIE);
+    const getOgT0ken = getCookie(OG_TOK0N_COOKIE);
+    const newItem = [
+      [
+        { title: "關於我們", link: "/about", disabled: false },
+        { title: "聯絡我們", link: "#", disabled: true },
+        { title: "常見問題", link: "#", disabled: true },
+        { title: "使用者條款", link: "#", disabled: true },
+      ],
+      [
+        { title: "活動介紹", link: "/activities", disabled: false },
+        { title: "優良主揪", link: "#", disabled: true },
+        { title: "短影音", link: "#", disabled: true },
+        { title: "Blog", link: "#", disabled: true },
+      ]
+    ]
+    if (getUserT0ken) {
+      newItem.push([
+        { title: "我的帳號", link: "/user/profile/", disabled: false },
+        { title: "我的收藏", link: "/favorites", disabled: false },
+        { title: "我的票券", link: "/ticket", disabled: false },
+      ])
+    } else if (getOgT0ken) {
+      newItem.push([
+        { title: "我的帳號", link: "/organizer/profile", disabled: false },
+        { title: "我的活動", link: "/organizer/activity/", disabled: false },
+      ])
+    }
+    setSubItem(newItem)
+
+  }, []);
 
   return (
     <Box component="footer" bgcolor="#171C22">
@@ -132,7 +164,7 @@ function Footer() {
               },
             }}
           >
-            {items.map((list, listIndex) => (
+            {subItem.map((list, listIndex) => (
               <List
                 key={listIndex}
                 sx={{
@@ -146,28 +178,30 @@ function Footer() {
                   },
                 }}
               >
-                {list.item.map((value, index) => (
+                <span style={{
+                  marginBottom: 20,
+                  display: "block",
+                }}>
+                  {titleItem[listIndex]}
+                </span>
+                {list.map((item, index) => (
                   <ListItem
                     key={index}
                     sx={{
-                      padding: 0,
+                      p: 0,
                     }}
                   >
-                    <Link href="/">
-                      <ListItemText
-                        primary={
-                          <span
-                            style={{
-                              marginBottom: index === 0 ? 20 : 1,
-                              color: index === 0 ? "#A9ABB1" : "#EDF1F9",
-                              display: "block",
-                            }}
-                          >
-                            {value}
-                          </span>
-                        }
-                      />
-                    </Link>
+                    <MuiLink 
+                      component={NextLink} 
+                      href={item.link}
+                      className={item.disabled ? "disabled-link" : ""}
+                      sx={{
+                        mb: 2,
+                        color: "#EDF1F9",
+                      }}
+                    >
+                      {item.title}
+                    </MuiLink>
                   </ListItem>
                 ))}
               </List>

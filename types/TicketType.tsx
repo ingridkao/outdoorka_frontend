@@ -1,7 +1,9 @@
 import { Activity, ActivityState } from "@/types";
 
 export enum TicketStatus {
+  // eslint-disable-next-line no-unused-vars
   Unused = 0,
+  // eslint-disable-next-line no-unused-vars
   Used = 1,
 }
 export interface OrganizerState {
@@ -44,6 +46,7 @@ export type CheckinTicketInfoProp = {
 };
 
 export interface TicketInfoState extends Activity {
+  rating: number;
   _id: string;
   organizer: OrganizerState;
   ticketStatus: number;
