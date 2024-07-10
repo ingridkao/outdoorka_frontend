@@ -1,15 +1,15 @@
 {
-	"extends": ["next", "next/core-web-vitals", "eslint:recommended"],
-	"parser": "@typescript-eslint/parser",
-	"globals": {
-		"React": "readonly"
-	},
-	"plugins": ["react", "@typescript-eslint", "unused-imports"],
-	"rules": {
-		"no-unused-vars": "error",
-		"indent": ["warn", "tab"],
-		"quotes": ["warn", "double"],
-		"@typescript-eslint/no-unused-vars": "warn",
-		"unused-imports/no-unused-imports-ts": "warn"
-	}
+  "extends": ["next", "next/core-web-vitals", "eslint:recommended"],
+  "parser": "@typescript-eslint/parser",
+  "globals": {
+    "React": "readonly"
+  },
+  "plugins": ["react", "@typescript-eslint", "unused-imports"],
+  "rules": {
+    "no-unused-vars": "error",
+    "indent": ["warn", "tab"],
+    "quotes": ["warn", "double"],
+    "@typescript-eslint/no-unused-vars": "warn",
+    "unused-imports/no-unused-imports-ts": "warn"
+  }
 }

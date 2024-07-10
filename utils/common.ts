@@ -6,10 +6,10 @@ import he from "he";
  * @returns
  */
 export const getFirebaseFileName = (url: string) => {
-	// 取出的結果如：images/92288311-6c78-4b95-8270-1ca98298c66c.png
-	const regex = /images\/[^?]+/;
-	const match = url.match(regex);
-	return match ? match[0] : "";
+  // 取出的結果如：images/92288311-6c78-4b95-8270-1ca98298c66c.png
+  const regex = /images\/[^?]+/;
+  const match = url.match(regex);
+  return match ? match[0] : "";
 };
 
 /**
@@ -18,9 +18,9 @@ export const getFirebaseFileName = (url: string) => {
  * @returns
  */
 export const escapeContent = (content: string) => {
-	if (!content) return "";
+  if (!content) return "";
 
-	return he.escape(content);
+  return he.escape(content);
 };
 
 /**
@@ -29,7 +29,7 @@ export const escapeContent = (content: string) => {
  * @returns
  */
 export const decodeContent = (content: string) => {
-	if (!content) return "";
+  if (!content) return "";
 
-	return he.decode(content);
+  return he.decode(content);
 };

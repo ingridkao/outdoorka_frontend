@@ -4,14 +4,14 @@ import { useState } from "react";
 import NextLink from "next/link";
 
 import {
-	Button,
-	Fab,
-	Chip,
-	Box,
-	Typography,
-	Grid,
-	Paper,
-	CardMedia,
+  Button,
+  Fab,
+  Chip,
+  Box,
+  Typography,
+  Grid,
+  Paper,
+  CardMedia,
 } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
 import PeopleIcon from "@/components/icon/peopleIcon";
@@ -28,163 +28,163 @@ import useCardTheme from "@/components/ui/card/useCardTheme";
  * @param activity  單一活動資料
  */
 function CardOrganizerActivity({
-	isFinish,
-	isPublish,
-	activity,
+  isFinish,
+  isPublish,
+  activity,
 }: {
-	isFinish: boolean;
-	isPublish: number;
-	activity: OrganizerActivityState;
+  isFinish: boolean;
+  isPublish: number;
+  activity: OrganizerActivityState;
 }) {
-	const cardStyle = useCardTheme();
-	const [dialogOpen, setDialogOpen] = useState(false);
-	const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
-	const canceActivity = () => {};
+  const cardStyle = useCardTheme();
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
+  const canceActivity = () => {};
 
-	return (
-		<Paper sx={cardStyle.container}>
-			{/* 上方 區塊 */}
-			<Box sx={{ position: "relative" }}>
-				<Box sx={cardStyle.topBg}>
-					<CardMedia
-						component="img"
-						height={310}
-						alt={activity.title}
-						image={activity.activityImageUrls[0]}
-					/>
-				</Box>
+  return (
+    <Paper sx={cardStyle.container}>
+      {/* 上方 區塊 */}
+      <Box sx={{ position: "relative" }}>
+        <Box sx={cardStyle.topBg}>
+          <CardMedia
+            component="img"
+            height={310}
+            alt={activity.title}
+            image={activity.activityImageUrls[0]}
+          />
+        </Box>
 
-				{!isFinish && (
-					<Grid
-						container
-						sx={{
-							...cardStyle.topInfoTopRow,
-							...cardStyle.topInfoTopRightBtn,
-						}}
-					>
-						<Grid item>
-							<Fab
-								size="small"
-								color="primary"
-								aria-label={isPublish === 0 ? "刪除活動" : "取消活動"}
-								onClick={canceActivity}
-							>
-								<ClearIcon />
-							</Fab>
-						</Grid>
-					</Grid>
-				)}
+        {!isFinish && (
+          <Grid
+            container
+            sx={{
+              ...cardStyle.topInfoTopRow,
+              ...cardStyle.topInfoTopRightBtn,
+            }}
+          >
+            <Grid item>
+              <Fab
+                size="small"
+                color="primary"
+                aria-label={isPublish === 0 ? "刪除活動" : "取消活動"}
+                onClick={canceActivity}
+              >
+                <ClearIcon />
+              </Fab>
+            </Grid>
+          </Grid>
+        )}
 
-				<Grid
-					container
-					sx={{
-						...cardStyle.topInfoTopRow,
-						...cardStyle.topInfoTopMainRow,
-					}}
-				>
-					{/* 參加人數_活動上限人數 */}
-					<Grid item>
-						<Chip
-							sx={cardStyle.chip}
-							label={
-								<Box display="inline-flex" alignItems="center">
-									<PeopleIcon sx={cardStyle.chipIcon} />
-									<Typography sx={cardStyle.chipText}>
-										{activity.bookedCapacity || 0} /{" "}
-										{activity.totalCapacity || 0}
-									</Typography>
-								</Box>
-							}
-						/>
-					</Grid>
+        <Grid
+          container
+          sx={{
+            ...cardStyle.topInfoTopRow,
+            ...cardStyle.topInfoTopMainRow,
+          }}
+        >
+          {/* 參加人數_活動上限人數 */}
+          <Grid item>
+            <Chip
+              sx={cardStyle.chip}
+              label={
+                <Box display="inline-flex" alignItems="center">
+                  <PeopleIcon sx={cardStyle.chipIcon} />
+                  <Typography sx={cardStyle.chipText}>
+                    {activity.bookedCapacity || 0} /{" "}
+                    {activity.totalCapacity || 0}
+                  </Typography>
+                </Box>
+              }
+            />
+          </Grid>
 
-					{!isFinish && isPublish === 1 && (
-						<Grid item>
-							<Button
-								sx={{ ...cardStyle.chip, px: 2 }}
-								onClick={() => setDialogOpen(true)}
-							>
-								<Typography sx={cardStyle.chipText}>報名清單</Typography>
-							</Button>
-							{dialogOpen && (
-								<ParticipantDialog
-									data={activity}
-									open={dialogOpen}
-									onClose={() => setDialogOpen(false)}
-								/>
-							)}
-						</Grid>
-					)}
-				</Grid>
-			</Box>
+          {!isFinish && isPublish === 1 && (
+            <Grid item>
+              <Button
+                sx={{ ...cardStyle.chip, px: 2 }}
+                onClick={() => setDialogOpen(true)}
+              >
+                <Typography sx={cardStyle.chipText}>報名清單</Typography>
+              </Button>
+              {dialogOpen && (
+                <ParticipantDialog
+                  data={activity}
+                  open={dialogOpen}
+                  onClose={() => setDialogOpen(false)}
+                />
+              )}
+            </Grid>
+          )}
+        </Grid>
+      </Box>
 
-			<CardBottomInfo row={1} info={activity} />
+      <CardBottomInfo row={1} info={activity} />
 
-			{!isFinish && (
-				<Grid container spacing={1.5} sx={{ px: 2, pb: 2 }}>
-					<Grid item xs={6}>
-						<Button
-							variant="contained"
-							size="small"
-							sx={{ width: "100%" }}
-							disabled={isPublish === 0}
-							component={NextLink}
-							href={`/activity/${activity._id}`}
-							target="_black"
-						>
-							活動預覽
-						</Button>
-					</Grid>
-					<Grid item xs={6}>
-						<Button
-							variant="contained"
-							size="small"
-							sx={{ width: "100%" }}
-							disabled={isPublish === 1}
-							component={NextLink}
-							href={`/organizer/activity-edit/${activity._id}`}
-						>
-							編輯
-						</Button>
-					</Grid>
-					<Grid item xs={12}>
-						<Button
-							variant="contained"
-							size="small"
-							sx={{ width: "100%" }}
-							disabled={isPublish === 0}
-							component={NextLink}
-							href="/organizer/scan"
-						>
-							驗票
-						</Button>
-					</Grid>
-				</Grid>
-			)}
+      {!isFinish && (
+        <Grid container spacing={1.5} sx={{ px: 2, pb: 2 }}>
+          <Grid item xs={6}>
+            <Button
+              variant="contained"
+              size="small"
+              sx={{ width: "100%" }}
+              disabled={isPublish === 0}
+              component={NextLink}
+              href={`/activity/${activity._id}`}
+              target="_black"
+            >
+              活動預覽
+            </Button>
+          </Grid>
+          <Grid item xs={6}>
+            <Button
+              variant="contained"
+              size="small"
+              sx={{ width: "100%" }}
+              disabled={isPublish === 1}
+              component={NextLink}
+              href={`/organizer/activity-edit/${activity._id}`}
+            >
+              編輯
+            </Button>
+          </Grid>
+          <Grid item xs={12}>
+            <Button
+              variant="contained"
+              size="small"
+              sx={{ width: "100%" }}
+              disabled={isPublish === 0}
+              component={NextLink}
+              href="/organizer/scan"
+            >
+              驗票
+            </Button>
+          </Grid>
+        </Grid>
+      )}
 
-			{isFinish && 
-				<Grid container spacing={1.5} sx={{ px: 2, pb: 2 }}>
-					<Grid item xs={12}>
-						<Button
-							variant="contained"
-							size="small"
-							sx={{ width: "100%" }}
-							onClick={() => setReviewDialogOpen(true)}
-						>
-							評價會員
-						</Button>
-						{reviewDialogOpen && (
-							<ParticipantReviewDialog
-								data={activity}
-								open={reviewDialogOpen}
-								onClose={() => setReviewDialogOpen(false)}
-							/>
-						)}
-					</Grid>
-				</Grid>
-			}
-		</Paper>
-	);
+      {isFinish && (
+        <Grid container spacing={1.5} sx={{ px: 2, pb: 2 }}>
+          <Grid item xs={12}>
+            <Button
+              variant="contained"
+              size="small"
+              sx={{ width: "100%" }}
+              onClick={() => setReviewDialogOpen(true)}
+            >
+              評價會員
+            </Button>
+            {reviewDialogOpen && (
+              <ParticipantReviewDialog
+                data={activity}
+                open={reviewDialogOpen}
+                onClose={() => setReviewDialogOpen(false)}
+              />
+            )}
+          </Grid>
+        </Grid>
+      )}
+    </Paper>
+  );
 }
 
 export default CardOrganizerActivity;
