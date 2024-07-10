@@ -1,16 +1,16 @@
 * {
-	box-sizing: border-box;
-	text-decoration: none;
+  box-sizing: border-box;
+  text-decoration: none;
 }
 
 body,
 html {
-	margin: 0;
-	padding: 0;
-	line-height: 1;
+  margin: 0;
+  padding: 0;
+  line-height: 1;
 }
 
 ol,
 ul {
-	list-style: none;
+  list-style: none;
 }

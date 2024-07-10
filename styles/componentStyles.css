@@ -1,74 +1,74 @@
 /* Search */
 .search .MuiInput-root {
-	width: 100%;
-	border-radius: 48px;
-	background-color: #fff;
-	padding: 16px;
+  width: 100%;
+  border-radius: 48px;
+  background-color: #fff;
+  padding: 16px;
 }
 .search .MuiButton-contained {
-	position: absolute;
-	right: 8px;
-	top: 8px;
-	min-width: 48px;
-	height: 48px;
-	border-radius: 48px;
-	padding: 0;
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  min-width: 48px;
+  height: 48px;
+  border-radius: 48px;
+  padding: 0;
 }
 
 /* chipAvatar */
 .chipAvatar {
-	height: 48px;
-	border-radius: 48px;
-	background-color: #eff0f7;
+  height: 48px;
+  border-radius: 48px;
+  background-color: #eff0f7;
 }
 .chipAvatar.og {
-	background-color: #22252a;
+  background-color: #22252a;
 }
 .chipAvatar .MuiChip-avatar {
-	width: 40px;
-	height: 40px;
-	border: 1px solid #fff;
+  width: 40px;
+  height: 40px;
+  border: 1px solid #fff;
 }
 
 .chipAvatarSmall {
-	height: 40px;
-	border-radius: 40px;
-	backdrop-filter: invert(25%);
-	background-color: rgba(255, 255, 255, 0.15);
+  height: 40px;
+  border-radius: 40px;
+  backdrop-filter: invert(25%);
+  background-color: rgba(255, 255, 255, 0.15);
 }
 .chipAvatarSmall .MuiChip-avatar {
-	width: 32px;
-	height: 32px;
-	border: 1px solid #fff;
+  width: 32px;
+  height: 32px;
+  border: 1px solid #fff;
 }
 
 .multiline-ellipsis {
-	display: -webkit-box;
-	-webkit-box-orient: vertical;
-	-webkit-line-clamp: 2;
-	overflow: hidden;
-	min-height: 4rem;
-	max-height: 4rem;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  min-height: 4rem;
+  max-height: 4rem;
 }
 
 .singleline-ellipsis {
-	display: -webkit-box;
-	-webkit-box-orient: vertical;
-	-webkit-line-clamp: 2;
-	overflow: hidden;
-	min-height: 1.25rem;
-	max-height: 1.75rem;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  min-height: 1.25rem;
+  max-height: 1.75rem;
 }
 
 .triplex-ellipsis {
-	display: -webkit-box;
-	-webkit-box-orient: vertical;
-	-webkit-line-clamp: 3;
-	overflow: hidden;
-	max-height: 5.75rem;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  max-height: 5.75rem;
 }
 
 .line-clamp-height {
-	min-height: 2rem;
-	max-height: 2.75rem;
+  min-height: 2rem;
+  max-height: 2.75rem;
 }

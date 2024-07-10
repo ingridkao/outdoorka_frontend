@@ -1,47 +1,47 @@
 import { AuthState, OgAuthState } from "@/types/AuthType";
 import { ActivityTag, City } from "./enum/activity";
 export interface ActivitiesState {
-	items: any[];
-	status: string | null;
-	error: null | Error;
+  items: any[];
+  status: string | null;
+  error: null | Error;
 }
 
 export interface RootState {
-	activities: ActivitiesState;
-	auth: AuthState;
-	ogAuth: OgAuthState;
+  activities: ActivitiesState;
+  auth: AuthState;
+  ogAuth: OgAuthState;
 }
 
 export interface OrganizerState {
-	_id: string;
-	name: string;
-	photo: string;
-	rating: number;
-	email?: number;
+  _id: string;
+  name: string;
+  photo: string;
+  rating: number;
+  email?: number;
 }
 export interface Activity {
-	title: string;
-	subtitle: string;
-	region: string;
-	city: City;
-	activityStartTime: any;
-	activityEndTime: any;
-	price?: number;
+  title: string;
+  subtitle: string;
+  region: string;
+  city: City;
+  activityStartTime: any;
+  activityEndTime: any;
+  price?: number;
 
-	bookedCapacity?: number; // 參加人數
-	totalCapacity?: number; // 參加人數上限
+  bookedCapacity?: number; // 參加人數
+  totalCapacity?: number; // 參加人數上限
 
-	activityNotice?: string;
-	activityImageUrl?: string;
-	activityImageUrls?: string[];
-	activityTags: ActivityTag[];
+  activityNotice?: string;
+  activityImageUrl?: string;
+  activityImageUrls?: string[];
+  activityTags: ActivityTag[];
 
-	likeCount?: number;
-	likers?: number; // TODO 待後端移除
-	organizerId?: string;
-	organizerRating?: number;
-	organzierName?: string;
-	popularity?: number;
+  likeCount?: number;
+  likers?: number; // TODO 待後端移除
+  organizerId?: string;
+  organizerRating?: number;
+  organzierName?: string;
+  popularity?: number;
 }
 /**
  *         {
@@ -68,67 +68,67 @@ export interface Activity {
         },
  */
 export interface HomeActivityState extends Activity {
-	_id?: string;
-	organizer?: OrganizerState;
-	title: string;
-	subtitle: string;
-	region: string;
-	city: City;
-	activityImageUrls: string[];
-	activityStartTime: any;
-	activityEndTime: any;
-	bookedCapacity?: number; // 參加人數
-	popularity?: number;
-	// isLike?: boolean;
+  _id?: string;
+  organizer?: OrganizerState;
+  title: string;
+  subtitle: string;
+  region: string;
+  city: City;
+  activityImageUrls: string[];
+  activityStartTime: any;
+  activityEndTime: any;
+  bookedCapacity?: number; // 參加人數
+  popularity?: number;
+  // isLike?: boolean;
 }
 
 export interface FavoritesActivityState extends Activity {
-	_id?: string;
-	organizer?: OrganizerState;
-	title: string;
-	subtitle: string;
-	region: string;
-	city: City;
-	activityImageUrls: string[];
-	activityStartTime: any;
-	activityEndTime: any;
-	activityTags: ActivityTag[];
-	bookedCapacity?: number; // 參加人數
-	likeCount?: number;
+  _id?: string;
+  organizer?: OrganizerState;
+  title: string;
+  subtitle: string;
+  region: string;
+  city: City;
+  activityImageUrls: string[];
+  activityStartTime: any;
+  activityEndTime: any;
+  activityTags: ActivityTag[];
+  bookedCapacity?: number; // 參加人數
+  likeCount?: number;
 }
 
 export interface ActivityState extends Activity {
-	_id?: string;
-	activityImageUrls: string[];
-	organizer?: OrganizerState;
-	popularity?: number;
-	isLike?: boolean;
+  _id?: string;
+  activityImageUrls: string[];
+  organizer?: OrganizerState;
+  popularity?: number;
+  isLike?: boolean;
 }
 export interface IActivityLink {
-	name: string;
-	url: string;
+  name: string;
+  url: string;
 }
 
 export interface IGetActivity {
-	status: number;
-	sort?: string;
+  status: number;
+  sort?: string;
 }
 
 export interface ICreateActivity extends Activity {
-	address: string;
-	location: string;
-	activityDetail: string;
-	activityLinks: IActivityLink[];
-	isPublish: boolean;
-	activitySignupStartTime: any;
-	activitySignupEndTime: any;
+  address: string;
+  location: string;
+  activityDetail: string;
+  activityLinks: IActivityLink[];
+  isPublish: boolean;
+  activitySignupStartTime: any;
+  activitySignupEndTime: any;
 }
 
 export interface OrganizerActivityState extends Activity {
-	_id: string;
-	totalCapacity: number; // 活動人數
-	address: string;
-	location: string; // 集合地點
-	activityImageUrls: string[];
-	isPublish: boolean;
+  _id: string;
+  totalCapacity: number; // 活動人數
+  address: string;
+  location: string; // 集合地點
+  activityImageUrls: string[];
+  isPublish: boolean;
 }

@@ -1,123 +1,123 @@
 /*  MUI Button */
 .MuiButton-root {
-	border-radius: 3rem;
+  border-radius: 3rem;
 }
 
 /*  MUI Button sizeSmall */
 .MuiButton-sizeSmall {
-	font-size: 1rem;
+  font-size: 1rem;
 }
 
 .MuiButton-sizeSmall svg {
-	margin-right: 0.5rem;
+  margin-right: 0.5rem;
 }
 
 /*  MUI Button colorPrimary */
 .MuiButton-contained.MuiButton-colorPrimary:hover {
-	background-color: #44474c;
+  background-color: #44474c;
 }
 .MuiButton-contained.MuiButton-colorPrimary:disabled {
-	background-color: #e1e2e9;
-	color: #c4c6cd;
+  background-color: #e1e2e9;
+  color: #c4c6cd;
 }
 
 /* MUI Button contained  */
 .MuiButton-contained:hover {
-	background-color: #a9abb1;
+  background-color: #a9abb1;
 }
 .MuiButton-contained:disabled {
-	background-color: #f8f9ff;
+  background-color: #f8f9ff;
 }
 .MuiButton-containedSizeMedium {
-	padding: 1rem 3rem 1rem 3rem;
-	font-size: 1rem;
+  padding: 1rem 3rem 1rem 3rem;
+  font-size: 1rem;
 }
 
 /* MUI Link  */
 
 .MuiLink-root.disabled-link {
-	pointer-events: none;
-	opacity: 0.8;
+  pointer-events: none;
+  opacity: 0.8;
 }
 
 /* MUI Typography  */
 .MuiTypography-h4 {
-	margin-bottom: 1rem;
+  margin-bottom: 1rem;
 }
 
 /* MUI Accordion  */
 .MuiAccordion-rounded.customAccordion {
-	border-radius: 1.5rem;
-	box-shadow: none;
+  border-radius: 1.5rem;
+  box-shadow: none;
 }
 .MuiAccordion-rounded.customAccordion::before {
-	display: none;
+  display: none;
 }
 .MuiAccordion-rounded.customAccordion .MuiAccordionSummary-content {
-	font-size: 1.5rem;
-	font-weight: 700;
+  font-size: 1.5rem;
+  font-weight: 700;
 }
 
 .MuiAccordion-rounded.customAccordion .MuiAccordionDetails-root {
-	color: #74777d;
+  color: #74777d;
 }
 
 .MuiMenu-paper {
-	box-shadow: 0px 10px 40px 0px #003c701a;
+  box-shadow: 0px 10px 40px 0px #003c701a;
 }
 
 /** Custom styles for the content editor */
 .content-editor {
-	margin-top: 12px;
+  margin-top: 12px;
 }
 
 .content-editor .ql-toolbar {
-	margin-top: 6px;
-	border-radius: 32px 32px 0 0;
+  margin-top: 6px;
+  border-radius: 32px 32px 0 0;
 }
 
 .content-editor .ql-container {
-	height: 300px;
-	border-radius: 0 0 32px 32px;
+  height: 300px;
+  border-radius: 0 0 32px 32px;
 }
 
 .content-editor label {
-	color: #b1aaa5;
-	font-weight: 400;
-	font-size: 0.95rem;
-	line-height: 1.5em;
-	margin-left: 12px;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	transition:
-		color 200ms cubic-bezier(0, 0, 0.2, 1) 0ms,
-		transform 200ms cubic-bezier(0, 0, 0.2, 1) 0ms,
-		max-width 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
-	z-index: 1;
-	pointer-events: auto;
-	user-select: none;
+  color: #b1aaa5;
+  font-weight: 400;
+  font-size: 0.95rem;
+  line-height: 1.5em;
+  margin-left: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition:
+    color 200ms cubic-bezier(0, 0, 0.2, 1) 0ms,
+    transform 200ms cubic-bezier(0, 0, 0.2, 1) 0ms,
+    max-width 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+  z-index: 1;
+  pointer-events: auto;
+  user-select: none;
 }
 
 .content-editor .helperText {
-	font-family:
-		Noto Sans TC,
-		sans-serif;
-	font-weight: 400;
-	font-size: 0.8571428571428571rem;
-	line-height: 1.66;
-	text-align: left;
-	margin: 3px 0 12px 13px;
+  font-family:
+    Noto Sans TC,
+    sans-serif;
+  font-weight: 400;
+  font-size: 0.8571428571428571rem;
+  line-height: 1.66;
+  text-align: left;
+  margin: 3px 0 12px 13px;
 }
 
 .content-editor .error {
-	color: #be565b;
+  color: #be565b;
 }
 
 .content-editor .quill.editor-error .ql-toolbar {
-	border-color: #be565b;
+  border-color: #be565b;
 }
 
 .content-editor .quill.editor-error .ql-container {
-	border-color: #be565b;
+  border-color: #be565b;
 }

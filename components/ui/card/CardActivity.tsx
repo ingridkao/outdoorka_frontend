@@ -1,18 +1,18 @@
 "use client";
 import { useRouter } from "next/navigation";
 import {
-	ActivityState,
-	HomeActivityState,
-	FavoritesActivityState,
+  ActivityState,
+  HomeActivityState,
+  FavoritesActivityState,
 } from "@/types/ActivitiesType";
 import {
-	Box,
-	Typography,
-	Avatar,
-	Grid,
-	Paper,
-	CardMedia,
-	Chip,
+  Box,
+  Typography,
+  Avatar,
+  Grid,
+  Paper,
+  CardMedia,
+  Chip,
 } from "@mui/material";
 import PeopleIcon from "@/components/icon/peopleIcon";
 import RatingStar from "@/components/ui/shared/RatingStar";
@@ -26,146 +26,146 @@ import useCardTheme from "@/components/ui/card/useCardTheme";
  * @param activity 單一活動資料
  */
 function CardActivity(props: {
-	home: boolean;
-	activity: ActivityState | HomeActivityState | FavoritesActivityState;
-	onLoad: () => void;
+  home: boolean;
+  activity: ActivityState | HomeActivityState | FavoritesActivityState;
+  onLoad: () => void;
 }) {
-	const cardStyle = useCardTheme();
-	const router = useRouter();
+  const cardStyle = useCardTheme();
+  const router = useRouter();
 
-	const { home, activity, onLoad } = props;
-	const activityImageUrl = activity.activityImageUrls
-		? activity.activityImageUrls[0]
-		: "";
+  const { home, activity, onLoad } = props;
+  const activityImageUrl = activity.activityImageUrls
+    ? activity.activityImageUrls[0]
+    : "";
 
-	const linkToInfo = (e: { preventDefault: () => void }) => {
-		e.preventDefault();
-		router.push(`/activity/${activity._id}`);
-	};
+  const linkToInfo = (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    router.push(`/activity/${activity._id}`);
+  };
 
-	return (
-		<Paper
-			sx={{
-				...cardStyle.container,
-				maxWidth: home ? 364 : 464,
-				cursor: "pointer",
-			}}
-			onClick={linkToInfo}
-		>
-			{/* 上方 區塊 */}
-			<Box
-				sx={{
-					position: "relative",
-					height: home ? 244 : 310,
-				}}
-			>
-				{/* 底圖 */}
-				<Box sx={cardStyle.topBg}>
-					<CardMedia
-						component="img"
-						alt={activity.title || activity.subtitle}
-						sx={{
-							height: home ? 244 : 310,
-						}}
-						image={activityImageUrl}
-					/>
-				</Box>
+  return (
+    <Paper
+      sx={{
+        ...cardStyle.container,
+        maxWidth: home ? 364 : 464,
+        cursor: "pointer",
+      }}
+      onClick={linkToInfo}
+    >
+      {/* 上方 區塊 */}
+      <Box
+        sx={{
+          position: "relative",
+          height: home ? 244 : 310,
+        }}
+      >
+        {/* 底圖 */}
+        <Box sx={cardStyle.topBg}>
+          <CardMedia
+            component="img"
+            alt={activity.title || activity.subtitle}
+            sx={{
+              height: home ? 244 : 310,
+            }}
+            image={activityImageUrl}
+          />
+        </Box>
 
-				<Grid
-					container
-					sx={{
-						...cardStyle.topInfoTopRow,
-						...cardStyle.topInfoTopMainRow,
-						justifyContent: home ? "flex-start" : "space-between",
-					}}
-				>
-					{/* 主揪資訊 */}
-					<Grid
-						item
-						sx={{
-							mb: 1,
-							flex: home
-								? {}
-								: {
-										xs: "0 1 calc(100% - 11rem)",
-										sm: "0 1 calc(100% - 12rem)",
-									},
-						}}
-					>
-						<Box
-							display="inline-flex"
-							alignItems="center"
-							sx={{
-								...cardStyle.chip,
-								width: home ? { xs: 136, sm: 144, xl: 140 } : "100%",
-								height: 40,
-								py: 0.5,
-							}}
-						>
-							<Avatar
-								alt={activity.organizer?.name || ""}
-								src={activity.organizer?.photo || ""}
-								sx={{
-									width: 32,
-									height: 32,
-									mr: 1,
-								}}
-							/>
-							<Box>
-								{/* 星星評分 */}
-								<RatingStar rating={activity.organizer?.rating || 0} />
+        <Grid
+          container
+          sx={{
+            ...cardStyle.topInfoTopRow,
+            ...cardStyle.topInfoTopMainRow,
+            justifyContent: home ? "flex-start" : "space-between",
+          }}
+        >
+          {/* 主揪資訊 */}
+          <Grid
+            item
+            sx={{
+              mb: 1,
+              flex: home
+                ? {}
+                : {
+                    xs: "0 1 calc(100% - 11rem)",
+                    sm: "0 1 calc(100% - 12rem)",
+                  },
+            }}
+          >
+            <Box
+              display="inline-flex"
+              alignItems="center"
+              sx={{
+                ...cardStyle.chip,
+                width: home ? { xs: 136, sm: 144, xl: 140 } : "100%",
+                height: 40,
+                py: 0.5,
+              }}
+            >
+              <Avatar
+                alt={activity.organizer?.name || ""}
+                src={activity.organizer?.photo || ""}
+                sx={{
+                  width: 32,
+                  height: 32,
+                  mr: 1,
+                }}
+              />
+              <Box>
+                {/* 星星評分 */}
+                <RatingStar rating={activity.organizer?.rating || 0} />
 
-								{/* 主揪名稱 */}
-								<Typography
-									sx={{
-										...cardStyle.chipOrganizerName,
-										maxWidth: home
-											? { xs: "5.25rem", sm: "6rem" }
-											: { sm: "10rem" },
-									}}
-								>
-									{activity.organizer?.name}
-								</Typography>
-							</Box>
-						</Box>
-					</Grid>
+                {/* 主揪名稱 */}
+                <Typography
+                  sx={{
+                    ...cardStyle.chipOrganizerName,
+                    maxWidth: home
+                      ? { xs: "5.25rem", sm: "6rem" }
+                      : { sm: "10rem" },
+                  }}
+                >
+                  {activity.organizer?.name}
+                </Typography>
+              </Box>
+            </Box>
+          </Grid>
 
-					{/* 參加人數 */}
-					<Grid item sx={{ mb: 1 }}>
-						<Chip
-							sx={cardStyle.chip}
-							label={
-								<Box display="inline-flex" alignItems="center">
-									<PeopleIcon sx={cardStyle.chipIcon} />
-									<Typography
-										sx={{
-											...cardStyle.chipText,
-											minWidth: home
-												? { xs: "1rem", sm: "2rem" }
-												: { xs: "1rem", sm: "0.75rem", md: "1.5rem" },
-										}}
-									>
-										{activity.bookedCapacity || 0}
-									</Typography>
-								</Box>
-							}
-						/>
-					</Grid>
+          {/* 參加人數 */}
+          <Grid item sx={{ mb: 1 }}>
+            <Chip
+              sx={cardStyle.chip}
+              label={
+                <Box display="inline-flex" alignItems="center">
+                  <PeopleIcon sx={cardStyle.chipIcon} />
+                  <Typography
+                    sx={{
+                      ...cardStyle.chipText,
+                      minWidth: home
+                        ? { xs: "1rem", sm: "2rem" }
+                        : { xs: "1rem", sm: "0.75rem", md: "1.5rem" },
+                    }}
+                  >
+                    {activity.bookedCapacity || 0}
+                  </Typography>
+                </Box>
+              }
+            />
+          </Grid>
 
-					{/* 愛心數 */}
-					<Grid item sx={{ mb: 1 }}>
-						<FavoriteAction
-							home={home}
-							activity={activity}
-							onLoad={() => onLoad()}
-						/>
-					</Grid>
-				</Grid>
-			</Box>
+          {/* 愛心數 */}
+          <Grid item sx={{ mb: 1 }}>
+            <FavoriteAction
+              home={home}
+              activity={activity}
+              onLoad={() => onLoad()}
+            />
+          </Grid>
+        </Grid>
+      </Box>
 
-			<CardBottomInfo row={2} info={activity} />
-		</Paper>
-	);
+      <CardBottomInfo row={2} info={activity} />
+    </Paper>
+  );
 }
 
 export default CardActivity;
