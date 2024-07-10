@@ -15,7 +15,7 @@ function StepperLayout({ children }) {
 		{ index: 0, label: "確認金額", path: `/check/amount/${id}/` },
 		{ index: 1, label: "填寫資料", path: `/check/details/${id}/` },
 		{ index: 2, label: "付款", path: `/check/payment/${id}/` },
-		{ index: 3, label: "訂單完成", path: `/check/success/${id}/` },
+		{ index: 3, label: "訂單完成", path: `/check/success/` },
 	];
 
 	const getActiveStep = (pathname) => {
