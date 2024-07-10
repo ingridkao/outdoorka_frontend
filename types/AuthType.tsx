@@ -30,7 +30,7 @@ export interface AuthState {
 	error: string | null;
 }
 export interface LikeState {
-	likesList: {_id:string}[];
+	likesList: { _id: string }[];
 	likesCount: number;
 	error: string | null;
 }

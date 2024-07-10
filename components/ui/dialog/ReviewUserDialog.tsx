@@ -16,7 +16,7 @@ import {
 	TextField,
 	Rating,
 } from "@mui/material";
-import { ParticipantInfo } from "./ParticipantDialog"
+import { ParticipantInfo } from "./ParticipantDialog";
 
 function ReviewUserDialog(props: {
 	owner: OwnerState | null;
@@ -53,26 +53,23 @@ function ReviewUserDialog(props: {
 		}
 	};
 
-
 	return (
-		<Dialog
-			onClose={() => onClose(false)}
-			open={open}
-			fullWidth
-			maxWidth="sm"
-		>
+		<Dialog onClose={() => onClose(false)} open={open} fullWidth maxWidth="sm">
 			<DialogTitle>評價會員</DialogTitle>
 			<DialogContent>
 				<Box
 					sx={{
 						px: 5,
 						py: 3,
-						textAlign: "left"
+						textAlign: "left",
 					}}
 				>
 					{props.owner && (
 						<>
-							<ParticipantInfo owner={props.owner} ticketCreatedAt={props.ticketCreatedAt}/>
+							<ParticipantInfo
+								owner={props.owner}
+								ticketCreatedAt={props.ticketCreatedAt}
+							/>
 						</>
 					)}
 					<FormControl fullWidth sx={{ mx: 1 }}>
@@ -115,11 +112,7 @@ function ReviewUserDialog(props: {
 					gap: 2,
 				}}
 			>
-				<Button
-					variant="contained"
-					size="large"
-					onClick={checkinCommit}
-				>
+				<Button variant="contained" size="large" onClick={checkinCommit}>
 					送出評價
 				</Button>
 			</DialogActions>

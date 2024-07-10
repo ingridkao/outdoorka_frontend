@@ -17,7 +17,7 @@ function CardBottomInfo({
 	info,
 }: {
 	row: number;
-	info: HomeActivityState |ActivityState | PaymentState;
+	info: HomeActivityState | ActivityState | PaymentState;
 }) {
 	const cardStyle = useCardTheme();
 	return (

@@ -6,7 +6,7 @@ import { showLikes } from "@/features/user/likeSlice";
 import { ActivityState } from "@/types/ActivitiesType";
 import { Chip, Box, Typography } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import useCardTheme from "@/components/ui/card/useCardTheme";
 import axios from "@/plugins/api/axios";
 import { getCookie, USER_T0KEN_COOKIE } from "@/utils/cookieHandler";
@@ -24,8 +24,8 @@ function FavoriteAction(props: {
 	const { home, activity, onLoad } = props;
 	const { favorite } = axios;
 	const dispatch = useDispatch();
-	const { likesList } = useSelector((state:any) => state.likes);
-	const isLike = likesList.some((likeId:string) => likeId == activity._id)
+	const { likesList } = useSelector((state: any) => state.likes);
+	const isLike = likesList.some((likeId: string) => likeId == activity._id);
 	const [modify, setModify] = useState(false);
 
 	const cardStyle = useCardTheme();
@@ -33,26 +33,26 @@ function FavoriteAction(props: {
 
 	useEffect(() => {
 		const getUserT0ken = getCookie(USER_T0KEN_COOKIE);
-		if(getUserT0ken)setIsLogin(true)
+		if (getUserT0ken) setIsLogin(true);
 	}, []);
 
 	const toggleFavorite = async (e: { stopPropagation: () => void }) => {
 		// 阻止事件冒泡，防止觸發卡片的點擊事件
-		e.stopPropagation()
+		e.stopPropagation();
 		// 未登入無法點擊
-		if(!isLogin) return
+		if (!isLogin) return;
 		try {
-			if(isLike){
+			if (isLike) {
 				await favorite.removeFavorite(activity._id);
 			} else {
 				await favorite.addFavorite(activity._id);
 			}
 			// 觸發資料更新
 			dispatch(showLikes());
-			setModify(true)
+			setModify(true);
 			setTimeout(() => {
-				setModify(false)
-				onLoad()
+				setModify(false);
+				onLoad();
 			}, 500);
 		} catch (error: any) {
 			console.error(String(error?.message));
@@ -67,14 +67,17 @@ function FavoriteAction(props: {
 			onClick={toggleFavorite}
 			label={
 				<Box display="inline-flex" alignItems="center">
-					<Box sx={{
-						transition: "transform 500ms ease-out",
-						transform: modify? "scale(1.5)" : "scale(1)"
-					}}>
-						{!isLike
-							?<FavoriteBorderIcon sx={cardStyle.chipIcon} />
-							:<FavoriteIcon sx={cardStyle.chipIcon} />
-						}
+					<Box
+						sx={{
+							transition: "transform 500ms ease-out",
+							transform: modify ? "scale(1.5)" : "scale(1)",
+						}}
+					>
+						{!isLike ? (
+							<FavoriteBorderIcon sx={cardStyle.chipIcon} />
+						) : (
+							<FavoriteIcon sx={cardStyle.chipIcon} />
+						)}
 					</Box>
 					<Typography
 						sx={{
@@ -84,7 +87,7 @@ function FavoriteAction(props: {
 								: { xs: "1rem", sm: "0.75rem", md: "1.5rem" },
 						}}
 					>
-						{ activity.likeCount || activity.likers || 0}
+						{activity.likeCount || activity.likers || 0}
 					</Typography>
 				</Box>
 			}

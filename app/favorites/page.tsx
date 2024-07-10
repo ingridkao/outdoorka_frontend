@@ -13,7 +13,7 @@ import {
 	IconButton,
 	Select,
 	MenuItem,
-	SelectChangeEvent
+	SelectChangeEvent,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
@@ -44,19 +44,24 @@ function Favorites() {
 	};
 	const updateDisplayTag = (tag: string = "") => {
 		if (tag) {
-			const filterList = source.filter((ticketItem:FavoritesActivityState) => ticketItem.activityTags && ticketItem.activityTags.includes(tag));
+			const filterList = source.filter(
+				(ticketItem: FavoritesActivityState) =>
+					ticketItem.activityTags && ticketItem.activityTags.includes(tag),
+			);
 			setDisplayList(filterList);
 		} else {
-			clear()
+			clear();
 		}
 	};
 
 	const updateDisplayRegion = (region: string = "") => {
 		if (region) {
-			const filterList = source.filter((ticketItem: FavoritesActivityState) => ticketItem.region === region);
+			const filterList = source.filter(
+				(ticketItem: FavoritesActivityState) => ticketItem.region === region,
+			);
 			setDisplayList(filterList);
 		} else {
-			clear()
+			clear();
 		}
 	};
 
@@ -85,19 +90,22 @@ function Favorites() {
 		if (searchInput === "") {
 			setDisplayList(source);
 		} else {
-			const filterList = source.filter((favoriteItem: FavoritesActivityState) => {
-				return (
-					favoriteItem.subtitle && favoriteItem.subtitle.includes(searchInput) ||
-					favoriteItem.title && favoriteItem.title.includes(searchInput)
-				);
-			});
+			const filterList = source.filter(
+				(favoriteItem: FavoritesActivityState) => {
+					return (
+						(favoriteItem.subtitle &&
+							favoriteItem.subtitle.includes(searchInput)) ||
+						(favoriteItem.title && favoriteItem.title.includes(searchInput))
+					);
+				},
+			);
 			setDisplayList(filterList);
 		}
 	};
 
-	async function loadData(init:boolean) {		
+	async function loadData(init: boolean) {
 		try {
-			if(init) setLoad(true)
+			if (init) setLoad(true);
 			const responseBody = await favorite.getFavoritesList();
 			if (responseBody && responseBody.data) {
 				const parseData = responseBody.data.likedList.map(
@@ -255,32 +263,32 @@ function Favorites() {
 							<SortIcon />
 						</IconButton>
 					</Box>
-					
-					
-					{load ? 
-						<ListLoading />:
-						displayList.length === 0
-							? <NoData target="活動" sub={true} />
-							:	<Box sx={{ mt: 2 }}>
-								<Grid container
-									spacing={3}
-									columnSpacing={{ xs: 0, sm: 3 }}
-									justifyContent="flex-start"
-									sx={{ width: "100%" }}
-								>
-									{displayList.map((value: FavoritesActivityState) => (
-										<Grid key={value._id} xs={12} sm={6} md={4}>
-											<CardActivity
-												home={false}
-												activity={value}
-												onLoad={()=>loadData(false)}
-											/>
-										</Grid>
-									))}
-								</Grid>
-							</Box>
-						}
-					
+
+					{load ? (
+						<ListLoading />
+					) : displayList.length === 0 ? (
+						<NoData target="活動" sub={true} />
+					) : (
+						<Box sx={{ mt: 2 }}>
+							<Grid
+								container
+								spacing={3}
+								columnSpacing={{ xs: 0, sm: 3 }}
+								justifyContent="flex-start"
+								sx={{ width: "100%" }}
+							>
+								{displayList.map((value: FavoritesActivityState) => (
+									<Grid key={value._id} xs={12} sm={6} md={4}>
+										<CardActivity
+											home={false}
+											activity={value}
+											onLoad={() => loadData(false)}
+										/>
+									</Grid>
+								))}
+							</Grid>
+						</Box>
+					)}
 				</Grid>
 			</Grid>
 		</PageLayout>

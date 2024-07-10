@@ -27,7 +27,6 @@ export interface TicketsState {
 	ownerId: string;
 	ownerName: string;
 	assignedAt: string | null;
-
 }
 export interface PaymentState extends Activity {
 	paymentId: string;

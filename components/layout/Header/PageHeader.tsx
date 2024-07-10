@@ -88,9 +88,9 @@ function PageHeader() {
 								display: { xs: "none", sm: "block" },
 								position: "relative",
 								maxWidth: 800,
-								width: {xs:"100%",sm:"60%"},
+								width: { xs: "100%", sm: "60%" },
 								ml: 5,
-								mt: 3
+								mt: 3,
 							}}
 						>
 							<Input

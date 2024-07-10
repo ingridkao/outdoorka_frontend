@@ -52,10 +52,7 @@ export const parseDetailDate = (startTime: string, endTime: string) => {
  * @param  startTime
  * @param  endTime
  */
-export const parstTicketStatus = (
-	startTime: string,
-	endTime: string,
-) => {
+export const parstTicketStatus = (startTime: string, endTime: string) => {
 	const now = dayjs();
 	const startDate = dayjs(startTime);
 	const endDate = dayjs(endTime);

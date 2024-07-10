@@ -38,7 +38,7 @@ function Tickets() {
 	const [filterStatus, setFilterStatus] = useState<number | null>(null);
 
 	const updateDisplayStatus = (type: number | null = null) => {
-		setFilterStatus(type)
+		setFilterStatus(type);
 		if (type === null) {
 			setDisplayList(source);
 		} else {
@@ -138,7 +138,7 @@ function Tickets() {
 						>
 							篩選條件
 						</Typography>
-						{filterStatus !== null &&
+						{filterStatus !== null && (
 							<Button
 								variant="contained"
 								color="tertiary"
@@ -149,7 +149,7 @@ function Tickets() {
 								<DeleteOutlineIcon />
 								<span>清除篩選</span>
 							</Button>
-						}
+						)}
 					</Box>
 					<Paper
 						variant="elevation"
@@ -168,12 +168,12 @@ function Tickets() {
 						>
 							票卷類型
 						</Typography>
-						
-						{ ticketStatuList.map((statuItem, statuIndex) => (
+
+						{ticketStatuList.map((statuItem, statuIndex) => (
 							<Button
 								variant="outlined"
 								size="small"
-								color={filterStatus===0?"secondary":"primary"}
+								color={filterStatus === 0 ? "secondary" : "primary"}
 								sx={{ mr: 1, borderRadius: 6 }}
 								onClick={() => updateDisplayStatus(statuIndex)}
 							>
@@ -202,7 +202,7 @@ function Tickets() {
 							<Select
 								defaultValue={"activityStartTime"}
 								onChange={handleSelectChange}
-								sx={{borderRadius: 8}}
+								sx={{ borderRadius: 8 }}
 							>
 								<MenuItem value={"activityStartTime"}>活動開始日期</MenuItem>
 								<MenuItem value={"activityEndTime"}>活動結束日期</MenuItem>
@@ -215,7 +215,7 @@ function Tickets() {
 					</Box>
 
 					<Box sx={{ mt: 2 }}>
-						{displayList.length === 0 && <NoData target="票卷" sub={true}/>}
+						{displayList.length === 0 && <NoData target="票卷" sub={true} />}
 
 						<Grid
 							container

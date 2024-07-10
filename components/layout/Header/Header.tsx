@@ -24,7 +24,7 @@ export const drawerPaperStyle = {
 	width: 280,
 	height: 587,
 	mt: 2,
-	ml: 2
+	ml: 2,
 };
 
 export const linkTitles = [
@@ -57,8 +57,8 @@ export function AsideDrawer(props: { drawerToggle: () => void }) {
 							key={item.title}
 							href={item.link}
 							sx={{ fontSize: "18px" }}
-							underline={item.disabled? "none": "hover"}
-							className={item.disabled? "disabled-link": ""}
+							underline={item.disabled ? "none" : "hover"}
+							className={item.disabled ? "disabled-link" : ""}
 						>
 							{item.title}
 						</Link>
@@ -131,8 +131,8 @@ function Header() {
 								noWrap
 								key={item.title}
 								href={item.link}
-								underline={item.disabled? "none": "hover"}
-								className={item.disabled? "disabled-link": ""}
+								underline={item.disabled ? "none" : "hover"}
+								className={item.disabled ? "disabled-link" : ""}
 								sx={{
 									py: 1,
 									px: 3,

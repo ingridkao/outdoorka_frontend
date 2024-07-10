@@ -27,10 +27,10 @@ export interface Activity {
 	activityStartTime: any;
 	activityEndTime: any;
 	price?: number;
-	
+
 	bookedCapacity?: number; // 參加人數
 	totalCapacity?: number; // 參加人數上限
-	
+
 	activityNotice?: string;
 	activityImageUrl?: string;
 	activityImageUrls?: string[];
@@ -42,7 +42,6 @@ export interface Activity {
 	organizerRating?: number;
 	organzierName?: string;
 	popularity?: number;
-
 }
 /**
  *         {
@@ -133,5 +132,3 @@ export interface OrganizerActivityState extends Activity {
 	activityImageUrls: string[];
 	isPublish: boolean;
 }
-
-

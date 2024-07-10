@@ -2,14 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { HomeActivityState } from "@/types/ActivitiesType";
-import {
-	Box,
-	Typography,
-	Avatar,
-	Grid,
-	Paper,
-	CardMedia
-} from "@mui/material";
+import { Box, Typography, Avatar, Grid, Paper, CardMedia } from "@mui/material";
 import RatingStar from "@/components/ui/shared/RatingStar";
 import CardBottomInfo from "@/components/ui/card/CardBottomInfo";
 import FavoriteAction from "@/components/ui/button/FavoriteAction";
@@ -26,7 +19,9 @@ function CardActivitySlick(props: {
 	const router = useRouter();
 
 	const { activity, onLoad } = props;
-	const activityImageUrl = activity.activityImageUrls? activity.activityImageUrls[0]: ""	
+	const activityImageUrl = activity.activityImageUrls
+		? activity.activityImageUrls[0]
+		: "";
 	const linkToInfo = (e: { preventDefault: () => void }) => {
 		e.preventDefault();
 		router.push(`/activity/${activity._id}`);
@@ -101,11 +96,7 @@ function CardActivitySlick(props: {
 
 					{/* 愛心數 */}
 					<Grid item>
-						<FavoriteAction 
-							home={false} 
-							activity={activity}
-							onLoad={reload}
-						/>
+						<FavoriteAction home={false} activity={activity} onLoad={reload} />
 					</Grid>
 				</Grid>
 			</Box>

@@ -28,7 +28,7 @@ import {
 	Button,
 	Link as MuiLink,
 	Alert,
-	Fade
+	Fade,
 } from "@mui/material";
 
 const baseUrl =
@@ -135,12 +135,7 @@ export default function Login() {
 	};
 
 	return (
-		<Grid
-			container
-			direction="row"
-			justifyContent="space-between"
-			spacing={2}
-		>
+		<Grid container direction="row" justifyContent="space-between" spacing={2}>
 			<Grid xs={12} sm={6} sx={{ overflow: "hidden" }}>
 				<Box
 					component="img"
@@ -155,12 +150,12 @@ export default function Login() {
 			</Grid>
 
 			<Grid xs={12} sm={6}>
-				<Box sx={{ml: 2,mt:2, mb:12}}>
+				<Box sx={{ ml: 2, mt: 2, mb: 12 }}>
 					<BackBtn href="/" name="返回" />
 				</Box>
 				<Fade in={true}>
-					<Box sx={{ textAlign: "center"}}>
-						<Box sx={{ width: "75%", maxWidth: 380, margin: "auto"}}>
+					<Box sx={{ textAlign: "center" }}>
+						<Box sx={{ width: "75%", maxWidth: 380, margin: "auto" }}>
 							<Box component="form" noValidate autoComplete="off">
 								<Box
 									component="img"
@@ -185,7 +180,9 @@ export default function Login() {
 										helperText={loginValid.account}
 										InputLabelProps={{ shrink: true }}
 										onChange={(
-											event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+											event: ChangeEvent<
+												HTMLInputElement | HTMLTextAreaElement
+											>,
 										) => handleInputChange(event)}
 									/>
 									<TextField
@@ -199,7 +196,9 @@ export default function Login() {
 										helperText={loginValid.password}
 										InputLabelProps={{ shrink: true }}
 										onChange={(
-											event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+											event: ChangeEvent<
+												HTMLInputElement | HTMLTextAreaElement
+											>,
 										) => handleInputChange(event)}
 									/>
 									<Button
@@ -234,7 +233,11 @@ export default function Login() {
 												/>
 											}
 										/>
-										<MuiLink component={NextLink} href="/forget" underline="always">
+										<MuiLink
+											component={NextLink}
+											href="/forget"
+											underline="always"
+										>
 											忘記密碼
 										</MuiLink>
 									</Box>
@@ -266,7 +269,11 @@ export default function Login() {
 
 							<Typography variant="body1">
 								尚未註冊帳號？
-								<MuiLink component={NextLink} href="/register" underline="always">
+								<MuiLink
+									component={NextLink}
+									href="/register"
+									underline="always"
+								>
 									立即註冊
 								</MuiLink>
 							</Typography>

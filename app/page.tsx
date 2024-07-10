@@ -20,7 +20,7 @@ function Home() {
 					<HomeBannerCarouselfrom />
 				</Grid>
 				<Grid sx={{ maxWidth: { sm: "850px", md: "1280px", lg: "1536px" } }}>
-					<HotActivities count={8}/>
+					<HotActivities count={8} />
 				</Grid>
 				<Grid xs={12}>
 					<NewActivities />

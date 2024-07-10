@@ -56,20 +56,35 @@ const bgStyle = {
 		py: 44,
 		pointerEvents: "none",
 	},
-}
+};
 function NewActivitiesLoading() {
-	return (<>
-		{[1, 2, 3, 4, 5, 6, 7].map((value:number) => (
-			<Box key={value} sx={{ px: 1.5, py: 0.5}}>
-				<Skeleton variant="rounded" width={272} height={181} sx={{ bgcolor: "grey.50" }}/>
-				<Box sx={{p: 1}}>
-					<Skeleton width="40%" variant="text" sx={{ fontSize: "1.75rem", bgcolor: "grey.50" }} />
-					<Skeleton width="60%" variant="text" sx={{ fontSize: "1.75rem", bgcolor: "grey.50" }} />
-					<Skeleton width="90%" height="2rem" sx={{ bgcolor: "grey.50" }} />
+	return (
+		<>
+			{[1, 2, 3, 4, 5, 6, 7].map((value: number) => (
+				<Box key={value} sx={{ px: 1.5, py: 0.5 }}>
+					<Skeleton
+						variant="rounded"
+						width={272}
+						height={181}
+						sx={{ bgcolor: "grey.50" }}
+					/>
+					<Box sx={{ p: 1 }}>
+						<Skeleton
+							width="40%"
+							variant="text"
+							sx={{ fontSize: "1.75rem", bgcolor: "grey.50" }}
+						/>
+						<Skeleton
+							width="60%"
+							variant="text"
+							sx={{ fontSize: "1.75rem", bgcolor: "grey.50" }}
+						/>
+						<Skeleton width="90%" height="2rem" sx={{ bgcolor: "grey.50" }} />
+					</Box>
 				</Box>
-			</Box>
-		))}
-	</>);
+			))}
+		</>
+	);
 }
 
 function NewActivities() {
@@ -79,7 +94,7 @@ function NewActivities() {
 	async function loadData() {
 		try {
 			const responseBody = await activity.getNewActivityList();
-			if (responseBody && responseBody.data){
+			if (responseBody && responseBody.data) {
 				setActivityList(responseBody.data);
 			}
 		} catch (error) {
@@ -94,21 +109,19 @@ function NewActivities() {
 		<Box sx={bgStyle}>
 			<TitleSection title="最新活動" />
 
-			{ error || activityList.length === 0
-				? <Box display="inline-flex">
+			{error || activityList.length === 0 ? (
+				<Box display="inline-flex">
 					<NewActivitiesLoading />
 				</Box>
-				: <Slider {...SliderSettings}>
+			) : (
+				<Slider {...SliderSettings}>
 					{activityList.map((value: HomeActivityState) => (
-						<Box key={value._id} sx={{ px: 1.5, py: 0.5}}>
-							<CardActivitySlick 
-								activity={value}
-								onLoad={loadData}
-							/>
+						<Box key={value._id} sx={{ px: 1.5, py: 0.5 }}>
+							<CardActivitySlick activity={value} onLoad={loadData} />
 						</Box>
 					))}
 				</Slider>
-			}
+			)}
 		</Box>
 	);
 }

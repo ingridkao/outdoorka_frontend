@@ -5,10 +5,7 @@ import banner02 from "@/public/images/banner02.jpeg";
 import banner04 from "@/public/images/banner04.jpeg";
 import banner05 from "@/public/images/banner05.jpeg";
 
-import {
-	Box,
-	Button,
-} from "@mui/material";
+import { Box, Button } from "@mui/material";
 
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";

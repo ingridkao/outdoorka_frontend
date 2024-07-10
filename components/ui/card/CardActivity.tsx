@@ -119,7 +119,9 @@ function CardActivity(props: {
 								<Typography
 									sx={{
 										...cardStyle.chipOrganizerName,
-										maxWidth: home ? {  xs: "5.25rem" , sm: "6rem" } : { sm: "10rem" },
+										maxWidth: home
+											? { xs: "5.25rem", sm: "6rem" }
+											: { sm: "10rem" },
 									}}
 								>
 									{activity.organizer?.name}

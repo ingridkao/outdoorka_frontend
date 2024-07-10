@@ -95,11 +95,11 @@ export default function useCardTheme() {
 			fontSize: "1.25rem",
 		},
 		box: {
-			width: {xs: "98%", sm:"96%"},
+			width: { xs: "98%", sm: "96%" },
 			maxWidth: 1200,
 			my: 0,
 			mx: "auto",
-			px: {xs: 2, sm:5},
+			px: { xs: 2, sm: 5 },
 			py: 4,
 			borderRadius: "2.25rem",
 			border: "1px solid #fff",

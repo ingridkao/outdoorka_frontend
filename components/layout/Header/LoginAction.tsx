@@ -197,14 +197,17 @@ function LoginAction() {
 			sx={{
 				flex: { xs: "0 1 112px", md: "0 1 500px" },
 				justifyContent: "flex-end",
-				textAlign: { md: "right" }
+				textAlign: { md: "right" },
 			}}
 		>
 			{!isClient ? (
 				<Box></Box>
 			) : authUser ? (
 				<>
-					<Box display="inline-flex" sx={{flexDirection:{ xs:"row-reverse",sm:"row"}}}>
+					<Box
+						display="inline-flex"
+						sx={{ flexDirection: { xs: "row-reverse", sm: "row" } }}
+					>
 						<Chip
 							onClick={handleProfileMenuClick}
 							className={`chipAvatar ${isOg ? "og" : ""}`}

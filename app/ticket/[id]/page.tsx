@@ -80,26 +80,26 @@ function TicketAction({
 				{/* 超過一張票卷，未使用及未分票的票卷 */}
 				{tickets.length > 1 &&
 					targetTicket.ticketStatus == TicketStatus.Unused && (
-					<Button
-						variant="contained"
-						size="large"
-						sx={{ wordBreak: "keep-all" }}
-						onClick={() => handleAction("email")}
-					>
-						進行分票
-					</Button>
-				)}
+						<Button
+							variant="contained"
+							size="large"
+							sx={{ wordBreak: "keep-all" }}
+							onClick={() => handleAction("email")}
+						>
+							進行分票
+						</Button>
+					)}
 				{tickets.length === 1 &&
 					targetTicket.ticketStatus == TicketStatus.Unused && (
-					<Button
-						variant="contained"
-						size="large"
-						sx={{ wordBreak: "keep-all" }}
-						onClick={() => handleAction("note")}
-					>
-						填寫備註
-					</Button>
-				)}
+						<Button
+							variant="contained"
+							size="large"
+							sx={{ wordBreak: "keep-all" }}
+							onClick={() => handleAction("note")}
+						>
+							填寫備註
+						</Button>
+					)}
 				{targetTicket.ticketStatus == TicketStatus.Used && (
 					<Button
 						variant="contained"
@@ -139,7 +139,7 @@ function TicketInfo() {
 
 	async function loadData() {
 		setLoad(true);
-		setAssignActive(0)
+		setAssignActive(0);
 		try {
 			const responseBody = await ticket.getPaymentInfo(params.id);
 			setLoad(false);
@@ -280,14 +280,20 @@ function TicketInfo() {
 								}}
 							>
 								{ticketsData[assignActive].ticketStatus ? (
-									<Box display="flex" justifyContent="center" alignItems="center"
+									<Box
+										display="flex"
+										justifyContent="center"
+										alignItems="center"
 										sx={{
 											width: { xs: 0, sm: 270 },
 											height: { xs: 0, sm: 270 },
-											backgroundColor: "#edf1f9"
+											backgroundColor: "#edf1f9",
 										}}
 									>
-										<TicketIcon sx={{width: 100, height: 100}} fillcolor="#70AFF5"/>
+										<TicketIcon
+											sx={{ width: 100, height: 100 }}
+											fillcolor="#70AFF5"
+										/>
 									</Box>
 								) : (
 									<QRCodeSVG

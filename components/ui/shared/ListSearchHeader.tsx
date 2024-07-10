@@ -23,15 +23,15 @@ function ListSearchHeader(props: {
 				background:
 					"linear-gradient(270deg, rgba(196, 221, 255, 0.18) 0%, #C4DDFF 100%)",
 				borderRadius: "48px",
-				px: {xs:2,sm:5},
-				py: {xs:3,sm:5},
+				px: { xs: 2, sm: 5 },
+				py: { xs: 3, sm: 5 },
 			}}
 		>
 			<Typography
 				variant="h4"
 				sx={{
 					color: theme.palette.text.primary,
-					fontWeight: 700
+					fontWeight: 700,
 				}}
 			>
 				{title}
@@ -43,13 +43,13 @@ function ListSearchHeader(props: {
 			>
 				{subTitle}
 			</Typography>
-			<Box 
-				className="search" 
-				sx={{ 
+			<Box
+				className="search"
+				sx={{
 					position: "relative",
 					maxWidth: 800,
-					width: {xs:"100%",sm:"60%"},
-					mt: 3
+					width: { xs: "100%", sm: "60%" },
+					mt: 3,
 				}}
 			>
 				<Input

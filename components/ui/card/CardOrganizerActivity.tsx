@@ -162,7 +162,7 @@ function CardOrganizerActivity({
 				</Grid>
 			)}
 
-			{isFinish && 
+			{isFinish && (
 				<Grid container spacing={1.5} sx={{ px: 2, pb: 2 }}>
 					<Grid item xs={12}>
 						<Button
@@ -182,7 +182,7 @@ function CardOrganizerActivity({
 						)}
 					</Grid>
 				</Grid>
-			}
+			)}
 		</Paper>
 	);
 }

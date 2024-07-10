@@ -1,14 +1,8 @@
-"use client"
+"use client";
 
 import React from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import {
-	Box,
-	Button,
-	Card,
-	CardContent,
-	Typography,
-} from "@mui/material";
+import { Box, Button, Card, CardContent, Typography } from "@mui/material";
 import StepperLayout from "@/components/layout/PaymentLayout/StepperLayout";
 import SuccessIcon from "@/components/icon/successIcon";
 
@@ -19,8 +13,8 @@ function Success() {
 	const totalPrice = searchParams.get("totalPrice");
 
 	const redirectToTicket = () => {
-    router.push('/ticket');
-  };
+		router.push("/ticket");
+	};
 
 	return (
 		<StepperLayout>

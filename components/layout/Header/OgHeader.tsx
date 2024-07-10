@@ -188,7 +188,7 @@ function OgHeader() {
 												<Typography>活動列表</Typography>
 											</MenuItem>
 											<MenuItem onClick={handleLogout}>
-												<LogoutIcon sx={MenuIconStyle} fillcolor="#B1AAA5"/>
+												<LogoutIcon sx={MenuIconStyle} fillcolor="#B1AAA5" />
 												<Typography>登出</Typography>
 											</MenuItem>
 										</Box>

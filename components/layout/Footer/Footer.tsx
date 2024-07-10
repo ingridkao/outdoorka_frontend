@@ -78,7 +78,13 @@ function Footer() {
 							},
 						}}
 					>
-						<Image src={LogoImage} width={268} height={49} alt="揪好咖" priority={true} />
+						<Image
+							src={LogoImage}
+							width={268}
+							height={49}
+							alt="揪好咖"
+							priority={true}
+						/>
 						<Box component="section">
 							<Box component="p" mt="24px" mb="8px">
 								© 揪好咖專題使用{" "}

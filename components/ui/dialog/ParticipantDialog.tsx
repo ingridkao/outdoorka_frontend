@@ -20,31 +20,41 @@ import {
 	CardMedia,
 } from "@mui/material";
 
-export function ParticipantInfo (props:{
-	ticketCreatedAt: string,
-	owner: OwnerState
-}){
-	const { name, mobile } = props.owner
-	const RowStyle = { 
+export function ParticipantInfo(props: {
+	ticketCreatedAt: string;
+	owner: OwnerState;
+}) {
+	const { name, mobile } = props.owner;
+	const RowStyle = {
 		display: "flex",
-		flexDirection: {xs: "column", sm: "row"},
+		flexDirection: { xs: "column", sm: "row" },
 		my: 1.5,
-		alignItems: "flex-start"
-	}
-	return (<>
-		<Box sx={RowStyle}>
-			<span style={{display: "inline-block", width: 80, textAlign:"left"}}>姓名：</span>
-			<span className="singleline-ellipsis">{name || ""}</span>
-		</Box>
-		<Box sx={RowStyle}>
-			<span style={{ display: "inline-block", width: 80, textAlign:"left" }}>電話：</span>
-			<span className="singleline-ellipsis">{mobile || ""}</span>
-		</Box>
-		<Box sx={RowStyle}>
-			<span style={{ display: "inline-block", width: 80, textAlign:"left" }}>報名日期：</span>
-			<span className="singleline-ellipsis">{parseStartTime(props.ticketCreatedAt)}</span>
-		</Box>
-	</>)
+		alignItems: "flex-start",
+	};
+	return (
+		<>
+			<Box sx={RowStyle}>
+				<span style={{ display: "inline-block", width: 80, textAlign: "left" }}>
+					姓名：
+				</span>
+				<span className="singleline-ellipsis">{name || ""}</span>
+			</Box>
+			<Box sx={RowStyle}>
+				<span style={{ display: "inline-block", width: 80, textAlign: "left" }}>
+					電話：
+				</span>
+				<span className="singleline-ellipsis">{mobile || ""}</span>
+			</Box>
+			<Box sx={RowStyle}>
+				<span style={{ display: "inline-block", width: 80, textAlign: "left" }}>
+					報名日期：
+				</span>
+				<span className="singleline-ellipsis">
+					{parseStartTime(props.ticketCreatedAt)}
+				</span>
+			</Box>
+		</>
+	);
 }
 
 function ParticipantDialog(props: SimpleDialogProps) {
@@ -94,13 +104,23 @@ function ParticipantDialog(props: SimpleDialogProps) {
 										<Box display="flex">
 											<CardMedia
 												component="img"
-												sx={{ width: 110, objectFit: item.owner.photo? "cover": "contain" }}
-												image={item.owner.photo ? item.owner.photo: "https://i.imgur.com/qokckjQ.png"}
+												sx={{
+													width: 110,
+													objectFit: item.owner.photo ? "cover" : "contain",
+												}}
+												image={
+													item.owner.photo
+														? item.owner.photo
+														: "https://i.imgur.com/qokckjQ.png"
+												}
 												alt={item.owner.name}
 											/>
 											<CardContent sx={{ flex: "1 0 auto", pb: 1 }}>
-												<ParticipantInfo owner={item.owner} ticketCreatedAt={item.ticketCreatedAt}/>
-												<Box sx={{ display: "flex", alignItems: "flex-end"}}>
+												<ParticipantInfo
+													owner={item.owner}
+													ticketCreatedAt={item.ticketCreatedAt}
+												/>
+												<Box sx={{ display: "flex", alignItems: "flex-end" }}>
 													<Button
 														component={NextLink}
 														variant="contained"
@@ -111,7 +131,6 @@ function ParticipantDialog(props: SimpleDialogProps) {
 													>
 														查看/驗票
 													</Button>
-
 												</Box>
 											</CardContent>
 										</Box>

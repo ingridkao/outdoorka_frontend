@@ -8,7 +8,7 @@ import { PaymentState } from "@/types/TicketType";
 import CardBottomInfo from "@/components/ui/card/CardBottomInfo";
 import useCardTheme from "@/components/ui/card/useCardTheme";
 
-export const ticketStatuList = ["已報名", "活動進行中", "活動結束"]
+export const ticketStatuList = ["已報名", "活動進行中", "活動結束"];
 /**
  * 票卷卡片
  * @param ticketItem 單一票卷資料
@@ -33,16 +33,16 @@ function CardTicket({ ticketItem }: { ticketItem: PaymentState }) {
 					sx={{
 						...cardStyle.topInfoTopRow,
 						...cardStyle.topInfoTopMainRow,
-						justifyContent: "space-between"
+						justifyContent: "space-between",
 					}}
 				>
 					<Grid item>
 						{/* 狀態 */}
-						<Chip 
+						<Chip
 							sx={{
 								...cardStyle.chip,
-								mr: 2
-							}} 
+								mr: 2,
+							}}
 							label={ticketStatuList[ticketItem.ticketStatu || 0]}
 						/>
 						{/* 票卷數量 */}

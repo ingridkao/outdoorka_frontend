@@ -55,35 +55,35 @@ const lightTheme = createTheme({
 	},
 	components: {
 		MuiMenu: {
-      styleOverrides: {
-        paper: {
+			styleOverrides: {
+				paper: {
 					px: 2,
 					pt: 1,
 					pb: 4,
 					borderRadius: 0.75,
-          backdropFilter: "invert(5%)",
+					backdropFilter: "invert(5%)",
 					backgroundColor: "rgba(255, 255, 255, .8)",
-        }
-      },
-    },
+				},
+			},
+		},
 		MuiDrawer: {
-      styleOverrides: {
-        paper: {
+			styleOverrides: {
+				paper: {
 					borderRadius: "0.5rem 1.5rem 1.5rem 0.5rem",
 					backgroundColor: "rgba(255, 255, 255, .9)",
-        }
-      },
-    },
+				},
+			},
+		},
 		MuiBackdrop: {
 			styleOverrides: {
 				root: {
 					backgroundColor: "rgba(53, 122, 188, 0.6)",
-				}
-      },
-		}
-	}
+				},
+			},
+		},
+	},
 	// shape: {
-		// borderRadius: 32,
+	// borderRadius: 32,
 	// },
 });
 
