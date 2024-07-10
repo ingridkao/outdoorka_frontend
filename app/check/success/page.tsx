@@ -1,10 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Box, Button, Card, CardContent, Typography } from "@mui/material";
 import StepperLayout from "@/components/layout/PaymentLayout/StepperLayout";
 import SuccessIcon from "@/components/icon/successIcon";
+import CircularLoading from "@/components/ui/loading/CircularLoading";
 
 function Success() {
   const router = useRouter();
@@ -97,4 +98,12 @@ function Success() {
   );
 }
 
-export default Success;
+function WrappedSuccessPage() {
+  return (
+    <Suspense fallback={<CircularLoading />}>
+      <Success />
+    </Suspense>
+  );
+}
+
+export default WrappedSuccessPage;
