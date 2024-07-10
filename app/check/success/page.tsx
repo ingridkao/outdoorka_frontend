@@ -1,8 +1,8 @@
+"use client"
+
 import React from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
-	Accordion,
-	AccordionSummary,
-	AccordionDetails,
 	Box,
 	Button,
 	Card,
@@ -11,32 +11,16 @@ import {
 } from "@mui/material";
 import StepperLayout from "@/components/layout/PaymentLayout/StepperLayout";
 import SuccessIcon from "@/components/icon/successIcon";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-
-const mockData = {
-	data: {
-		paymentId: "SUP202403220001",
-		ticketCount: 2,
-		tickePrice: 500,
-		activity: {
-			title: "跑山幫越野跑訓練營(象山夜跑)",
-			activityStartTime: "2024-04-15T16:50:46.637Z",
-			activityEndTime: "2024-04-14T17:11:30.952Z",
-			city: "臺北市",
-			address: "信義區信義路5段152號",
-			location: "集合地點",
-			tickets: [
-				"1f704bc5-5055-43eb-a851-c87b6b0bf7b9",
-				"1f704bc5-5055-43eb-a851-c87b6b0bf7b9",
-			],
-		},
-	},
-};
 
 function Success() {
-	const totalPrice = () => {
-		return mockData.data.ticketCount * mockData.data.tickePrice;
-	};
+	const router = useRouter();
+	const searchParams = useSearchParams();
+	const paymentId = searchParams.get("paymentId");
+	const totalPrice = searchParams.get("totalPrice");
+
+	const redirectToTicket = () => {
+    router.push('/ticket');
+  };
 
 	return (
 		<StepperLayout>
@@ -81,7 +65,7 @@ function Success() {
 								fontSize: 28,
 							}}
 						>
-							{mockData.data.paymentId}
+							{paymentId}
 						</Typography>
 					</Box>
 					<Box display="flex" justifyContent="space-between">
@@ -100,7 +84,7 @@ function Success() {
 								fontSize: 28,
 							}}
 						>
-							NT$ {totalPrice()}
+							NT$ {totalPrice}
 						</Typography>
 					</Box>
 				</CardContent>
@@ -109,36 +93,12 @@ function Success() {
 						variant="contained"
 						color="primary"
 						sx={{ boxShadow: "none", py: 0.6 }}
+						onClick={redirectToTicket}
 					>
 						快速取票
 					</Button>
 				</Box>
 			</Card>
-			<Accordion
-				elevation={0}
-				sx={{
-					borderRadius: 1.5,
-					border: 0,
-					mt: 3,
-					p: "42px 40px",
-					backgroundColor: "#EDF1F9",
-					boxShadow: "none",
-					"&::before": { display: "none" },
-				}}
-			>
-				<AccordionSummary
-					expandIcon={<ExpandMoreIcon />}
-					aria-controls="panel2-content"
-					id="panel2-header"
-					sx={{
-						fontSize: 24,
-						fontWeight: 700,
-					}}
-				>
-					票券資訊
-				</AccordionSummary>
-				<AccordionDetails></AccordionDetails>
-			</Accordion>
 		</StepperLayout>
 	);
 }
