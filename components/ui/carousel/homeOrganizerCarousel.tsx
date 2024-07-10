@@ -14,104 +14,104 @@ import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 
 const settings = {
-	infinite: true,
-	speed: 500,
-	slidesToShow: 4,
-	slidesToScroll: 4,
-	nextArrow: <SampleNextArrow />,
-	prevArrow: <SamplePrevArrow />,
-	responsive: [
-		{
-			breakpoint: 1919,
-			settings: {
-				slidesToShow: 3,
-				slidesToScroll: 3,
-			},
-		},
-		{
-			breakpoint: 1279,
-			settings: {
-				slidesToShow: 2,
-				slidesToScroll: 2,
-			},
-		},
-		{
-			breakpoint: 780,
-			settings: {
-				slidesToShow: 1,
-				slidesToScroll: 1,
-			},
-		},
-	],
+  infinite: true,
+  speed: 500,
+  slidesToShow: 4,
+  slidesToScroll: 4,
+  nextArrow: <SampleNextArrow />,
+  prevArrow: <SamplePrevArrow />,
+  responsive: [
+    {
+      breakpoint: 1919,
+      settings: {
+        slidesToShow: 3,
+        slidesToScroll: 3,
+      },
+    },
+    {
+      breakpoint: 1279,
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 2,
+      },
+    },
+    {
+      breakpoint: 780,
+      settings: {
+        slidesToShow: 1,
+        slidesToScroll: 1,
+      },
+    },
+  ],
 };
 
 // TODO: 調整成共用元件
 function HomeOrganizerCarousel() {
-	return (
-		<Box className="slider-container">
-			<TitleSection title="優質主揪" />
+  return (
+    <Box className="slider-container">
+      <TitleSection title="優質主揪" />
 
-			<Box sx={{ marginLeft: { xs: "-44px", sm: 0 } }}>
-				<Slider {...settings}>
-					{organizerData.map((el, i) => (
-						<HomeOrganizerCard
-							key={i}
-							{...el} // 直接傳遞 el 物件中的所有屬性
-						/>
-					))}
-				</Slider>
-			</Box>
-		</Box>
-	);
+      <Box sx={{ marginLeft: { xs: "-44px", sm: 0 } }}>
+        <Slider {...settings}>
+          {organizerData.map((el, i) => (
+            <HomeOrganizerCard
+              key={i}
+              {...el} // 直接傳遞 el 物件中的所有屬性
+            />
+          ))}
+        </Slider>
+      </Box>
+    </Box>
+  );
 }
 
 // TODO: 調整程式碼寫法及樣式
 function SampleNextArrow(props) {
-	const { onClick } = props;
-	const theme = useTheme();
+  const { onClick } = props;
+  const theme = useTheme();
 
-	return (
-		<IconButton
-			className="slick-arrow"
-			sx={{
-				color: theme.palette.secondary.main,
-				...arrowBtnConfig,
-				right: { sm: "-64px", xs: "-44px" },
-			}}
-			onClick={onClick}
-		>
-			<FontAwesomeIcon icon={faAngleRight} />
-		</IconButton>
-	);
+  return (
+    <IconButton
+      className="slick-arrow"
+      sx={{
+        color: theme.palette.secondary.main,
+        ...arrowBtnConfig,
+        right: { sm: "-64px", xs: "-44px" },
+      }}
+      onClick={onClick}
+    >
+      <FontAwesomeIcon icon={faAngleRight} />
+    </IconButton>
+  );
 }
 
 function SamplePrevArrow(props) {
-	const { onClick } = props;
-	const theme = useTheme();
+  const { onClick } = props;
+  const theme = useTheme();
 
-	return (
-		<IconButton
-			sx={{
-				color: theme.palette.secondary.main,
-				...arrowBtnConfig,
-				left: "-64px",
-				hidden: { sm: "block", xs: "none" },
-			}}
-			onClick={onClick}
-		>
-			<FontAwesomeIcon icon={faAngleLeft} />
-		</IconButton>
-	);
+  return (
+    <IconButton
+      sx={{
+        color: theme.palette.secondary.main,
+        ...arrowBtnConfig,
+        left: "-64px",
+        hidden: { sm: "block", xs: "none" },
+      }}
+      onClick={onClick}
+    >
+      <FontAwesomeIcon icon={faAngleLeft} />
+    </IconButton>
+  );
 }
 
 const arrowBtnConfig = {
-	top: "45%",
-	border: 1,
-	position: "absolute",
-	px: "16px",
-	py: "28px",
-	borderColor: "#DFE2EB",
-	borderRadius: "100px",
+  top: "45%",
+  border: 1,
+  position: "absolute",
+  px: "16px",
+  py: "28px",
+  borderColor: "#DFE2EB",
+  borderRadius: "100px",
 };
 
 export default HomeOrganizerCarousel;

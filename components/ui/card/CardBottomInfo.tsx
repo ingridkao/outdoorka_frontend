@@ -13,44 +13,44 @@ import { PaymentState } from "@/types/TicketType";
  * @param info 資料
  */
 function CardBottomInfo({
-	row,
-	info,
+  row,
+  info,
 }: {
-	row: number;
-	info: HomeActivityState |ActivityState | PaymentState;
+  row: number;
+  info: HomeActivityState | ActivityState | PaymentState;
 }) {
-	const cardStyle = useCardTheme();
-	return (
-		<Box sx={{ py: 3, px: 4 }}>
-			<Box sx={cardStyle.infoRow}>
-				<LocationIcon sx={{ mr: 1.5 }} />
-				<span className="singleline-ellipsis">
-					{info.region} {info.city}
-				</span>
-			</Box>
-			<Box sx={cardStyle.infoRow}>
-				<CalendarTodayIcon sx={{ mr: 1.5 }} />
-				<span className="singleline-ellipsis">
-					{row === 3
-						? parseStartTime(info.activityStartTime)
-						: parseDate(info.activityStartTime, info.activityEndTime)}
-				</span>
-			</Box>
-			<Typography
-				variant="h6"
-				sx={cardStyle.infoTitle}
-				className={
-					row === 3
-						? "triplex-ellipsis"
-						: row === 2
-							? "multiline-ellipsis"
-							: "singleline-ellipsis"
-				}
-			>
-				{info.title || info.subtitle}
-			</Typography>
-		</Box>
-	);
+  const cardStyle = useCardTheme();
+  return (
+    <Box sx={{ py: 3, px: 4 }}>
+      <Box sx={cardStyle.infoRow}>
+        <LocationIcon sx={{ mr: 1.5 }} />
+        <span className="singleline-ellipsis">
+          {info.region} {info.city}
+        </span>
+      </Box>
+      <Box sx={cardStyle.infoRow}>
+        <CalendarTodayIcon sx={{ mr: 1.5 }} />
+        <span className="singleline-ellipsis">
+          {row === 3
+            ? parseStartTime(info.activityStartTime)
+            : parseDate(info.activityStartTime, info.activityEndTime)}
+        </span>
+      </Box>
+      <Typography
+        variant="h6"
+        sx={cardStyle.infoTitle}
+        className={
+          row === 3
+            ? "triplex-ellipsis"
+            : row === 2
+              ? "multiline-ellipsis"
+              : "singleline-ellipsis"
+        }
+      >
+        {info.title || info.subtitle}
+      </Typography>
+    </Box>
+  );
 }
 
 export default CardBottomInfo;
