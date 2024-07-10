@@ -198,7 +198,8 @@ function Activity({ params }: { params: { id: string } }) {
     return paragraphs.map((paragraph, index) => {
       const lines = paragraph.split(/\r?\n/g).map((line, lineIndex) => (
         <React.Fragment key={lineIndex}>
-          {line}
+          <div dangerouslySetInnerHTML={{ __html: line }}></div>
+          {/* {line} */}
           {/* {lineIndex < paragraph.split(/\r?\n/g).length - 1 && <br />} */}
         </React.Fragment>
       ));
