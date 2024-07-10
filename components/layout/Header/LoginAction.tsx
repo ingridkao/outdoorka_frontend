@@ -12,7 +12,7 @@ import {
 	getCookie,
 	getProfileCookieObj,
 	USER_T0KEN_COOKIE,
-	OG_TOK0N_COOKIE
+	OG_TOK0N_COOKIE,
 } from "@/utils/cookieHandler";
 
 import {
@@ -35,7 +35,7 @@ import LoginDialog from "./LoginDialog";
 function LoginAction() {
 	const router = useRouter();
 	const dispatch = useDispatch();
-	const { likesCount } = useSelector((state:any) => state.likes);	
+	const { likesCount } = useSelector((state: any) => state.likes);
 	const [authUser, setAuthUser] = useState<{
 		name: string;
 		photo: string;
@@ -48,23 +48,26 @@ function LoginAction() {
 
 	const [suspenseCount, setSuspenseCount] = useState<number>(0);
 	const { ticket, organizer } = axios;
-	async function loadData(user:boolean) {
+	async function loadData(user: boolean) {
 		try {
-			if(user){
+			if (user) {
 				dispatch(showLikes());
-				const res = await ticket.getSuspenseTicketInfo()
+				const res = await ticket.getSuspenseTicketInfo();
 				if (res && res.data) {
-					const unusedCount = res.data.reduce((acc: number, item: any) => acc += (item.unused > 0) ?1: 0, 0);				
+					const unusedCount = res.data.reduce(
+						(acc: number, item: any) => (acc += item.unused > 0 ? 1 : 0),
+						0,
+					);
 					setSuspenseCount(unusedCount);
 				}
-			}else{
-				setIsOg(true)
+			} else {
+				setIsOg(true);
 				const res = await organizer.getOrganizer();
 				if (res && res.data) {
 					setAuthUser({
 						name: res.data.name,
-						photo: res.data.photo
-					})
+						photo: res.data.photo,
+					});
 				}
 			}
 		} catch (error) {
@@ -80,9 +83,9 @@ function LoginAction() {
 			const profile = getProfileCookieObj();
 			setAuthUser(profile);
 			loadData(true);
-		} else if(getOgT0ken) {
+		} else if (getOgT0ken) {
 			loadData(false);
-		} else{
+		} else {
 			router.push("/");
 		}
 	}, []);
@@ -99,10 +102,10 @@ function LoginAction() {
 	const handleLogout = () => {
 		handleProfileMenuClose(new Event("logout"));
 		setAuthUser(null);
-		if(isOg){
+		if (isOg) {
 			dispatch(logoutOrganizer());
 			router.push("/organizer/login");
-		}else{
+		} else {
 			dispatch(logoutUser());
 			router.push("/");
 		}
@@ -110,9 +113,9 @@ function LoginAction() {
 
 	const goToProfile = () => {
 		handleProfileMenuClose(new Event("navigate"));
-		if(isOg){
+		if (isOg) {
 			router.push("/organizer/profile");
-		}else{
+		} else {
 			router.push("/user/profile/");
 		}
 	};
@@ -163,21 +166,25 @@ function LoginAction() {
 				<ProfileIcon sx={MenuIconStyle} fillcolor="#B1AAA5" />
 				<Typography>管理帳號</Typography>
 			</MenuItem>
-			{!isOg ? <>
-				<MenuItem onClick={goToFavorites}>
-					<HeartIcon sx={MenuIconStyle} fillcolor="#B1AAA5" />
-					<Typography>我的收藏</Typography>
-				</MenuItem>
-				<MenuItem onClick={goToTicket}>
-					<TicketIcon sx={MenuIconStyle} fillcolor="#B1AAA5" />
-					<Typography>我的票卷</Typography>
-				</MenuItem>
-			</> :<>
-				<MenuItem onClick={goToActivity}>
-					<TicketIcon sx={MenuIconStyle} fillcolor="#B1AAA5" />
-					<Typography>活動列表</Typography>
-				</MenuItem>
-			</>}
+			{!isOg ? (
+				<>
+					<MenuItem onClick={goToFavorites}>
+						<HeartIcon sx={MenuIconStyle} fillcolor="#B1AAA5" />
+						<Typography>我的收藏</Typography>
+					</MenuItem>
+					<MenuItem onClick={goToTicket}>
+						<TicketIcon sx={MenuIconStyle} fillcolor="#B1AAA5" />
+						<Typography>我的票卷</Typography>
+					</MenuItem>
+				</>
+			) : (
+				<>
+					<MenuItem onClick={goToActivity}>
+						<TicketIcon sx={MenuIconStyle} fillcolor="#B1AAA5" />
+						<Typography>活動列表</Typography>
+					</MenuItem>
+				</>
+			)}
 			<MenuItem onClick={handleLogout}>
 				<LogoutIcon sx={MenuIconStyle} fillcolor="#B1AAA5" />
 				<Typography>登出</Typography>
@@ -190,62 +197,67 @@ function LoginAction() {
 			sx={{
 				flex: { xs: "0 1 112px", md: "0 1 500px" },
 				justifyContent: "flex-end",
-				textAlign: { md: "right" },
+				textAlign: { md: "right" }
 			}}
 		>
 			{!isClient ? (
 				<Box></Box>
 			) : authUser ? (
 				<>
-					<Box display="inline-flex">
+					<Box display="inline-flex" sx={{flexDirection:{ xs:"row-reverse",sm:"row"}}}>
 						<Chip
 							onClick={handleProfileMenuClick}
-							className={`chipAvatar ${isOg?"og":""}`}
+							className={`chipAvatar ${isOg ? "og" : ""}`}
 							sx={{
 								width: { xs: "48px", md: "auto" },
 								pl: { xs: 1.5, md: 0 },
 							}}
-							avatar={
-								<Avatar
-									alt={authUser.name}
-									src={authUser.photo}
-								/>
-							}
+							avatar={<Avatar alt={authUser.name} src={authUser.photo} />}
 							label={
 								<Typography
 									sx={{
 										display: { xs: "none", md: "block" },
 										pr: { xs: 0, md: 1 },
-										color: isOg? "#eff0f7": "#22252A" 
+										color: isOg ? "#eff0f7" : "#22252A",
 									}}
 								>
-									{isOg? "主揪! ": "CIAO! "}
+									{isOg ? "主揪! " : "CIAO! "}
 									<b>{authUser.name}</b>
 								</Typography>
 							}
 						/>
 
-						{!isOg && <>
-							<Button component={NextLink} href="/ticket" color="inherit">
-								<Badge badgeContent={suspenseCount} color="secondary">
-									<TicketIcon
-										sx={{ width: 24, height: 24 }}
-										fillcolor="#4a4642"
-									/>
-								</Badge>
-							</Button>
+						{!isOg && (
+							<>
+								<Button
+									component={NextLink}
+									href="/ticket"
+									color="inherit"
+									sx={{ ml: 1 }}
+								>
+									<Badge badgeContent={suspenseCount} color="secondary">
+										<TicketIcon
+											sx={{ width: 24, height: 24 }}
+											fillcolor="#4a4642"
+										/>
+									</Badge>
+								</Button>
 
-							<Button
-								component={NextLink}
-								href="/favorites"
-								color="inherit"
-								sx={{ display: { xs: "none", md: "inline-flex" } }}
-							>
-								<Badge badgeContent={likesCount} color="secondary">
-									<HeartIcon sx={{ width: 24, height: 24 }} fillcolor="#4a4642" />
-								</Badge>
-							</Button>
-						</>}
+								<Button
+									component={NextLink}
+									href="/favorites"
+									color="inherit"
+									sx={{ display: { xs: "none", md: "inline-flex" }, ml: 1 }}
+								>
+									<Badge badgeContent={likesCount} color="secondary">
+										<HeartIcon
+											sx={{ width: 24, height: 24 }}
+											fillcolor="#4a4642"
+										/>
+									</Badge>
+								</Button>
+							</>
+						)}
 					</Box>
 					<ClickAwayListener onClickAway={handleProfileMenuClose}>
 						<Menu
@@ -257,12 +269,6 @@ function LoginAction() {
 							PaperProps={{
 								sx: {
 									width: 336,
-									px: 2,
-									pt: 1,
-									pb: 4,
-									borderRadius: 0.75,
-									backdropFilter: "invert(5%)",
-									backgroundColor: "rgba(255, 255, 255, .5)",
 								},
 							}}
 						>

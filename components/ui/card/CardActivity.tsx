@@ -1,6 +1,10 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { ActivityState, HomeActivityState, FavoritesActivityState } from "@/types/ActivitiesType";
+import {
+	ActivityState,
+	HomeActivityState,
+	FavoritesActivityState,
+} from "@/types/ActivitiesType";
 import {
 	Box,
 	Typography,
@@ -79,12 +83,13 @@ function CardActivity(props: {
 					<Grid
 						item
 						sx={{
+							mb: 1,
 							flex: home
 								? {}
 								: {
-									xs: "0 1 calc(100% - 11rem)",
-									sm: "0 1 calc(100% - 12rem)",
-								}
+										xs: "0 1 calc(100% - 11rem)",
+										sm: "0 1 calc(100% - 12rem)",
+									},
 						}}
 					>
 						<Box
@@ -92,7 +97,7 @@ function CardActivity(props: {
 							alignItems="center"
 							sx={{
 								...cardStyle.chip,
-								width: home ? { xs: 158, sm: 144, xl: 140 } : "100%",
+								width: home ? { xs: 136, sm: 144, xl: 140 } : "100%",
 								height: 40,
 								py: 0.5,
 							}}
@@ -114,7 +119,7 @@ function CardActivity(props: {
 								<Typography
 									sx={{
 										...cardStyle.chipOrganizerName,
-										maxWidth: home ? "6rem" : { sm: "10rem" },
+										maxWidth: home ? {  xs: "5.25rem" , sm: "6rem" } : { sm: "10rem" },
 									}}
 								>
 									{activity.organizer?.name}
@@ -124,7 +129,7 @@ function CardActivity(props: {
 					</Grid>
 
 					{/* 參加人數 */}
-					<Grid item>
+					<Grid item sx={{ mb: 1 }}>
 						<Chip
 							sx={cardStyle.chip}
 							label={
@@ -134,7 +139,7 @@ function CardActivity(props: {
 										sx={{
 											...cardStyle.chipText,
 											minWidth: home
-												? "2rem"
+												? { xs: "1rem", sm: "2rem" }
 												: { xs: "1rem", sm: "0.75rem", md: "1.5rem" },
 										}}
 									>
@@ -146,11 +151,11 @@ function CardActivity(props: {
 					</Grid>
 
 					{/* 愛心數 */}
-					<Grid item >
-						<FavoriteAction 
-							home={home} 
+					<Grid item sx={{ mb: 1 }}>
+						<FavoriteAction
+							home={home}
 							activity={activity}
-							onLoad={()=>onLoad()}
+							onLoad={() => onLoad()}
 						/>
 					</Grid>
 				</Grid>

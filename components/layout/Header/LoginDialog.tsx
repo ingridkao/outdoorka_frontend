@@ -39,7 +39,8 @@ function LoginDialog(props: SimpleDialogProps) {
 						sx={{
 							display: "flex",
 							height: "200px",
-							px: 10,
+							flexDirection: {xs: "column", sm: "row"},
+							px: {xs: 2, sm: 10},
 							mb: 2,
 							position: "relative",
 							"&::before": {
@@ -70,7 +71,13 @@ function LoginDialog(props: SimpleDialogProps) {
 								backgroundRepeat: "no-repeat",
 							}}
 						/>
-						<Box sx={{ zIndex: 1, width: "215px", color: "#fff", ml: 10 }}>
+						<Box sx={{ 
+							zIndex: 1, 
+							width: 215, 
+							color: "#fff", 
+							ml: {xs: 0, sm: 10},
+							textAlign: {xs: "center", sm: "left"}
+						}}>
 							<Typography sx={{ fontWeight: 700, fontSize: "28px" }}>
 								{item.title}
 							</Typography>

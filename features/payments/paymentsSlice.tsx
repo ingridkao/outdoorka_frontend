@@ -1,7 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "@/plugins/api/axios";
-import { removeCookie, setCookie } from "@/utils/cookieHandler";
-import { v4 as uuidv4 } from "uuid";
 
 const { payments } = axios;
 
@@ -10,12 +8,12 @@ export const paymentRegistration = createAsyncThunk(
 	async (paymentForm, { rejectWithValue }) => {
 		try {
 			const paymentData = {
-				"activityId": paymentForm.activityId,
-				"ticketCount": "1",
-				"buyerName": paymentForm.name,
-				"buyerMobile": paymentForm.mobile,
-				"buyerEmail": paymentForm.email
-			}
+				activityId: paymentForm.activityId,
+				ticketCount: Number(paymentForm.count),
+				buyerName: paymentForm.name,
+				buyerMobile: paymentForm.mobile,
+				buyerEmail: paymentForm.email,
+			};
 
 			const { data } = await payments.registration(paymentData);
 
@@ -31,7 +29,7 @@ export const paymentRegistration = createAsyncThunk(
 const paymentsSlice = createSlice({
 	name: "payments",
 	initialState: {
-		items: [],
+		data: null,
 		error: null,
 		loading: false,
 		success: false,
@@ -46,7 +44,7 @@ const paymentsSlice = createSlice({
 			})
 			.addCase(paymentRegistration.fulfilled, (state, action) => {
 				state.loading = false;
-				state.items = action.payload;
+				state.data = action.payload;
 				state.success = true;
 			})
 			.addCase(paymentRegistration.rejected, (state, action) => {

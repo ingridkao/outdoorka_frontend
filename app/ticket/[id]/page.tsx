@@ -27,6 +27,7 @@ import CircularLoading from "@/components/ui/loading/CircularLoading";
 
 import { parseDetailDate } from "@/utils/dateHandler";
 import ExpandMoreIcon from "@/components/icon/ExpandMoreIcon";
+import TicketIcon from "@/components/icon/TicketIcon";
 import PageLayout from "@/components/layout/MainLayout/PageLayout";
 import BackBtn from "@/components/ui/shared/BackBtn";
 import useCustomTheme from "@/components/ui/shared/useCustomTheme";
@@ -44,9 +45,9 @@ function TicketAction({
 }) {
 	if (!info) return <Box />;
 
-	const [modifyType, setModifyType] = useState("");
+	const [modifyType, setModifyType] = useState<string>("");
 	const [target, setTarget] = useState<TicketsState | null>(null);
-	const [dialogOpen, setDialogOpen] = useState(false);
+	const [dialogOpen, setDialogOpen] = useState<boolean>(false);
 	const closeDialog = (res: boolean) => {
 		setDialogOpen(false);
 		setTarget(null);
@@ -138,6 +139,7 @@ function TicketInfo() {
 
 	async function loadData() {
 		setLoad(true);
+		setAssignActive(0)
 		try {
 			const responseBody = await ticket.getPaymentInfo(params.id);
 			setLoad(false);
@@ -278,12 +280,15 @@ function TicketInfo() {
 								}}
 							>
 								{ticketsData[assignActive].ticketStatus ? (
-									<Box
+									<Box display="flex" justifyContent="center" alignItems="center"
 										sx={{
 											width: { xs: 0, sm: 270 },
 											height: { xs: 0, sm: 270 },
+											backgroundColor: "#edf1f9"
 										}}
-									/>
+									>
+										<TicketIcon sx={{width: 100, height: 100}} fillcolor="#70AFF5"/>
+									</Box>
 								) : (
 									<QRCodeSVG
 										size={270}

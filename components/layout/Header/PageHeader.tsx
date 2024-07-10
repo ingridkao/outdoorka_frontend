@@ -17,7 +17,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import LogoHorizontal from "@/components/icon/LogoHorizontal";
 import LoginAction from "./LoginAction";
-import { drawerWidth, AsideDrawer } from "./Header";
+import { drawerPaperStyle, AsideDrawer } from "./Header";
 
 function PageHeader() {
 	const [container, setContainer] = useState<HTMLElement | undefined>(
@@ -85,8 +85,12 @@ function PageHeader() {
 						<Box
 							className="search"
 							sx={{
-								ml: 5,
 								display: { xs: "none", sm: "block" },
+								position: "relative",
+								maxWidth: 800,
+								width: {xs:"100%",sm:"60%"},
+								ml: 5,
+								mt: 3
 							}}
 						>
 							<Input
@@ -116,10 +120,7 @@ function PageHeader() {
 					}}
 					sx={{
 						display: { xs: "block", md: "none" },
-						"& .MuiDrawer-paper": {
-							boxSizing: "border-box",
-							width: drawerWidth,
-						},
+						"& .MuiDrawer-paper": drawerPaperStyle,
 					}}
 				>
 					<AsideDrawer drawerToggle={handleDrawerToggle} />

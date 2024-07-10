@@ -19,22 +19,29 @@ import MenuIcon from "@mui/icons-material/Menu";
 import LogoHeader1 from "@/public/images/logoHeader_1.svg";
 import LogoHeader2 from "@/public/images/logoHeader_2.svg";
 import LoginAction from "./LoginAction";
-export const drawerWidth = 240;
+export const drawerPaperStyle = {
+	boxSizing: "border-box",
+	width: 280,
+	height: 587,
+	mt: 2,
+	ml: 2
+};
+
 export const linkTitles = [
-	{ title: "關於我們", link: "#" },
-	{ title: "活動", link: "/activities" },
-	{ title: "優良主揪", link: "#" },
-	{ title: "Blog", link: "#" },
-	{ title: "短影音", link: "#" },
+	{ title: "關於我們", link: "/about", disabled: false },
+	{ title: "活動", link: "/activities", disabled: false },
+	{ title: "優良主揪", link: "#", disabled: true },
+	{ title: "Blog", link: "#", disabled: true },
+	{ title: "短影音", link: "#", disabled: true },
 ];
 
-export function AsideDrawer(props: {
-	drawerToggle: () => void;
-}) {
+export function AsideDrawer(props: { drawerToggle: () => void }) {
 	const { drawerToggle } = props;
 	return (
 		<Box>
-			<IconButton onClick={drawerToggle}><MenuIcon /></IconButton>
+			<IconButton onClick={drawerToggle}>
+				<MenuIcon />
+			</IconButton>
 			<List sx={{ px: 2, py: 5 }}>
 				{linkTitles.map((item) => (
 					<ListItem
@@ -49,8 +56,9 @@ export function AsideDrawer(props: {
 						<Link
 							key={item.title}
 							href={item.link}
-							underline="hover"
 							sx={{ fontSize: "18px" }}
+							underline={item.disabled? "none": "hover"}
+							className={item.disabled? "disabled-link": ""}
 						>
 							{item.title}
 						</Link>
@@ -58,7 +66,7 @@ export function AsideDrawer(props: {
 				))}
 			</List>
 		</Box>
-	)
+	);
 }
 
 function Header() {
@@ -82,7 +90,7 @@ function Header() {
 				component="nav"
 				elevation={scrollDownFlag ? 6 : 0}
 				sx={{
-					backgroundColor: scrollDownFlag ? "#D9D9D9" : "transparent",
+					backgroundColor: scrollDownFlag ? "#D9D9D9" : "#FFFFFF",
 					color: "#4A4642",
 					transition: scrollDownFlag ? "0.3s" : "0.5s",
 					boxShadow: "none",
@@ -109,7 +117,6 @@ function Header() {
 					>
 						<MenuIcon />
 					</IconButton>
-
 					{/* Desktop: Menu*/}
 					<Box
 						sx={{
@@ -121,10 +128,11 @@ function Header() {
 							<Link
 								color="inherit"
 								fontSize="inherit"
-								underline="hover"
 								noWrap
 								key={item.title}
 								href={item.link}
+								underline={item.disabled? "none": "hover"}
+								className={item.disabled? "disabled-link": ""}
 								sx={{
 									py: 1,
 									px: 3,
@@ -134,26 +142,31 @@ function Header() {
 							</Link>
 						))}
 					</Box>
-
-					<Button
-						component={NextLink}
+					<Link
 						href="/"
 						sx={{
+							display: "flex",
+							alignItems: "center",
 							height: { xs: "30px", md: "48px" },
 							flex: "1 1 auto",
 							justifyContent: "center",
+							padding: 0,
+							minWidth: 0,
 						}}
 					>
-						<Image
-							src={scrollDownFlag ? LogoHeader2 : LogoHeader1}
-							fill={true}
-							alt="揪好咖"
-							style={{
-								transition: scrollDownFlag ? "0.3s" : "0.5s",
-							}}
-							priority={true}
-						/>
-					</Button>
+						<Box sx={{ position: "relative", width: "100%", height: "100%" }}>
+							<Image
+								src={scrollDownFlag ? LogoHeader2 : LogoHeader1}
+								layout="fill"
+								objectFit="contain"
+								alt="揪好咖"
+								style={{
+									transition: scrollDownFlag ? "0.3s" : "0.5s",
+								}}
+								priority={true}
+							/>
+						</Box>
+					</Link>
 
 					<LoginAction />
 				</Toolbar>
@@ -169,10 +182,7 @@ function Header() {
 					}}
 					sx={{
 						display: { xs: "block", md: "none" },
-						"& .MuiDrawer-paper": {
-							boxSizing: "border-box",
-							width: drawerWidth,
-						},
+						"& .MuiDrawer-paper": drawerPaperStyle,
 					}}
 				>
 					<AsideDrawer drawerToggle={handleDrawerToggle} />
