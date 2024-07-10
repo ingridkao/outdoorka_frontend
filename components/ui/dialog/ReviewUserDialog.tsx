@@ -23,7 +23,7 @@ function ReviewUserDialog(props: {
   ticketCreatedAt: string;
   ticketId?: string;
   open: boolean;
-  onClose: (reload: boolean) => void;
+  onClose: () => void;
 }) {
   const { organizer } = axios;
   const { onClose, open, ticketId } = props;
@@ -44,7 +44,7 @@ function ReviewUserDialog(props: {
         setErrorMsg("");
         setSuccessMsg(true);
         setTimeout(() => {
-          onClose(true);
+          onClose();
         }, 2000);
       }
     } catch (error: any) {
@@ -54,7 +54,7 @@ function ReviewUserDialog(props: {
   };
 
   return (
-    <Dialog onClose={() => onClose(false)} open={open} fullWidth maxWidth="sm">
+    <Dialog onClose={() => onClose()} open={open} fullWidth maxWidth="sm">
       <DialogTitle>評價會員</DialogTitle>
       <DialogContent>
         <Box

@@ -24,10 +24,11 @@ function TicketModifyDialog(props: {
   type: string;
   target: TicketsState | null;
   open: boolean;
-  onClose: (res: boolean) => void;
+  onClose: () => void;
+  onReload: () => void;
 }) {
   const { ticket } = axios;
-  const { onClose, open, type, target, payment } = props;
+  const { onClose, onReload, open, type, target, payment } = props;
   const displayTitle: any = {
     note: "編輯備註",
     evaluate: "活動評價",
@@ -64,7 +65,7 @@ function TicketModifyDialog(props: {
     if (type === "note") {
       setTicketNote(target?.ticketNote || "");
     }
-  }, [target]);
+  }, [target, type]);
 
   const checkinCommit = async () => {
     if (!target) return;
@@ -88,7 +89,7 @@ function TicketModifyDialog(props: {
         setErrorMsg("");
         setSuccessMsg(displaySuccessMsg[type]);
         setTimeout(() => {
-          onClose(true);
+          onReload();
         }, 2000);
       }
     } catch (error: any) {
@@ -106,7 +107,7 @@ function TicketModifyDialog(props: {
 
   return (
     <Dialog
-      onClose={() => onClose(false)}
+      onClose={() => onClose()}
       open={open}
       fullWidth={type !== "email"}
       maxWidth="sm"

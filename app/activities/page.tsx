@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import PageLayout from "@/components/layout/MainLayout/PageLayout";
 import CardActivity from "@/components/ui/card/CardActivity";
 import axios from "@/plugins/api/axios";
@@ -73,7 +73,7 @@ function Activities() {
     setCapacity(event.target.value as string);
   };
 
-  async function loadData(init: boolean) {
+  const fetchActivityList = useCallback(async (init: boolean) => {
     try {
       if (init) setLoad(true);
       const responseBody = await activity.getActivitiesList();
@@ -84,10 +84,11 @@ function Activities() {
     } catch (error) {
       setError("Failed to fetch data: " + String(error));
     }
-  }
+  }, [activity]);
+
   useEffect(() => {
-    loadData(true);
-  }, []);
+    fetchActivityList(true);
+  }, [fetchActivityList]);
 
   return (
     <PageLayout>
@@ -349,7 +350,7 @@ function Activities() {
                       <CardActivity
                         home={false}
                         activity={value}
-                        onLoad={() => loadData(false)}
+                        onLoad={() => fetchActivityList(false)}
                       />
                     </Grid>
                   ))}
@@ -458,19 +459,19 @@ const capacityOptions = [
     label: ">100 人",
   },
 ];
-const sortOptions = [
-  {
-    value: "1",
-    label: "日期",
-  },
-  {
-    value: "2",
-    label: "價格",
-  },
-  {
-    value: "3",
-    label: "人數",
-  },
-];
+// const sortOptions = [
+//   {
+//     value: "1",
+//     label: "日期",
+//   },
+//   {
+//     value: "2",
+//     label: "價格",
+//   },
+//   {
+//     value: "3",
+//     label: "人數",
+//   },
+// ];
 
 export default Activities;

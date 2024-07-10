@@ -1,12 +1,12 @@
 "use client";
 
 import { ChangeEvent, useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import NextLink from "next/link";
 import BackBtn from "@/components/ui/shared/BackBtn";
 
-import { RootState, LoginForm } from "@/types";
+import { LoginForm } from "@/types";
 import { loginUser } from "@/features/user/authSlice";
 import { EMAIL_REGEX, PWD_REGEX } from "@/utils/regexHandler";
 import {
@@ -37,7 +37,6 @@ const baseUrl =
 export default function Login() {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { profile: authUser } = useSelector((state: RootState) => state.auth);
   const [loginField, setLoginField] = useState<LoginForm>({
     account: "",
     password: "",
@@ -45,6 +44,11 @@ export default function Login() {
   });
 
   useEffect(() => {
+    setLoginField({
+      account: "",
+      password: "",
+      remember: true,
+    });
     const getT0ken = getCookie(USER_T0KEN_COOKIE);
     const getAcc = getCookie(USER_ACCOUNT_COOKIE);
     if (getT0ken) {
@@ -57,7 +61,7 @@ export default function Login() {
         remember: true,
       });
     }
-  }, [authUser]);
+  }, [router]);
 
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
@@ -135,151 +139,174 @@ export default function Login() {
   };
 
   return (
-    <Grid container direction="row" justifyContent="space-between" spacing={2}>
-      <Grid xs={12} sm={6} sx={{ overflow: "hidden" }}>
+    <Grid
+      container
+      direction="row"
+      justifyContent="space-between" 
+      sx={{
+        height: "100vh",
+      }}
+    >
+      <Grid 
+        xs={12}
+        sm={6}
+        sx={{
+          overflow: "hidden",
+          height:{ xs: "auto", sm: "100%" },
+        }}
+      >
         <Box
           component="img"
           sx={{
+            display:{ xs: "none", sm: "block" },
             objectFit: "cover",
-            height: "100dvh",
+            height: "100%",
           }}
-          display={{ xs: "none", sm: "block" }}
           alt="cover"
           src="https://i.imgur.com/UTYmBjM.jpg"
         />
       </Grid>
 
-      <Grid xs={12} sm={6}>
-        <Box sx={{ ml: 2, mt: 2, mb: 12 }}>
+      <Grid 
+        xs={12} 
+        sm={6} 
+        sx={{
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          p: 2
+        }}
+      >
+        <Box>
           <BackBtn href="/" name="返回" />
         </Box>
         <Fade in={true}>
-          <Box sx={{ textAlign: "center" }}>
-            <Box sx={{ width: "75%", maxWidth: 380, margin: "auto" }}>
-              <Box component="form" noValidate autoComplete="off">
-                <Box
-                  component="img"
-                  sx={{
-                    objectFit: "cover",
-                    marginBottom: 3,
-                  }}
-                  alt="login"
-                  src="https://i.imgur.com/qokckjQ.png"
-                />
-                {errorMsg && <Alert severity="error">{errorMsg}</Alert>}
-                {successMsg && <Alert severity="success">{successMsg}</Alert>}
-                <FormGroup>
-                  <TextField
-                    required
-                    name="account"
-                    type="email"
-                    value={loginField.account}
-                    label={loginLabel.account}
-                    margin="normal"
-                    error={loginValid.account !== ""}
-                    helperText={loginValid.account}
-                    InputLabelProps={{ shrink: true }}
-                    onChange={(
-                      event: ChangeEvent<
-                        HTMLInputElement | HTMLTextAreaElement
-                      >,
-                    ) => handleInputChange(event)}
-                  />
-                  <TextField
-                    required
-                    name="password"
-                    value={loginField.password}
-                    label={loginLabel.password}
-                    margin="normal"
-                    type="password"
-                    error={loginValid.password !== ""}
-                    helperText={loginValid.password}
-                    InputLabelProps={{ shrink: true }}
-                    onChange={(
-                      event: ChangeEvent<
-                        HTMLInputElement | HTMLTextAreaElement
-                      >,
-                    ) => handleInputChange(event)}
-                  />
-                  <Button
-                    variant="contained"
-                    size="large"
-                    sx={{
-                      marginTop: 1,
-                      marginBottom: 1,
-                    }}
-                    onClick={handleSubmit}
-                    disabled={
-                      loginValid.account !== "" || loginValid.password !== ""
-                    }
-                  >
-                    登入
-                  </Button>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      my: 2,
-                    }}
-                  >
-                    <FormControlLabel
-                      label="記住我"
-                      control={
-                        <Checkbox
-                          name="remember"
-                          checked={loginField.remember}
-                          onChange={handleChecked}
-                        />
-                      }
-                    />
-                    <MuiLink
-                      component={NextLink}
-                      href="/forget"
-                      underline="always"
-                    >
-                      忘記密碼
-                    </MuiLink>
-                  </Box>
-                </FormGroup>
-              </Box>
-              <Typography variant="body1" sx={{ fontSize: 20 }}>
-                或
-              </Typography>
+          <Box sx={{ width: "75%", maxWidth: 380, margin: "auto", textAlign: "center"  }}>
+            <Box component="form" noValidate autoComplete="off">
               <Box
+                component="img"
                 sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 1,
-                  my: 2,
+                  objectFit: "cover",
+                  marginBottom: 2,
                 }}
-              >
+                alt="login"
+                src="https://i.imgur.com/qokckjQ.png"
+              />
+              {errorMsg && <Alert severity="error">{errorMsg}</Alert>}
+              {successMsg && <Alert severity="success">{successMsg}</Alert>}
+              <FormGroup>
+                <TextField
+                  required
+                  name="account"
+                  type="email"
+                  value={loginField.account}
+                  label={loginLabel.account}
+                  margin="normal"
+                  error={loginValid.account !== ""}
+                  helperText={loginValid.account}
+                  InputLabelProps={{ shrink: true }}
+                  onChange={(
+                    event: ChangeEvent<
+                      HTMLInputElement | HTMLTextAreaElement
+                    >,
+                  ) => handleInputChange(event)}
+                />
+                <TextField
+                  required
+                  name="password"
+                  value={loginField.password}
+                  label={loginLabel.password}
+                  margin="normal"
+                  type="password"
+                  error={loginValid.password !== ""}
+                  helperText={loginValid.password}
+                  InputLabelProps={{ shrink: true }}
+                  onChange={(
+                    event: ChangeEvent<
+                      HTMLInputElement | HTMLTextAreaElement
+                    >,
+                  ) => handleInputChange(event)}
+                />
                 <Button
-                  variant="outlined"
+                  variant="contained"
                   size="large"
-                  component={NextLink}
-                  href={`${baseUrl}/api/v1/auth/google`}
+                  sx={{
+                    marginTop: 1,
+                    marginBottom: 1,
+                  }}
+                  onClick={handleSubmit}
+                  disabled={
+                    loginValid.account !== "" || loginValid.password !== ""
+                  }
                 >
-                  使用 Google 帳號登入
+                  登入
                 </Button>
-                {/* <Button variant="outlined" size="large">
-									使用 LINE 帳號登入
-								</Button> */}
-              </Box>
-
-              <Typography variant="body1">
-                尚未註冊帳號？
-                <MuiLink
-                  component={NextLink}
-                  href="/register"
-                  underline="always"
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    my: 2,
+                  }}
                 >
-                  立即註冊
-                </MuiLink>
-              </Typography>
+                  <FormControlLabel
+                    label="記住我"
+                    control={
+                      <Checkbox
+                        name="remember"
+                        checked={loginField.remember}
+                        onChange={handleChecked}
+                      />
+                    }
+                  />
+                  <MuiLink
+                    component={NextLink}
+                    href="/forget"
+                    underline="always"
+                  >
+                    忘記密碼
+                  </MuiLink>
+                </Box>
+              </FormGroup>
             </Box>
+            <Typography variant="body1" sx={{ fontSize: 20 }}>
+              或
+            </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 1,
+                my: 2,
+              }}
+            >
+              <Button
+                variant="outlined"
+                size="large"
+                component={NextLink}
+                href={`${baseUrl}/api/v1/auth/google`}
+              >
+                使用 Google 帳號登入
+              </Button>
+              {/* <Button variant="outlined" size="large">
+                使用 LINE 帳號登入
+              </Button> */}
+            </Box>
+
+            <Typography variant="body1">
+              尚未註冊帳號？
+              <MuiLink
+                component={NextLink}
+                href="/register"
+                underline="always"
+              >
+                立即註冊
+              </MuiLink>
+            </Typography>
           </Box>
         </Fade>
+        <Box sx={{height: 40}}></Box>
       </Grid>
     </Grid>
   );

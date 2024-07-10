@@ -68,7 +68,7 @@ function ParticipantDialog(props: SimpleDialogProps) {
   };
 
   useEffect(() => {
-    if (data?._id) {
+    if (data && data._id) {
       organizer.getActivityParticipant(data._id).then((res: any) => {
         if (res.data) {
           console.log("res.data", res.data);
@@ -76,7 +76,7 @@ function ParticipantDialog(props: SimpleDialogProps) {
         }
       });
     }
-  }, []);
+  }, [data, organizer]);
   return (
     <Dialog onClose={() => onClose()} open={open} fullWidth maxWidth="sm">
       <DialogTitle>報名會員</DialogTitle>
@@ -120,18 +120,20 @@ function ParticipantDialog(props: SimpleDialogProps) {
                           owner={item.owner}
                           ticketCreatedAt={item.ticketCreatedAt}
                         />
-                        <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-                          <Button
-                            component={NextLink}
-                            variant="contained"
-                            size="small"
-                            sx={{ mt: 2, marginBottom: "-8px" }}
-                            href={`/organizer/scan/?id=${item._id}`}
-                            target="_blank"
-                          >
-                            查看/驗票
-                          </Button>
-                        </Box>
+                        {tagValue == 0 &&
+                          <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+                            <Button
+                              component={NextLink}
+                              variant="contained"
+                              size="small"
+                              sx={{ mt: 2, marginBottom: "-8px" }}
+                              href={`/organizer/scan/?id=${item._id}`}
+                              target="_blank"
+                            >
+                              查看/驗票
+                            </Button>
+                          </Box>
+                        }
                       </CardContent>
                     </Box>
                   </Card>

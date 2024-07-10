@@ -137,7 +137,7 @@ const Stars = ({ star }: { star: number }) => {
 const CustomTypography = styled(Typography)({
   "@font-face": {
     fontFamily: "ChenYuluoyan-Thin",
-    src: `url('/fonts/ChenYuluoyan-Thin.ttf') format('truetype')`,
+    src: "url(\"/fonts/ChenYuluoyan-Thin.ttf\") format(\"truetype\")",
   },
   fontFamily: "ChenYuluoyan-Thin",
 });

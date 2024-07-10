@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, SyntheticEvent } from "react";
+import { useState, useEffect, SyntheticEvent, useCallback } from "react";
 import axios from "@/plugins/api/axios";
 import { sortTimeData } from "@/utils/dateHandler";
 
@@ -103,7 +103,7 @@ function Favorites() {
     }
   };
 
-  async function loadData(init: boolean) {
+  const fetchFavoritesList = useCallback(async (init: boolean) => {
     try {
       if (init) setLoad(true);
       const responseBody = await favorite.getFavoritesList();
@@ -134,10 +134,10 @@ function Favorites() {
         console.error(String(error?.message));
       }
     }
-  }
+  }, [favorite]);
   useEffect(() => {
-    loadData(true);
-  }, []);
+    fetchFavoritesList(true);
+  }, [fetchFavoritesList]);
 
   return (
     <PageLayout>
@@ -282,7 +282,7 @@ function Favorites() {
                     <CardActivity
                       home={false}
                       activity={value}
-                      onLoad={() => loadData(false)}
+                      onLoad={() => fetchFavoritesList(false)}
                     />
                   </Grid>
                 ))}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { QRCodeSVG } from "qrcode.react";
 import {
@@ -9,6 +9,7 @@ import {
   TicketInfoState,
 } from "@/types/TicketType";
 import axios from "@/plugins/api/axios";
+import { parstTicketStatus } from "@/utils/dateHandler";
 
 import {
   Box,
@@ -41,21 +42,22 @@ function TicketAction({
   active: number;
   info: TicketInfoState | null;
   tickets: TicketsState[] | null;
-  reload: (res: boolean) => void;
+  reload: () => void;
 }) {
-  if (!info) return <Box />;
-
   const [modifyType, setModifyType] = useState<string>("");
   const [target, setTarget] = useState<TicketsState | null>(null);
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
-  const closeDialog = (res: boolean) => {
+  const closeDialog = () => {
     setDialogOpen(false);
     setTarget(null);
-    reload(res);
   };
-
+  const reloadData = () => {
+    closeDialog()
+    reload();
+  };
   const handleAction = (type: string) => {
     if (!type) return;
+    if (!info) return;
     if (type === "evaluate" && info.rating === 1) return;
     if (!(tickets && tickets[active])) return;
     setModifyType(type);
@@ -63,6 +65,7 @@ function TicketAction({
     setDialogOpen(true);
   };
 
+  if (!info) return <Box />;
   if (!tickets) return <Box />;
 
   const targetTicket: TicketsState | null = tickets[active];
@@ -74,32 +77,35 @@ function TicketAction({
       (item: any) => item.ticketId === targetTicket.ticketId,
     );
 
+  const checkTimeValid = parstTicketStatus(info.activityStartTime, info.activityEndTime)
+
   return (
     <>
       <Box>
-        {/* 超過一張票卷，未使用及未分票的票卷 */}
+        {/* 超過一張票卷，未逾期+未使用+未分票的票卷 */}
         {tickets.length > 1 &&
+          checkTimeValid !== 2 &&
           targetTicket.ticketStatus == TicketStatus.Unused && (
-            <Button
-              variant="contained"
-              size="large"
-              sx={{ wordBreak: "keep-all" }}
-              onClick={() => handleAction("email")}
-            >
-              進行分票
-            </Button>
-          )}
+          <Button
+            variant="contained"
+            size="large"
+            sx={{ wordBreak: "keep-all" }}
+            onClick={() => handleAction("email")}
+          >
+            進行分票
+          </Button>
+        )}
         {tickets.length === 1 &&
           targetTicket.ticketStatus == TicketStatus.Unused && (
-            <Button
-              variant="contained"
-              size="large"
-              sx={{ wordBreak: "keep-all" }}
-              onClick={() => handleAction("note")}
-            >
-              填寫備註
-            </Button>
-          )}
+          <Button
+            variant="contained"
+            size="large"
+            sx={{ wordBreak: "keep-all" }}
+            onClick={() => handleAction("note")}
+          >
+            填寫備註
+          </Button>
+        )}
         {targetTicket.ticketStatus == TicketStatus.Used && (
           <Button
             variant="contained"
@@ -118,6 +124,7 @@ function TicketAction({
         target={target}
         open={dialogOpen}
         onClose={closeDialog}
+        onReload={reloadData}
       />
     </>
   );
@@ -126,10 +133,6 @@ function TicketAction({
 function TicketInfo() {
   const params = useParams<{ id: string }>();
   const router = useRouter();
-  if (!params.id) {
-    router.push("/ticket");
-    return <CircularLoading />;
-  }
 
   const { ticket } = axios;
   const customStyle = useCustomTheme();
@@ -137,9 +140,10 @@ function TicketInfo() {
   const [paymentData, setPaymentData] = useState<TicketInfoState | null>(null);
   const [assignActive, setAssignActive] = useState(0);
 
-  async function loadData() {
+  const fetchPayment = useCallback(async () => {
     setLoad(true);
     setAssignActive(0);
+    if(!params) return
     try {
       const responseBody = await ticket.getPaymentInfo(params.id);
       setLoad(false);
@@ -150,16 +154,15 @@ function TicketInfo() {
       setLoad(false);
       setPaymentData(null);
     }
-  }
+  }, [params, ticket]);
   useEffect(() => {
-    loadData();
-  }, []);
-  const actionHandle = (res: boolean) => {
-    console.log(res);
-    if (res) {
-      loadData();
-    }
-  };
+    fetchPayment();
+  }, [fetchPayment]);
+
+  if (!(params && params.id)) {
+    router.push("/ticket");
+    return <CircularLoading />;
+  }
 
   if (load) return <CircularLoading />;
 
@@ -191,6 +194,8 @@ function TicketInfo() {
     mb: { xs: 0.5, sm: 0 },
     color: "#74777D",
   };
+  const checkTimeValid = parstTicketStatus(paymentData.activityStartTime, paymentData.activityEndTime)
+
   return (
     <PageLayout>
       <Box
@@ -235,7 +240,7 @@ function TicketInfo() {
             active={assignActive}
             info={paymentData}
             tickets={ticketsData}
-            reload={actionHandle}
+            reload={fetchPayment}
           />
         </Box>
 
@@ -279,7 +284,7 @@ function TicketInfo() {
                   p: 1,
                 }}
               >
-                {ticketsData[assignActive].ticketStatus ? (
+                { checkTimeValid === 2 || ticketsData[assignActive].ticketStatus ? (
                   <Box
                     display="flex"
                     justifyContent="center"
@@ -313,7 +318,10 @@ function TicketInfo() {
                 }}
               >
                 <Box sx={customStyle.labelStyle}>
-                  {ticketsData[assignActive].ticketStatus ? "已使用" : "已報名"}
+                  {ticketsData[assignActive].ticketStatus 
+                    ? "已使用" 
+                    : checkTimeValid === 2? "已逾期" : "已報名"
+                  }
                 </Box>
                 <Box sx={rowContainer}>
                   <Typography sx={columnDesc}>

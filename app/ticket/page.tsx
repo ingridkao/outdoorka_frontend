@@ -171,6 +171,7 @@ function Tickets() {
 
             {ticketStatuList.map((statuItem, statuIndex) => (
               <Button
+                key={statuIndex}
                 variant="outlined"
                 size="small"
                 color={filterStatus === 0 ? "secondary" : "primary"}

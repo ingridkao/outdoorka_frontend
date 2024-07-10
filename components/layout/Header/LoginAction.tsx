@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, MouseEvent, SyntheticEvent } from "react";
+import { useState, useEffect, MouseEvent, SyntheticEvent, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "@/features/user/authSlice";
 import { logoutOrganizer } from "@/features/organizer/ogAuthSlice";
@@ -48,7 +48,8 @@ function LoginAction() {
 
   const [suspenseCount, setSuspenseCount] = useState<number>(0);
   const { ticket, organizer } = axios;
-  async function loadData(user: boolean) {
+
+  const fetchSuspenseList = useCallback(async (user: boolean) => {
     try {
       if (user) {
         dispatch(showLikes());
@@ -73,7 +74,8 @@ function LoginAction() {
     } catch (error) {
       console.error("Failed to fetch data: " + String(error));
     }
-  }
+  }, [dispatch, organizer, ticket]);
+
   useEffect(() => {
     setIsClient(true);
     if (isClient) return;
@@ -82,13 +84,11 @@ function LoginAction() {
     if (getUserT0ken) {
       const profile = getProfileCookieObj();
       setAuthUser(profile);
-      loadData(true);
+      fetchSuspenseList(true);
     } else if (getOgT0ken) {
-      loadData(false);
-    } else {
-      router.push("/");
+      fetchSuspenseList(false);
     }
-  }, []);
+  }, [isClient, fetchSuspenseList]);
 
   const handleProfileMenuClick = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -181,7 +181,7 @@ function LoginAction() {
         <>
           <MenuItem onClick={goToActivity}>
             <TicketIcon sx={MenuIconStyle} fillcolor="#B1AAA5" />
-            <Typography>活動列表</Typography>
+            <Typography>我的活動</Typography>
           </MenuItem>
         </>
       )}
