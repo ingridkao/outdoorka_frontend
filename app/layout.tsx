@@ -72,6 +72,7 @@ export default function RootLayout({
         <meta name="description" content="揪好咖，戶外活動揪團系統" />
         <meta name="keywords" content="揪團, 戶外, 活動, 聚會, 社交" />
         <meta name="author" content="OUTDOORKA" />
+        <link rel="icon" href="https://outdoorka-frontend-ten.vercel.app/favicon.ico" />
 
         <meta property="og:title" content="戶外活動揪團系統" />
         <meta

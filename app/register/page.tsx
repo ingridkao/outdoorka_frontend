@@ -17,7 +17,6 @@ import {
   getCookie,
 } from "@/utils/cookieHandler";
 import {
-  Unstable_Grid2 as Grid,
   Box,
   Typography,
   Fade,
@@ -317,50 +316,48 @@ export default function Register() {
   );
 
   return (
-    <Grid
-      container
-      direction="row"
-      justifyContent="space-between"
-      alignItems="center"
-      spacing={2}
+    <Box
+      sx={{
+        height: "100vh",
+        display: "grid",
+        gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" },
+      }}
     >
-      <Grid
-        xs={12}
-        md={6}
+      <Box
         sx={{
-          overflow: "hidden",
+          display:{ xs: "none", sm: "block" },
+          overflow: "hidden"
         }}
       >
         <Box
           component="img"
           sx={{
             objectFit: "cover",
+            height: "100%",
           }}
-          style={{
-            height: "100dvh",
-          }}
-          display={{ xs: "none", md: "block" }}
           alt="cover"
           src="https://i.imgur.com/UTYmBjM.jpg"
         />
-      </Grid>
+      </Box>
 
-      <Grid
-        xs={12}
-        md={6}
+      <Box
         sx={{
-          textAlign: "center",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          p: 2
         }}
       >
         <Box
           sx={{
             position: "relative",
+            textAlign: "center",
           }}
         >
           <Fade in={checked}>{step1}</Fade>
           <Fade in={!checked}>{step2}</Fade>
         </Box>
-      </Grid>
-    </Grid>
+      </Box>
+    </Box>
   );
 }

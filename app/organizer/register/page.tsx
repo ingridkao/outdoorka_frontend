@@ -11,7 +11,6 @@ import {
 } from "@/utils/regexHandler";
 import axios from "@/plugins/api/axios";
 import {
-  Grid,
   Box,
   Typography,
   Fade,
@@ -25,7 +24,6 @@ import {
 export default function Register() {
   const router = useRouter();
   const { auth } = axios;
-  // const dispatch = useDispatch();
 
   const [registerForm, setRegisterForm] = useState<any>({
     name: "",
@@ -149,13 +147,11 @@ export default function Register() {
   };
 
   const step1 = (
-    <Box
-      sx={{
-        width: "80%",
-        margin: "auto",
-      }}
-    >
-      <Typography variant="h6">加入揪好咖</Typography>
+    <Box sx={{
+      width: "80%",
+      mx: "auto"
+    }}>
+      <Typography variant="h4">加入揪好咖</Typography>
 
       <Box
         component="form"
@@ -267,6 +263,9 @@ export default function Register() {
               validPwd !== "" ||
               validMatch !== ""
             }
+            sx={{
+              mb: 2,
+            }}
             onClick={handleSubmit}
           >
             註冊
@@ -288,18 +287,16 @@ export default function Register() {
   );
 
   return (
-    <Grid
-      container
-      direction="row"
-      justifyContent="space-between"
-      alignItems="center"
-      spacing={2}
+    <Box
+      sx={{
+        height: "100vh",
+        display: "grid",
+        gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" },
+      }}
     >
-      <Grid
-        item
-        xs={12}
-        md={6}
+      <Box
         sx={{
+          display:{ xs: "none", sm: "block" },
           overflow: "hidden",
         }}
       >
@@ -307,32 +304,21 @@ export default function Register() {
           component="img"
           sx={{
             objectFit: "cover",
+            height: "100%",
           }}
-          style={{
-            height: "100dvh",
-          }}
-          display={{ xs: "none", md: "block" }}
           alt="cover"
           src="https://fastly.picsum.photos/id/572/1000/700.jpg?hmac=4wtTOriqhtIkQQpz6N9PLCmvzXwMvkGpSE235Mu_P9Q"
         />
-      </Grid>
+      </Box>
 
-      <Grid
-        item
-        xs={12}
-        md={6}
+      <Box
         sx={{
           textAlign: "center",
+          p: 3
         }}
       >
-        <Box
-          sx={{
-            position: "relative",
-          }}
-        >
-          <Fade in={true}>{step1}</Fade>
-        </Box>
-      </Grid>
-    </Grid>
+        <Fade in={true}>{step1}</Fade>
+      </Box>
+    </Box>
   );
 }
