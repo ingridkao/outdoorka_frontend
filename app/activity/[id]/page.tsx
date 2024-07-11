@@ -94,6 +94,7 @@ function Activity({ params }: { params: { id: string } }) {
   });
   const [activityData, setActivityData] = React.useState<any>({});
   const [listItemData, setListItemData] = React.useState<any[]>([]);
+  const [canResister, setCanResister] = React.useState(false);
 
   useEffect(() => {
     if (params.id) {
@@ -140,6 +141,19 @@ function Activity({ params }: { params: { id: string } }) {
 
         // 設定倒數計時
         setTimeLeftFunc(res.data);
+
+        // 設定是否可以報名
+        const now = new Date();
+        const startDate: Date = new Date(res.data.activitySignupStartTime);
+        const endDate: Date = new Date(res.data.activitySignupEndTime);
+        if (
+          res.data.role === "user" &&
+          now.getTime() >= startDate.getTime() &&
+          now.getTime() < endDate.getTime() &&
+          res.data.remainingCapacity > 0
+        ) {
+          setCanResister(true);
+        }
       });
     }
   }, []);
@@ -198,7 +212,7 @@ function Activity({ params }: { params: { id: string } }) {
     return paragraphs.map((paragraph, index) => {
       const lines = paragraph.split(/\r?\n/g).map((line, lineIndex) => (
         <React.Fragment key={lineIndex}>
-          <div dangerouslySetInnerHTML={{ __html: line }}></div>
+          <span dangerouslySetInnerHTML={{ __html: line }}></span>
           {/* {line} */}
           {/* {lineIndex < paragraph.split(/\r?\n/g).length - 1 && <br />} */}
         </React.Fragment>
@@ -668,13 +682,27 @@ function Activity({ params }: { params: { id: string } }) {
                       />
                     </ListItem>
                   </List>
-                  <Button
-                    onClick={linkToInfo}
-                    fullWidth
-                    sx={{ backgroundColor: "#22252A", color: "#FFFFFF" }}
-                  >
-                    立即報名
-                  </Button>
+                  {canResister ? (
+                    <Button
+                      onClick={linkToInfo}
+                      fullWidth
+                      sx={{ backgroundColor: "#22252A", color: "#FFFFFF" }}
+                    >
+                      立即報名
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={linkToInfo}
+                      fullWidth
+                      sx={{
+                        backgroundColor: "rgba(255, 255, 255, .15);",
+                        color: "#FFFFFF",
+                      }}
+                      disabled={true}
+                    >
+                      未開放報名
+                    </Button>
+                  )}
                 </Paper>
                 <Paper
                   elevation={0}
