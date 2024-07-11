@@ -19,7 +19,6 @@ import {
 } from "@/utils/cookieHandler";
 
 import {
-  Grid,
   Box,
   Typography,
   FormGroup,
@@ -138,22 +137,17 @@ export default function Login() {
   }, [router]);
 
   return (
-    <Grid
-      container
-      direction="row"
-      justifyContent="space-between"
-      alignItems="center"
+    <Box
       sx={{
         height: "100vh",
+        display: "grid",
+        gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" },
       }}
     >
-      <Grid
-        item
-        xs={12}
-        sm={6}
+      <Box
         sx={{
-          overflow: "hidden",
-          height:{ xs: "auto", sm: "100%" },
+          display:{ xs: "none", sm: "block" },
+          overflow: "hidden"
         }}
       >
         <Box
@@ -166,13 +160,10 @@ export default function Login() {
           alt="cover"
           src="https://fastly.picsum.photos/id/572/1000/700.jpg?hmac=4wtTOriqhtIkQQpz6N9PLCmvzXwMvkGpSE235Mu_P9Q"
         />
-      </Grid>
+      </Box>
 
-      <Grid 
-        xs={12} 
-        sm={6} 
+      <Box 
         sx={{
-          height: "100%",
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
@@ -183,7 +174,7 @@ export default function Login() {
           <BackBtn href="/" name="返回" />
         </Box>
         <Fade in={true}>
-          <Box sx={{ width: "75%", maxWidth: 380, margin: "auto", textAlign: "center" }}>
+          <Box sx={{ width: "75%", maxWidth: "30rem", margin: "auto", textAlign: "center" }}>
             <Box>
               <Button component={NextLink} href="/" sx={{ height: 60, my: 5 }}>
                 <LogoHorizontal color="#4A4642" />
@@ -272,7 +263,7 @@ export default function Login() {
           </Box>
         </Fade>
         <Box sx={{height: 40}}></Box>
-      </Grid>
-    </Grid>
+      </Box>
+    </Box>
   );
 }

@@ -18,7 +18,6 @@ import {
 } from "@/utils/cookieHandler";
 
 import {
-  Unstable_Grid2 as Grid,
   Box,
   Typography,
   FormGroup,
@@ -139,39 +138,32 @@ export default function Login() {
   };
 
   return (
-    <Grid
-      container
-      direction="row"
-      justifyContent="space-between" 
+    <Box
       sx={{
         height: "100vh",
+        display: "grid",
+        gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" },
       }}
     >
-      <Grid 
-        xs={12}
-        sm={6}
+      <Box 
         sx={{
-          overflow: "hidden",
-          height:{ xs: "auto", sm: "100%" },
+          display:{ xs: "none", sm: "block" },
+          overflow: "hidden"
         }}
       >
         <Box
           component="img"
           sx={{
-            display:{ xs: "none", sm: "block" },
             objectFit: "cover",
             height: "100%",
           }}
           alt="cover"
           src="https://i.imgur.com/UTYmBjM.jpg"
         />
-      </Grid>
+      </Box>
 
-      <Grid 
-        xs={12} 
-        sm={6} 
+      <Box 
         sx={{
-          height: "100%",
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
@@ -182,7 +174,7 @@ export default function Login() {
           <BackBtn href="/" name="返回" />
         </Box>
         <Fade in={true}>
-          <Box sx={{ width: "75%", maxWidth: 380, margin: "auto", textAlign: "center"  }}>
+          <Box sx={{ width: "75%", maxWidth: "30rem", margin: "auto", textAlign: "center"  }}>
             <Box component="form" noValidate autoComplete="off">
               <Box
                 component="img"
@@ -307,7 +299,7 @@ export default function Login() {
           </Box>
         </Fade>
         <Box sx={{height: 40}}></Box>
-      </Grid>
-    </Grid>
+      </Box>
+    </Box>
   );
 }

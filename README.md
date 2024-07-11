@@ -36,13 +36,14 @@
     3. 報名購票：活動報名及金流支付
         ![報名購票流程](https://i.imgur.com/8nQjH8F.jpeg)
     4. 票卷清單：分票、備註、出示QRcode、評價
+        ![分票流程](https://i.imgur.com/00fc0fr.jpeg)
 
 - 主揪：
     1. 登入註冊：可使用Email登入
     2. 活動清單：查看及新增修改活動，評價過去活動之參加者
     3. 活動編輯：可上傳活動照片以及使用編輯器編輯內容，並有草稿及發布機制
     5. 活動驗票：可透過掃描QRcode或是參加者列表進行驗票
-        ![活動驗票流程]()
+        ![活動驗票流程](https://i.imgur.com/8ajxnLV.jpeg)
 
 
 
@@ -127,3 +128,7 @@ Visit http://localhost:3000 in your browser to access the application.
   <img src="https://contrib.rocks/image?repo=outdoorka/outdoorka_frontend" />
 </a>
 
+.
+
+![LOGO](https://i.imgur.com/woq9oCr.png#pic_center =300x)
+© 2023 outdoorka
