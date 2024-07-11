@@ -211,13 +211,13 @@ function ActivityCreate() {
 
     if (event.target.files[0]) {
       const getFile = event.target.files[0];
-      const maxSize = 1024 * 1024 * 2; // 2 MB
+      const maxSize = 1024 * 1024 * 3; // 3 MB
 
       if (getFile.size > maxSize) {
         console.error("Image size cannot exceed 2 MB");
         setSubmitResult({
           isSuccess: false,
-          message: "上傳圖片大小不可超過 2 MB",
+          message: "上傳圖片大小不可超過 3 MB",
         });
         return;
       }
@@ -697,8 +697,20 @@ function ActivityCreate() {
 
           <Grid item xs={12} mt={3} mb={3}>
             <Grid container spacing={3} alignItems="center">
-              <Grid xs={2} sx={{ marginBottom: "16px" }}>
-                <Typography mt={0}>上傳圖片 {imageUrls.length} / 5</Typography>
+              <Grid xs={4} sx={{ marginBottom: "16px" }}>
+                <Typography mt={0} sx={{ marginLeft: "20px" }}>
+                  上傳圖片 {imageUrls.length} / 5{" "}
+                  <span
+                    style={{
+                      color: "#BE565B",
+                      fontWeight: "400",
+                      fontSize: "0.86rem",
+                      marginLeft: "8px",
+                    }}
+                  >
+                    (最少上傳1張，最多5張，每張圖片大小不可超過 3 MB)
+                  </span>
+                </Typography>
               </Grid>
               <Grid xs={1} sx={{ marginBottom: "16px" }}>
                 <IconButton
@@ -713,7 +725,7 @@ function ActivityCreate() {
               </Grid>
             </Grid>
 
-            <Grid container spacing={2}>
+            <Grid container spacing={2} sx={{ marginLeft: 0 }}>
               {imageUrls.map((url, index) => (
                 <Grid key={url} xs={4} sx={{ marginBottom: "16px" }}>
                   <Box sx={{ position: "relative" }}>
